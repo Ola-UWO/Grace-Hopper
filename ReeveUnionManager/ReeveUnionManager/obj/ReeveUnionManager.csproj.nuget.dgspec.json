@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj": {}
+    "/Users/ola/Downloads/Grace-Hopper/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj": {}
   },
   "projects": {
-    "/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj": {
+    "/Users/ola/Downloads/Grace-Hopper/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj",
+        "projectUniqueName": "/Users/ola/Downloads/Grace-Hopper/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj",
         "projectName": "ReeveUnionManager",
-        "projectPath": "/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj",
+        "projectPath": "/Users/ola/Downloads/Grace-Hopper/ReeveUnionManager/ReeveUnionManager/ReeveUnionManager.csproj",
         "packagesPath": "/Users/ola/.nuget/packages/",
-        "outputPath": "/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/obj/",
+        "outputPath": "/Users/ola/Downloads/Grace-Hopper/ReeveUnionManager/ReeveUnionManager/obj/",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "configFilePaths": [

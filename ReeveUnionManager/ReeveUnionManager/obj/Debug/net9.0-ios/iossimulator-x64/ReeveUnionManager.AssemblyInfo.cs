@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ReeveUnionManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+174dbfda8611a113332f740e90b8bd2a0c7d89cf")]
 [assembly: System.Reflection.AssemblyProductAttribute("ReeveUnionManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ReeveUnionManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
