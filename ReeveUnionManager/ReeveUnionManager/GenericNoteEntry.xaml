@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReeveUnionManager.GenericNoteEntry"
+             Title="Add Note">
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="18">
+            <Label Text="New Note" Margin="0,20,0,0"
+                   FontSize="Large" HorizontalTextAlignment="Center" />
+
+            <Label Text="Title" FontAttributes="Bold"/>
+            <Entry Placeholder="Note title..." WidthRequest="300"/>
+
+            <Label Text="Tag (Optional)" FontAttributes="Bold"/>
+            <Entry Placeholder="e.g., Facilities, AV, Catering" WidthRequest="300"/>
+
+            <Label Text="Details" FontAttributes="Bold"/>
+            <Editor Placeholder="Write your note..."
+                    AutoSize="TextChanges" HeightRequest="140"/>
+
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Add Photo" IsEnabled="False"/>
+                <Button Text="Take Photo" IsEnabled="False"/>
+            </HorizontalStackLayout>
+
+            <CollectionView HeightRequest="120">
+                <CollectionView.ItemsSource>
+                    <x:Array Type="{x:Type ImageSource}">
+                        <FileImageSource File="ph.png" />
+                        <FileImageSource File="ph.png" />
+                        <FileImageSource File="ph.png" />
+                        <FileImageSource File="ph.png" />
+                    </x:Array>
+                </CollectionView.ItemsSource>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal" Span="1"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="4" Margin="4" HasShadow="False" BorderColor="{DynamicResource Gray200}">
+                            <Image Source="{Binding}" WidthRequest="100" HeightRequest="100" Aspect="AspectFill"/>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Save Note" WidthRequest="200" HeightRequest="50"
+                    HorizontalOptions="Center" IsEnabled="False"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

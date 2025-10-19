@@ -1,0 +1,127 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net9.0-maccatalyst
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ReeveUnionManager
+build_property.ProjectDir = /Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/App.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.App.xaml
+build_metadata.AdditionalFiles.TargetPath = App.xaml
+build_metadata.AdditionalFiles.RelativePath = App.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/ClosingCheckListPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.ClosingCheckListPage.xaml
+build_metadata.AdditionalFiles.TargetPath = ClosingCheckListPage.xaml
+build_metadata.AdditionalFiles.RelativePath = ClosingCheckListPage.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/EventCheckIn.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.EventCheckIn.xaml
+build_metadata.AdditionalFiles.TargetPath = EventCheckIn.xaml
+build_metadata.AdditionalFiles.RelativePath = EventCheckIn.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/EventCheckInLogs.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.EventCheckInLogs.xaml
+build_metadata.AdditionalFiles.TargetPath = EventCheckInLogs.xaml
+build_metadata.AdditionalFiles.RelativePath = EventCheckInLogs.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/EventSupportChanges.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.EventSupportChanges.xaml
+build_metadata.AdditionalFiles.TargetPath = EventSupportChanges.xaml
+build_metadata.AdditionalFiles.RelativePath = EventSupportChanges.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/FoodServiceIssue.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.FoodServiceIssue.xaml
+build_metadata.AdditionalFiles.TargetPath = FoodServiceIssue.xaml
+build_metadata.AdditionalFiles.RelativePath = FoodServiceIssue.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/FrontDeskTasksScreen.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.FrontDeskTasksScreen.xaml
+build_metadata.AdditionalFiles.TargetPath = FrontDeskTasksScreen.xaml
+build_metadata.AdditionalFiles.RelativePath = FrontDeskTasksScreen.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/GenericNoteEntry.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.GenericNoteEntry.xaml
+build_metadata.AdditionalFiles.TargetPath = GenericNoteEntry.xaml
+build_metadata.AdditionalFiles.RelativePath = GenericNoteEntry.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/GuestCountEntry.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.GuestCountEntry.xaml
+build_metadata.AdditionalFiles.TargetPath = GuestCountEntry.xaml
+build_metadata.AdditionalFiles.RelativePath = GuestCountEntry.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/HomePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.HomePage.xaml
+build_metadata.AdditionalFiles.TargetPath = HomePage.xaml
+build_metadata.AdditionalFiles.RelativePath = HomePage.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/MaintenanceCustodialScreen.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.MaintenanceCustodialScreen.xaml
+build_metadata.AdditionalFiles.TargetPath = MaintenanceCustodialScreen.xaml
+build_metadata.AdditionalFiles.RelativePath = MaintenanceCustodialScreen.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/OpeningCheckListPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.OpeningCheckListPage.xaml
+build_metadata.AdditionalFiles.TargetPath = OpeningCheckListPage.xaml
+build_metadata.AdditionalFiles.RelativePath = OpeningCheckListPage.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/PhoneCallEntry.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.PhoneCallEntry.xaml
+build_metadata.AdditionalFiles.TargetPath = PhoneCallEntry.xaml
+build_metadata.AdditionalFiles.RelativePath = PhoneCallEntry.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/PhoneCallLogs.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.PhoneCallLogs.xaml
+build_metadata.AdditionalFiles.TargetPath = PhoneCallLogs.xaml
+build_metadata.AdditionalFiles.RelativePath = PhoneCallLogs.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/Resources/Styles/Colors.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.Resources.Styles.Colors.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources/Styles/Colors.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources/Styles/Colors.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/Resources/Styles/Styles.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.Resources.Styles.Styles.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources/Styles/Styles.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources/Styles/Styles.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/RoomSetsScreen.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.RoomSetsScreen.xaml
+build_metadata.AdditionalFiles.TargetPath = RoomSetsScreen.xaml
+build_metadata.AdditionalFiles.RelativePath = RoomSetsScreen.xaml
+
+[/Users/ola/Downloads/ReeveUnionManager/ReeveUnionManager/UploadNotesTemplate.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = ReeveUnionManager.UploadNotesTemplate.xaml
+build_metadata.AdditionalFiles.TargetPath = UploadNotesTemplate.xaml
+build_metadata.AdditionalFiles.RelativePath = UploadNotesTemplate.xaml

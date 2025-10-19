@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReeveUnionManager.HomePage">
+
+       <Frame HeightRequest="750"
+              WidthRequest="400"
+              CornerRadius="20">
+
+              <VerticalStackLayout Padding="20"
+                                   Spacing="45">
+
+                     <VerticalStackLayout Spacing="5">
+                            <Label Text="Building Manager Portal"
+                                   FontSize="28"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   TextColor="#2C3E50"/>
+
+                            <Label Text="Manage your building operations efficiently"
+                                   FontSize="15"
+                                   HorizontalOptions="Center"
+                                   TextColor="#7F8C8D"/>
+                     </VerticalStackLayout>
+
+                     <Grid RowDefinitions="Auto,Auto"
+                           ColumnDefinitions="*,*"
+                           RowSpacing="15"
+                           ColumnSpacing="15">
+
+                            <Frame Grid.Row="0"
+                                   Grid.Column="0"
+                                   Padding="25"
+                                   CornerRadius="15"
+                                   BackgroundColor="White"
+                                   BorderColor="#3498DB"
+                                   HasShadow="True">
+                                   <VerticalStackLayout Spacing="15">
+
+                                          <Frame WidthRequest="60"
+                                                 HeightRequest="60"
+                                                 CornerRadius="15"
+                                                 BackgroundColor="#5DADE2"
+                                                 Padding="0"
+                                                 HasShadow="False"
+                                                 HorizontalOptions="Start">
+                                                 <Label Text="📋"
+                                                        FontSize="32"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+                                          </Frame>
+
+                                          <VerticalStackLayout Spacing="5">
+                                                 <Label Text="Manager Logs"
+                                                        FontSize="20"
+                                                        FontAttributes="Bold"
+                                                        TextColor="#2C3E50"/>
+                                                 <Label Text="View all building logs from last 30 days"
+                                                        FontSize="14"
+                                                        TextColor="#7F8C8D"
+                                                        LineBreakMode="WordWrap"/>
+                                          </VerticalStackLayout>
+
+                                   </VerticalStackLayout>
+                            </Frame>
+
+                            <Frame Grid.Row="0"
+                                   Grid.Column="1"
+                                   Padding="25"
+                                   CornerRadius="15"
+                                   BackgroundColor="White"
+                                   BorderColor="#2ECC71"
+                                   HasShadow="True">
+                                   <VerticalStackLayout Spacing="15">
+
+                                          <Frame WidthRequest="60"
+                                                 HeightRequest="60"
+                                                 CornerRadius="15"
+                                                 BackgroundColor="#58D68D"
+                                                 Padding="0"
+                                                 HasShadow="False"
+                                                 HorizontalOptions="Start">
+                                                 <Label Text="➕"
+                                                        FontSize="32"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+                                          </Frame>
+
+                                          <VerticalStackLayout Spacing="5">
+                                                 <Label Text="New Log Entry"
+                                                        FontSize="20"
+                                                        FontAttributes="Bold"
+                                                        TextColor="#2C3E50"/>
+                                                 <Label Text="Create a new log entry"
+                                                        FontSize="14"
+                                                        TextColor="#7F8C8D"
+                                                        LineBreakMode="WordWrap"/>
+                                          </VerticalStackLayout>
+
+                                   </VerticalStackLayout>
+                            </Frame>
+
+                            <Frame Grid.Row="1"
+                                   Grid.Column="0"
+                                   Padding="25"
+                                   CornerRadius="15"
+                                   BackgroundColor="White"
+                                   BorderColor="#FFF39D12"
+                                   HasShadow="True">
+                                   <VerticalStackLayout Spacing="15">
+
+                                          <Frame WidthRequest="60"
+                                                 HeightRequest="60"
+                                                 CornerRadius="15"
+                                                 BackgroundColor="#FFF59E41"
+                                                 Padding="0"
+                                                 HasShadow="False"
+                                                 HorizontalOptions="Start">
+                                                 <Label Text="☀️"
+                                                        FontSize="32"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+                                          </Frame>
+
+                                          <VerticalStackLayout Spacing="5">
+                                                 <Label Text="Opening Checklist"
+                                                        FontSize="20"
+                                                        FontAttributes="Bold"
+                                                        TextColor="#2C3E50"/>
+                                                 <Label Text="Complete daily opening tasks"
+                                                        FontSize="14"
+                                                        TextColor="#7F8C8D"
+                                                        LineBreakMode="WordWrap"/>
+                                          </VerticalStackLayout>
+
+                                   </VerticalStackLayout>
+                            </Frame>
+
+                            <Frame Grid.Row="1"
+                                   Grid.Column="1"
+                                   Padding="25"
+                                   CornerRadius="15"
+                                   BackgroundColor="White"
+                                   BorderColor="#9B59B6"
+                                   HasShadow="True">
+                                   <VerticalStackLayout Spacing="15">
+
+                                          <Frame WidthRequest="60"
+                                                 HeightRequest="60"
+                                                 CornerRadius="15"
+                                                 BackgroundColor="#FF967AC5"
+                                                 Padding="0"
+                                                 HasShadow="False"
+                                                 HorizontalOptions="Start">
+                                                 <Label Text="🌙"
+                                                        FontSize="32"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+                                          </Frame>
+
+                                          <VerticalStackLayout Spacing="5">
+                                                 <Label Text="Closing Checklist"
+                                                        FontSize="20"
+                                                        FontAttributes="Bold"
+                                                        TextColor="#2C3E50"/>
+                                                 <Label Text="Complete daily closing tasks"
+                                                        FontSize="14"
+                                                        TextColor="#7F8C8D"
+                                                        LineBreakMode="WordWrap"/>
+                                          </VerticalStackLayout>
+
+                                   </VerticalStackLayout>
+                            </Frame>
+                     </Grid>
+
+              </VerticalStackLayout>
+       </Frame>
+
+</ContentPage>

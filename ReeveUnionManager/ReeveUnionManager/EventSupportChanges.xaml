@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReeveUnionManager.EventSupportChanges"
+             Title="Event Support">
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="18">
+            <Label Text="Event Support: Last-Minute Changes" Margin="0,20,0,0"
+                   FontSize="Large" HorizontalTextAlignment="Center" />
+
+            <Label Text="Event Name" FontAttributes="Bold"/>
+            <Entry Placeholder="Event name..." WidthRequest="300"/>
+
+            <Label Text="Time" FontAttributes="Bold"/>
+            <Entry Placeholder="e.g., 7:00 PM" WidthRequest="300"/>
+
+            <Label Text="Location" FontAttributes="Bold"/>
+            <Entry Placeholder="e.g., Ballroom A" WidthRequest="300"/>
+
+            <Label Text="Change Details" FontAttributes="Bold"/>
+            <Editor Placeholder="Describe last-minute changes..."
+                    AutoSize="TextChanges" HeightRequest="120"/>
+
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Add Photo" IsEnabled="False"/>
+                <Button Text="Take Photo" IsEnabled="False"/>
+            </HorizontalStackLayout>
+
+            <CollectionView HeightRequest="120">
+                <CollectionView.ItemsSource>
+                    <x:Array Type="{x:Type ImageSource}">
+                        <FileImageSource File="ph.png" />
+                        <FileImageSource File="ph.png" />
+                    </x:Array>
+                </CollectionView.ItemsSource>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal" Span="1"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="4" Margin="4" HasShadow="False" BorderColor="{DynamicResource Gray200}">
+                            <Image Source="{Binding}" WidthRequest="100" HeightRequest="100" Aspect="AspectFill"/>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Submit" WidthRequest="200" HeightRequest="50"
+                    HorizontalOptions="Center" IsEnabled="False"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

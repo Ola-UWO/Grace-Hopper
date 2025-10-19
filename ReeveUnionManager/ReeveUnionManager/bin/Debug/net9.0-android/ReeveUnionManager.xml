@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReeveUnionManager</name>
+    </assembly>
+    <members>
+        <member name="T:ReeveUnionManager.App">
+            <summary>
+            Author: Ola ft. Edgerunner
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.ClosingCheckListPage">
+            <summary>
+            Author: Ola ft. Edgerunner
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.EventCheckIn">
+            <summary>
+            Author: Kyle Johnson
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.EventCheckInLogs">
+            <summary>
+            Author: Kyle Johnson
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.EventSupportChanges">
+            <summary>
+            <!-- Kevin Kraiss -->
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.FoodServiceIssue">
+            <summary>
+            <!-- Kevin Kraiss -->
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.FrontDeskTasksScreen">
+            <summary>
+            Author: Caleb Wisneski
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.GenericNoteEntry">
+            <summary>
+            <!-- Kevin Kraiss -->
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.GuestCountEntry">
+            <summary>
+            <!-- Kevin Kraiss -->
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.HomePage">
+            <summary>
+            Author: Ola ft. Edgerunner
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.MaintenanceCustodialScreen">
+            <summary>
+            Author: Caleb Wisneski
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.MauiProgram">
+            <summary>
+            Author: Ola ft. Edgerunner
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.OpeningCheckListPage">
+            <summary>
+            Author: Ola ft. Edgerunner
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.PhoneCallEntry">
+            <summary>
+            Author: Kyle Johnson
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.PhoneCallLogs">
+            <summary>
+            Author: Kyle Johnson
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.RoomSetsScreen">
+            <summary>
+            Author: Caleb Wisneski
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.UploadNotesTemplate">
+            <summary>
+            Author: Caleb Wisneski
+            </summary>
+        </member>
+        <member name="T:ReeveUnionManager.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+    </members>
+</doc>
