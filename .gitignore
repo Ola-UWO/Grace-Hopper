@@ -1,15 +1,52 @@
-# Build outputs (anywhere)
+# Build artifacts
 **/bin/
 **/obj/
 
-# IDE/OS user files
+# User-specific settings
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.vscode/
+
+# macOS system files
+.DS_Store
+
+# Visual Studio / VS for Mac
 .vs/
 .idea/
-*.user
-*.suo
-.DS_Store
-*.pdb
 
-# MAUI platform-specific (covered by bin/obj, but fine)
-**/Platforms/*/bin/
-**/Platforms/*/obj/
+# Build logs and caches
+*.log
+*.tlog
+*.cache
+*.pdb
+*.mdb
+*.db
+*.bak
+
+# Temporary publish folders
+**/AppPackages/
+**/BundleArtifacts/
+**/BundleResources/
+**/Release/
+**/Debug/
+**/PublishProfiles/
+**/GeneratedFiles/
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+artifacts/
+
+# Xamarin / MAUI device-specific junk (superfluous, but harmless)
+*.apk
+*.aab
+*.app
+*.ipa
+*.xcuserdata/
+*.xcuserstate
+*.xcworkspacedata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj  # keep the actual project file if created
