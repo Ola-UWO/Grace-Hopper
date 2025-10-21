@@ -8,6 +8,7 @@
 *.user
 *.suo
 .DS_Store
+*.pdb
 
 # MAUI platform-specific (covered by bin/obj, but fine)
 **/Platforms/*/bin/
