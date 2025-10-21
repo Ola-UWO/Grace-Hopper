@@ -1,0 +1,14 @@
+# Build outputs (anywhere)
+**/bin/
+**/obj/
+
+# IDE/OS user files
+.vs/
+.idea/
+*.user
+*.suo
+.DS_Store
+
+# MAUI platform-specific (covered by bin/obj, but fine)
+**/Platforms/*/bin/
+**/Platforms/*/obj/
