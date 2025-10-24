@@ -1,4 +1,4 @@
-namespace ReeveUnionManager;
+namespace ReeveUnionManager.Views;
 /// <summary>
 /// Author: Ola ft. Edgerunner
 /// </summary>
