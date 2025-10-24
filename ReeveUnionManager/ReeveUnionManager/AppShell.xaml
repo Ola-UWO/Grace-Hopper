@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ReeveUnionManager.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:ReeveUnionManager.Views">
+
+    <TabBar>
+        <Tab Title="Home">
+            <ShellContent
+                Title="Home"
+                ContentTemplate="{DataTemplate views:HomePage}" />
+        </Tab>
+
+        <Tab Title="Check-In">
+            <ShellContent
+                Title="Event Check-In"
+                ContentTemplate="{DataTemplate views:EventCheckIn}" />
+        </Tab>
+
+        <Tab Title="Food">
+            <ShellContent
+                Title="Food Service"
+                ContentTemplate="{DataTemplate views:FoodServiceIssue}" />
+        </Tab>
+
+        <Tab Title="Guests">
+            <ShellContent
+                Title="Guest Count"
+                ContentTemplate="{DataTemplate views:GuestCountEntry}" />
+        </Tab>
+
+        <Tab Title="Notes">
+            <ShellContent
+                Title="Notes"
+                ContentTemplate="{DataTemplate views:GenericNoteEntry}" />
+        </Tab>
+    </TabBar>
+</Shell>
