@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReeveUnionManager.ShiftDetails">
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill" RowDefinitions="Auto, *, Auto">
+        
+        <Label Text="Shift Details" HorizontalOptions="Center" VerticalOptions="Start" FontSize="30" Margin="0,10,0,0" Grid.Row="0"></Label>
+            
+            
+            <Grid 
+                ColumnDefinitions="Auto, *" 
+                RowDefinitions="*, *, *, *"  
+                HorizontalOptions="Fill" 
+                RowSpacing="40" 
+                VerticalOptions="Center" 
+                Grid.Row="1" 
+                Padding="20"
+                >
+
+                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="0" Margin="0,0,0,10">Name:</Label>
+                <Entry x:Name="NameENT" Placeholder="Name" FontSize="16" Grid.Column="1" Grid.Row="0" Margin="0,0,0,10"/>
+                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">Shift:</Label>
+                <Entry x:Name="ShiftENT" Placeholder="Shift Title" FontSize="16" Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"/>
+                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="2" Margin="0,0,0,10">Day of Week:</Label>
+                <Entry x:Name="DayOfWeekENT" Placeholder="Monday" FontSize="16" Grid.Column="1" Grid.Row="2" Margin="0,0,0,10"/>
+                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="3" Margin="0,0,0,10">Date:</Label>
+                <DatePicker Grid.Column="1" Grid.Row="3" Margin="0,0,0,10"/>
+            </Grid> 
+
+
+        <Button
+                    x:Name="BackToHome"
+                    Text="Finished"
+                    HorizontalOptions="Fill"
+                    Grid.Row="2"
+                    VerticalOptions="End"
+                    Margin="0,0,0,0"
+                    />
+
+    </Grid>
+    
+</ContentPage>
