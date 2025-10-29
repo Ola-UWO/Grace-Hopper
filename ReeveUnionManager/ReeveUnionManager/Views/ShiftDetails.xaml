@@ -19,12 +19,20 @@
 
                 <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="0" Margin="0,0,0,10">Name:</Label>
                 <Entry x:Name="NameENT" Placeholder="Name" FontSize="16" Grid.Column="1" Grid.Row="0" Margin="0,0,0,10"/>
-                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">Shift:</Label>
-                <Entry x:Name="ShiftENT" Placeholder="Shift Title" FontSize="16" Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"/>
+
+                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">Date:</Label>
+                <DatePicker Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"/>
+
                 <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="2" Margin="0,0,0,10">Day of Week:</Label>
                 <Entry x:Name="DayOfWeekENT" Placeholder="Monday" FontSize="16" Grid.Column="1" Grid.Row="2" Margin="0,0,0,10"/>
-                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="3" Margin="0,0,0,10">Date:</Label>
-                <DatePicker Grid.Column="1" Grid.Row="3" Margin="0,0,0,10"/>
+
+                <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="3" Margin="0,0,0,10">Shift:</Label>
+                
+                <HorizontalStackLayout Grid.Column="1" Grid.Row="3">
+                    <TimePicker VerticalOptions="Center"></TimePicker>
+                    <Label  VerticalOptions="Center">-</Label>
+                    <TimePicker VerticalOptions="Center"></TimePicker>
+                </HorizontalStackLayout>
             </Grid> 
 
 
