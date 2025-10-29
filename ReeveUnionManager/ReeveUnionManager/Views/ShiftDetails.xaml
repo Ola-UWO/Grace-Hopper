@@ -28,7 +28,7 @@
 
                 <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="3" Margin="0,0,0,10">Shift:</Label>
                 
-                <HorizontalStackLayout Grid.Column="1" Grid.Row="3">
+                <HorizontalStackLayout Grid.Column="1" Grid.Row="3" HorizontalOptions="Center">
                     <TimePicker VerticalOptions="Center"></TimePicker>
                     <Label  VerticalOptions="Center">-</Label>
                     <TimePicker VerticalOptions="Center"></TimePicker>
