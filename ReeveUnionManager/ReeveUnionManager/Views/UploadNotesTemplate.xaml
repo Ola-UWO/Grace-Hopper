@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ReeveUnionManager.UploadNotesTemplate"
+             x:Class="ReeveUnionManager.Views.UploadNotesTemplate"
              x:Name="component">
 
     <Grid RowDefinitions="Auto, *, Auto, Auto, Auto" VerticalOptions="Fill" RowSpacing="20" Padding="10">
@@ -24,8 +24,8 @@
 
             
         <Grid ColumnDefinitions="*,*" Grid.Row="2" ColumnSpacing="10">
-            <Button Grid.Column="0" Text="Upload Photo"></Button>
-            <Button Grid.Column="1" Text="Capture Photo"></Button>
+            <Button Grid.Column="0" Text="Upload Photo" IsEnabled="False"/>
+            <Button Grid.Column="1" Text="Capture Photo" IsEnabled="False"/>
         </Grid>
 
         <VerticalStackLayout Grid.Row="3" VerticalOptions="Fill">
@@ -40,11 +40,12 @@
         
         <Button
             x:Name="BackToHome"
-            Text="Finished"
+            Text="Submit"
             HorizontalOptions="Fill"
             VerticalOptions="End"
             Margin="0,0,0,0"
             Grid.Row="4"
+            IsEnabled="False"
             />
     </Grid>
 

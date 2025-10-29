@@ -34,7 +34,15 @@
                                    CornerRadius="15"
                                    BackgroundColor="White"
                                    BorderColor="#3498DB"
-                                   HasShadow="True">
+                                   HasShadow="True"
+                                   Grid.ColumnSpan="2">
+
+                                   <Frame.GestureRecognizers>
+                                          <TapGestureRecognizer
+                                                 Command="{Binding NavigateCommand}"
+                                                 CommandParameter="ManagerLogsPage"/>
+                                   </Frame.GestureRecognizers>
+
                                    <VerticalStackLayout Spacing="15">
 
                                           <Frame WidthRequest="60"
@@ -64,48 +72,6 @@
                                    </VerticalStackLayout>
                             </Frame>
 
-                            <Frame Grid.Row="0"
-                                   Grid.Column="1"
-                                   Padding="25"
-                                   CornerRadius="15"
-                                   BackgroundColor="White"
-                                   BorderColor="#2ECC71"
-                                   HasShadow="True">
-
-                                   <Frame.GestureRecognizers>
-                                          <TapGestureRecognizer
-                                                 Command="{Binding NavigateCommand}"
-                                                 CommandParameter="GenericNoteEntry"/>
-                                   </Frame.GestureRecognizers>
-
-                                   <VerticalStackLayout Spacing="15">
-
-                                          <Frame WidthRequest="60"
-                                                 HeightRequest="60"
-                                                 CornerRadius="15"
-                                                 BackgroundColor="#58D68D"
-                                                 Padding="0"
-                                                 HasShadow="False"
-                                                 HorizontalOptions="Start">
-                                                 <Label Text="➕"
-                                                        FontSize="32"
-                                                        HorizontalOptions="Center"
-                                                        VerticalOptions="Center"/>
-                                          </Frame>
-
-                                          <VerticalStackLayout Spacing="5">
-                                                 <Label Text="New Log Entry"
-                                                        FontSize="20"
-                                                        FontAttributes="Bold"
-                                                        TextColor="#2C3E50"/>
-                                                 <Label Text="Create a new log entry"
-                                                        FontSize="14"
-                                                        TextColor="#7F8C8D"
-                                                        LineBreakMode="WordWrap"/>
-                                          </VerticalStackLayout>
-
-                                   </VerticalStackLayout>
-                            </Frame>
 
                             <Frame Grid.Row="1"
                                    Grid.Column="0"

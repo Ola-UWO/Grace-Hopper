@@ -1,4 +1,4 @@
-namespace ReeveUnionManager;
+namespace ReeveUnionManager.Views;
 
 public partial class ShiftDetails : ContentPage
 {

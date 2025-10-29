@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReeveUnionManager.Views.NewLogEntryPage"
+             Title="Manager Log">
+    <Grid Padding="20" RowSpacing="15" ColumnSpacing="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Row 0 -->
+        <Frame Grid.Row="0" Grid.Column="0" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Shift Details" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="ShiftDetails"/>
+        </Frame>
+        
+        <Frame Grid.Row="0" Grid.Column="1" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Event Support/Reservations" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" LineBreakMode="WordWrap" Command="{Binding NavigateCommand}" CommandParameter="EventSupportChanges"/>
+        </Frame>
+
+        <!-- Row 1 -->
+        <Frame Grid.Row="1" Grid.Column="0" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Sets for Tomorrow" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="RoomSetsScreen"/>
+        </Frame>
+        
+        <Frame Grid.Row="1" Grid.Column="1" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="AV/Technology" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="TechnologyPage"/>
+        </Frame>
+
+        <!-- Row 2 -->
+        <Frame Grid.Row="2" Grid.Column="0" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Food Service" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="FoodServiceIssue"/>
+        </Frame>
+        
+        <Frame Grid.Row="2" Grid.Column="1" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Retail Services" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="RetailServicesPage"/>
+        </Frame>
+
+        <!-- Row 3 -->
+        <Frame Grid.Row="3" Grid.Column="0" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Maintenance/Custodial" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" LineBreakMode="WordWrap" Command="{Binding NavigateCommand}" CommandParameter="MaintenanceCustodialScreen"/>
+        </Frame>
+        
+        <Frame Grid.Row="3" Grid.Column="1" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Miscellaneous" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="MiscellaneousPage"/>
+        </Frame>
+
+        <!-- Row 4 -->
+        <Frame Grid.Row="4" Grid.Column="0" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Front Desk Tasks" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="FrontDeskTasksScreen"/>
+        </Frame>
+        
+        <Frame Grid.Row="4" Grid.Column="1" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="No. of Guests" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="GuestCountEntry"/>
+        </Frame>
+
+        <!-- Row 5 -->
+        <Frame Grid.Row="5" Grid.Column="0" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Event Log" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="EventCheckIn"/>
+        </Frame>
+        
+        <Frame Grid.Row="5" Grid.Column="1" Padding="0" CornerRadius="15" 
+               HeightRequest="100" HasShadow="True">
+            <Button Text="Phone Log" BackgroundColor="White" TextColor="Black"
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="PhoneCallEntry"/>
+        </Frame>
+    </Grid>
+</ContentPage>

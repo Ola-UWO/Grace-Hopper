@@ -2,11 +2,11 @@ using System.Windows.Input;
 
 namespace ReeveUnionManager.ViewModels;
 
-public class HomePageViewModel
+public class PageViewModel
 {
     public ICommand NavigateCommand { get; }
 
-    public HomePageViewModel()
+    public PageViewModel()
     {
         NavigateCommand = new Command<string>(OnNavigate);
     }

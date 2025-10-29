@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ReeveUnionManager.Views.EventSupportChanges"
-             Title="Event Support">
+             x:Class="ReeveUnionManager.Views.EventSupportChanges" >
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="18">
             <Label Text="Event Support: Last-Minute Changes" Margin="0,20,0,0"
