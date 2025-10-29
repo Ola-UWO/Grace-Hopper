@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+#if ANDROID
 using Android.Telecom;
 using Android.Text.Format;
+#endif
 using ReeveUnionManager.Models;
 
 namespace ReeveUnionManager.Models;
@@ -53,7 +55,7 @@ public class BusinessLogic : IBusinessLogic
         return await _database.SelectAllCallLogs();
     }
 
-    public async Task<CallLogError> AddCallLog(int callId, string callerName, DateTime timeOfCall, string callNotes)
+    public async Task<CallLogError> AddCallLog(int callId, string callerName, string timeOfCall, string callNotes)
     {
         CallLog? existingCallLog = await _database.SelectCallLog(callId);
         if (existingCallLog != null)
@@ -66,10 +68,12 @@ public class BusinessLogic : IBusinessLogic
             return CallLogError.NameTooShort;
         }
 
-        if (timeOfCall == DateTime.MinValue)
+        if (timeOfCall == null)
         {
             return CallLogError.MissingDate;
         }
+
+        Console.WriteLine(3);
 
         var newCallLog = new CallLog
         {
@@ -78,6 +82,9 @@ public class BusinessLogic : IBusinessLogic
             TimeOfCall = timeOfCall,
             CallNotes = callNotes
         };
+
+        Console.WriteLine(4);
+
         try
         {
             await _database.InsertCallLog(newCallLog);
@@ -101,7 +108,7 @@ public class BusinessLogic : IBusinessLogic
         return await _database.SelectAllCheckInLogs();
     }
 
-    public async Task<CheckInLogError> AddCheckInLog(int checkInId, string checkInName, DateTime checkInTime, string checkInNotes)
+    public async Task<CheckInLogError> AddCheckInLog(int checkInId, string checkInName, string checkInTime, string checkInNotes)
     {
         CheckInLog? existingCheckInLog = await _database.SelectCheckInLog(checkInId);
         if (existingCheckInLog != null)
@@ -114,7 +121,7 @@ public class BusinessLogic : IBusinessLogic
             return CheckInLogError.NameTooShort;
         }
 
-        if (checkInTime == DateTime.MinValue)
+        if (checkInTime == "")
         {
             return CheckInLogError.MissingDate;
         }

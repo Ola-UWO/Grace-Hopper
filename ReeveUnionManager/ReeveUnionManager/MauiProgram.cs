@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ReeveUnionManager.Models;
 
 namespace ReeveUnionManager;
 
@@ -7,6 +8,8 @@ namespace ReeveUnionManager;
 /// </summary>
 public static class MauiProgram
 {
+	public static BusinessLogic businessLogic = new BusinessLogic(new Database());
+
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
