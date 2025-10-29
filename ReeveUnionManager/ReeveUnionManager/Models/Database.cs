@@ -60,7 +60,9 @@ public class Database : IDatabase
 	}
 
 	public async Task<CallLogError> InsertCallLog(CallLog callLog)
-    {
+	{
+		await waitingForInitialization;
+
         try
         {
             await supabaseClient.From<CallLog>().Insert(callLog);

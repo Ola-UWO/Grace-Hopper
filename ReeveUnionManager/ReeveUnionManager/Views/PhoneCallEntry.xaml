@@ -14,11 +14,11 @@
 
                 <Label Text="Time" 
                     FontAttributes="Bold" />
-                <Entry Placeholder="Time of call:" WidthRequest="300" 
+                <Entry Placeholder="Time of call:" WidthRequest="300" x:Name="TimeOfCallEntry"
                     HeightRequest="40" HorizontalOptions="Start" />
                 <Label Text="Caller"
                     FontAttributes="Bold" />
-                <Entry Placeholder="Caller:" WidthRequest="300"
+                <Entry Placeholder="Caller:" WidthRequest="300" x:Name="CallerEntry"
                     HeightRequest="40" HorizontalOptions="Start" />
                 <Label Text="Notes"
                     FontAttributes="Bold" />
@@ -46,8 +46,8 @@
                     HorizontalOptions="FillAndExpand" />                
             </Grid>
 
-            <Button Text="Submit" WidthRequest="200" HeightRequest="50"
-                HorizontalOptions="Center" IsEnabled="False"/>
+            <Button Text="Submit" Clicked="HandleSubmit" WidthRequest="200" HeightRequest="50"
+                HorizontalOptions="Center" IsEnabled="True"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -5,13 +5,13 @@ using Newtonsoft.Json;
 
 namespace ReeveUnionManager.Models
 {
-    [Table("phone_call_logs")]
+    [Table("check_in_logs")]
     public class CheckInLog : ObservableBaseModel, IEquatable<CheckInLog>
     {
         // Backing fields
         int _checkInId = -1;
         string _checkInName = "";
-        DateTime _timeOfCheckIn = DateTime.MinValue;
+        string _timeOfCheckIn = "";
         string _checkInNotes = "";
 
         [PrimaryKey("check_in_id", true)]
@@ -29,7 +29,7 @@ namespace ReeveUnionManager.Models
         }
 
         [Column("check_in_time")]
-        public DateTime TimeOfCheckIn
+        public string TimeOfCheckIn
         {
             get => _timeOfCheckIn;
             set => SetProperty(ref _timeOfCheckIn, value);
@@ -44,7 +44,7 @@ namespace ReeveUnionManager.Models
 
         public CheckInLog() { }
 
-        public CheckInLog(int checkInId, string checkInName, DateTime timeOfCheckIn, string checkInNotes)
+        public CheckInLog(int checkInId, string checkInName, string timeOfCheckIn, string checkInNotes)
         {
             CheckInId = checkInId;
             CheckInName = checkInName;

@@ -11,7 +11,7 @@ namespace ReeveUnionManager.Models
         // Backing fields
         int _callId = -1;
         string _callerName = "";
-        DateTime _timeOfCall = DateTime.MinValue;
+        string _timeOfCall = "";
         string _callNotes = "";
 
         [PrimaryKey("call_id", true)]
@@ -29,7 +29,7 @@ namespace ReeveUnionManager.Models
         }
 
         [Column("time_of_call")]
-        public DateTime TimeOfCall
+        public string TimeOfCall
         {
             get => _timeOfCall;
             set => SetProperty(ref _timeOfCall, value);
@@ -44,7 +44,7 @@ namespace ReeveUnionManager.Models
 
         public CallLog() { }
 
-        public CallLog(int callId, string callerName, DateTime timeOfCall, string callNotes)
+        public CallLog(int callId, string callerName, string timeOfCall, string callNotes)
         {
             CallId = callId;
             CallerName = callerName;
