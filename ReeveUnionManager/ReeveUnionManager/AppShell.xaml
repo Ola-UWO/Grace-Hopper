@@ -12,28 +12,5 @@
                 ContentTemplate="{DataTemplate views:HomePage}" />
         </Tab>
 
-        <Tab Title="Check-In">
-            <ShellContent
-                Title="Event Check-In"
-                ContentTemplate="{DataTemplate views:EventCheckIn}" />
-        </Tab>
-
-        <Tab Title="Food">
-            <ShellContent
-                Title="Food Service"
-                ContentTemplate="{DataTemplate views:FoodServiceIssue}" />
-        </Tab>
-
-        <Tab Title="Guests">
-            <ShellContent
-                Title="Guest Count"
-                ContentTemplate="{DataTemplate views:GuestCountEntry}" />
-        </Tab>
-
-        <Tab Title="Notes">
-            <ShellContent
-                Title="Notes"
-                ContentTemplate="{DataTemplate views:GenericNoteEntry}" />
-        </Tab>
     </TabBar>
 </Shell>
