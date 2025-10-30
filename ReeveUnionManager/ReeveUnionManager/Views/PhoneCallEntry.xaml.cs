@@ -11,7 +11,6 @@ public partial class PhoneCallEntry : ContentPage
     public PhoneCallEntry()
     {
         InitializeComponent();
-        BindingContext = MauiProgram.businessLogic;
     }
 
     public async void HandleSubmit(object sender, EventArgs args)

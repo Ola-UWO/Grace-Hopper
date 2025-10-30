@@ -7,5 +7,8 @@ public partial class PhoneCallLogs : ContentPage
     public PhoneCallLogs()
     {
         InitializeComponent();
+        BindingContext = MauiProgram.businessLogic;
     }
+
+    
 }

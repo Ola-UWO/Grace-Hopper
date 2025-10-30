@@ -215,6 +215,7 @@ public class BusinessLogic : IBusinessLogic
             CheckInId = checkInId,
             CheckInName = checkInName,
             TimeOfCheckIn = checkInTime,
+            CheckInLocation = checkInLocation,
             CheckInNotes = checkInNotes
         };
         try

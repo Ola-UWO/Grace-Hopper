@@ -7,7 +7,8 @@ public partial class EventCheckInLogs : ContentPage
 
 	public EventCheckInLogs()
 	{
-        InitializeComponent();
+		InitializeComponent();
+		BindingContext = MauiProgram.businessLogic;
 	}
 
 }
