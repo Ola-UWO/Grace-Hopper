@@ -1,4 +1,5 @@
 Sprint 2 changes:
+
 -Made all necessary screens as of this version of the app (some new features are in discussion)
 
 -Added Shell navigation with a view model that allows pages to bind to a NavigateCommand
