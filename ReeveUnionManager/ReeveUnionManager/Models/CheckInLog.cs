@@ -12,6 +12,7 @@ namespace ReeveUnionManager.Models
         int _checkInId = -1;
         string _checkInName = "";
         string _timeOfCheckIn = "";
+        string _checkInLocation = "";
         string _checkInNotes = "";
 
         [PrimaryKey("check_in_id", true)]
@@ -35,6 +36,13 @@ namespace ReeveUnionManager.Models
             set => SetProperty(ref _timeOfCheckIn, value);
         }
 
+        [Column("check_in_location")]
+        public string CheckInLocation
+        {
+            get => _checkInLocation;
+            set => SetProperty(ref _checkInLocation, value);
+        }
+
         [Column("check_in_notes")]
         public string CheckInNotes
         {
@@ -44,16 +52,17 @@ namespace ReeveUnionManager.Models
 
         public CheckInLog() { }
 
-        public CheckInLog(int checkInId, string checkInName, string timeOfCheckIn, string checkInNotes)
+        public CheckInLog(int checkInId, string checkInName, string timeOfCheckIn, string checkInLocation, string checkInNotes)
         {
             CheckInId = checkInId;
             CheckInName = checkInName;
             TimeOfCheckIn = timeOfCheckIn;
+            CheckInLocation = checkInLocation;
             CheckInNotes = checkInNotes;
         }
 
         public override string ToString()
-            => $"Call ID: {CheckInId}, Caller Name: {CheckInName}, Time: {TimeOfCheckIn}, Call Notes: {CheckInNotes}";
+            => $"Call ID: {CheckInId}, Caller Name: {CheckInName}, Time: {TimeOfCheckIn}, Location: {CheckInLocation},Call Notes: {CheckInNotes}";
 
 
         public override bool Equals(object? obj)

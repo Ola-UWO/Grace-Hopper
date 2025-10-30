@@ -9,8 +9,9 @@ public interface IDatabase
 	Task<ObservableCollection<CallLog>> SelectAllCallLogs();
 	Task<CallLog?> SelectCallLog(int callId);
 	Task<CallLogError> InsertCallLog(CallLog callLog);
+	Task<CallLogError> DeleteCallLog(int callId);
 	Task<ObservableCollection<CheckInLog>> SelectAllCheckInLogs();
 	Task<CheckInLog?> SelectCheckInLog(int checkInId);
 	Task<CheckInLogError> InsertCheckInLog(CheckInLog checkInLog);
-
+    Task<CheckInLogError> DeleteCheckInLog(int checkInId);
 }

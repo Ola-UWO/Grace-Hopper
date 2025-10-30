@@ -13,15 +13,15 @@
 
                 <Label Text="Event Name" 
                     FontAttributes="Bold" />
-                <Entry Placeholder="Event Name:" WidthRequest="300" 
+                <Entry Placeholder="Event Name:" WidthRequest="300" x:Name="CheckInNameEntry"
                     HeightRequest="40" HorizontalOptions="Start" />
                 <Label Text="Time"
                     FontAttributes="Bold"/>
-                <Entry Placeholder="Time:" WidthRequest="300"
+                <Entry Placeholder="Time:" WidthRequest="300" x:Name="TimeOfCheckInEntry"
                     HeightRequest="40" HorizontalOptions="Start" />
                 <Label Text="Location"
                     FontAttributes="Bold" />
-                <Entry Placeholder="Location:" WidthRequest="300"
+                <Entry Placeholder="Location:" WidthRequest="300" x:Name="CheckInLocationEntry"
                     HeightRequest="40" HorizontalOptions="Start" />
                 <Label Text="Notes"
                     FontAttributes="Bold" />

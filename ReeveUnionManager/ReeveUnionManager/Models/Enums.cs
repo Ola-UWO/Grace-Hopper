@@ -8,7 +8,9 @@ public enum CallLogError
     InsertionError,
     NameTooShort,
     DuplicateCallId,
-    MissingDate
+    MissingDate,
+    DeleteError,
+    CallLogIdNotFound
 }
 
 public enum CheckInLogError
@@ -17,5 +19,8 @@ public enum CheckInLogError
     InsertionError,
     DuplicateCheckInId,
     NameTooShort,
-    MissingDate
+    MissingDate,
+    MissingLocation,
+    DeleteError,
+    CheckInLogIdNotFound
 }

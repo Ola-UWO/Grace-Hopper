@@ -63,16 +63,30 @@ public class Database : IDatabase
 	{
 		await waitingForInitialization;
 
+		try
+		{
+			await supabaseClient.From<CallLog>().Insert(callLog);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
+			return CallLogError.InsertionError;
+		}
+
+		return CallLogError.None;
+	}
+	
+	public async Task<CallLogError> DeleteCallLog(int callId)
+    {
         try
         {
-            await supabaseClient.From<CallLog>().Insert(callLog);
+            var unused = await supabaseClient.From<CallLog>().Delete(await SelectCallLog(callId));
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
-            return CallLogError.InsertionError;
+            Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+            return CallLogError.DeleteError;
         }
-
         return CallLogError.None;
     }
 
@@ -98,19 +112,33 @@ public class Database : IDatabase
 		}
 		return null;
 	}
-	
+
 	public async Task<CheckInLogError> InsertCheckInLog(CheckInLog checkInLog)
+	{
+		try
+		{
+			await supabaseClient.From<CheckInLog>().Insert(checkInLog);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
+			return CheckInLogError.InsertionError;
+		}
+
+		return CheckInLogError.None;
+	}
+	
+	public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
     {
         try
-        {	
-            await supabaseClient.From<CheckInLog>().Insert(checkInLog);
+        {
+            var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
-            return CheckInLogError.InsertionError;
+            Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+            return CheckInLogError.DeleteError;
         }
-
         return CheckInLogError.None;
     }
 }

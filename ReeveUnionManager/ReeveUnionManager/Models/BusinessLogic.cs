@@ -103,12 +103,48 @@ public class BusinessLogic : IBusinessLogic
         throw new NotImplementedException();
     }
 
+    public async Task<CallLogError> DeleteCallLog(int callId)
+    {
+        var callLog = CallLogs.FirstOrDefault(cl => cl.CallId == callId);
+        if (callLog == null)
+        {
+            return CallLogError.CallLogIdNotFound;
+        }
+
+        await _database.DeleteCallLog(callId);
+        CallLogs.Remove(callLog);
+
+        return CallLogError.None;
+    }
+
+    public async Task<CallLogError> DeleteAllCallLogs()
+    {
+        try
+        {
+            var callsToDelete = CallLogs.ToList();
+            foreach (var cl in callsToDelete)
+            {
+                var result = await DeleteCallLog(cl.CallId);
+                if (result != CallLogError.None)
+                {
+                    return result;
+                }
+            }
+            return CallLogError.None;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting all clubs -- {ex}");
+            return CallLogError.DeleteError;
+        }
+    }
+
     public async Task<ObservableCollection<CheckInLog>> GetCheckInLogs()
     {
         return await _database.SelectAllCheckInLogs();
     }
 
-    public async Task<CheckInLogError> AddCheckInLog(int checkInId, string checkInName, string checkInTime, string checkInNotes)
+    public async Task<CheckInLogError> AddCheckInLog(int checkInId, string checkInName, string checkInTime, string checkInLocation, string checkInNotes)
     {
         CheckInLog? existingCheckInLog = await _database.SelectCheckInLog(checkInId);
         if (existingCheckInLog != null)
@@ -124,6 +160,11 @@ public class BusinessLogic : IBusinessLogic
         if (checkInTime == "")
         {
             return CheckInLogError.MissingDate;
+        }
+
+        if (checkInLocation == "")
+        {
+            return CheckInLogError.MissingLocation;
         }
 
         var newCheckInLog = new CheckInLog
@@ -149,5 +190,41 @@ public class BusinessLogic : IBusinessLogic
     public Task<CheckInLog> FindCheckInLog(int checkInId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
+    {
+        var checkInLog = CheckInLogs.FirstOrDefault(cil => cil.CheckInId == checkInId);
+        if (checkInLog == null)
+        {
+            return CheckInLogError.CheckInLogIdNotFound;
+        }
+
+        await _database.DeleteCheckInLog(checkInId);
+        CheckInLogs.Remove(checkInLog);
+
+        return CheckInLogError.None;
+    }
+
+    public async Task<CheckInLogError> DeleteAllCheckInLogs()
+    {
+        try
+        {
+            var checkInsToDelete = CheckInLogs.ToList();
+            foreach (var cil in checkInsToDelete)
+            {
+                var result = await DeleteCheckInLog(cil.CheckInId);
+                if (result != CheckInLogError.None)
+                {
+                    return result;
+                }
+            }
+            return CheckInLogError.None;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting all clubs -- {ex}");
+            return CheckInLogError.DeleteError;
+        }
     }
 }
