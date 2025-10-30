@@ -7,7 +7,11 @@ public partial class EventCheckIn : ContentPage
 
 	public EventCheckIn()
 	{
-        InitializeComponent();
+		InitializeComponent();
 	}
 
+	public void OnViewEventLogPage(object sender, EventArgs e)
+	{
+		Shell.Current.GoToAsync(nameof(EventCheckInLogs));
+	}
 }
