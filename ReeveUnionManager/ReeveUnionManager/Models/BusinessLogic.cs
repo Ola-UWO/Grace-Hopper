@@ -25,6 +25,9 @@ public class BusinessLogic : IBusinessLogic
         LoadAllDataAsync();
     }
 
+    /// <summary>
+    /// Loads every class all at once
+    /// </summary>
     private async void LoadAllDataAsync()
     {
         try
@@ -40,6 +43,13 @@ public class BusinessLogic : IBusinessLogic
         }
     }
 
+    /// <summary>
+    /// Helper method to load all classes
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="collection"></param>
+    /// <param name="loadFunc"></param>
+    /// <returns></returns>
     private async Task LoadCollectionAsync<T>(ObservableCollection<T> collection, Func<Task<ObservableCollection<T>>> loadFunc)
     {
         var items = await loadFunc();
@@ -50,11 +60,23 @@ public class BusinessLogic : IBusinessLogic
         }
     }
 
+    /// <summary>
+    /// Gets all entries into CallLog
+    /// </summary>
+    /// <returns>Every callLog</returns>
     public async Task<ObservableCollection<CallLog>> GetCallLogs()
     {
         return await _database.SelectAllCallLogs();
     }
 
+    /// <summary>
+    /// Adds a call log to the collection
+    /// </summary>
+    /// <param name="callId">Unique identifier for a call log</param>
+    /// <param name="callerName">Name of who called</param>
+    /// <param name="timeOfCall">The time of the call</param>
+    /// <param name="callNotes">Notes about the call</param>
+    /// <returns></returns>
     public async Task<CallLogError> AddCallLog(int callId, string callerName, string timeOfCall, string callNotes)
     {
         CallLog? existingCallLog = await _database.SelectCallLog(callId);
@@ -98,11 +120,24 @@ public class BusinessLogic : IBusinessLogic
         return CallLogError.None;
     }
 
-    public Task<CallLog> FindCallLog(int callId)
+    /// <summary>
+    /// Finds a specific call log
+    /// </summary>
+    /// <param name="callId">Unique identifier for a call log</param>
+    /// <returns>A specific call Log</returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task<CallLog> FindCallLog(int callId)
     {
-        throw new NotImplementedException();
+        CallLog? cl = await _database.SelectCallLog(callId);
+
+        return cl;
     }
 
+    /// <summary>
+    /// Deletes a call log
+    /// </summary>
+    /// <param name="callId">Call log to be deleted</param>
+    /// <returns>Whether the delete was successful</returns>
     public async Task<CallLogError> DeleteCallLog(int callId)
     {
         var callLog = CallLogs.FirstOrDefault(cl => cl.CallId == callId);
@@ -117,6 +152,10 @@ public class BusinessLogic : IBusinessLogic
         return CallLogError.None;
     }
 
+    /// <summary>
+    /// Delete all call logs
+    /// </summary>
+    /// <returns>Whether the delete was successful or not</returns>
     public async Task<CallLogError> DeleteAllCallLogs()
     {
         try
@@ -139,6 +178,10 @@ public class BusinessLogic : IBusinessLogic
         }
     }
 
+    /// <summary>
+    /// Gets all check in logs
+    /// </summary>
+    /// <returns>All check in logs</returns>
     public async Task<ObservableCollection<CheckInLog>> GetCheckInLogs()
     {
         return await _database.SelectAllCheckInLogs();
@@ -187,11 +230,23 @@ public class BusinessLogic : IBusinessLogic
         return CheckInLogError.None;
     }
 
-    public Task<CheckInLog> FindCheckInLog(int checkInId)
+    /// <summary>
+    /// Finds a specific check in log
+    /// </summary>
+    /// <param name="checkInId">The unique id for a check in log</param>
+    /// <returns>The check in log specified</returns>
+    public async Task<CheckInLog> FindCheckInLog(int checkInId)
     {
-        throw new NotImplementedException();
+        CheckInLog? cil = await _database.SelectCheckInLog(checkInId);
+
+        return cil;
     }
 
+    /// <summary>
+    /// Deletes a check in log
+    /// </summary>
+    /// <param name="checkInId">The unique identifier for a check in id</param>
+    /// <returns>Whether the delete was successful</returns>
     public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
     {
         var checkInLog = CheckInLogs.FirstOrDefault(cil => cil.CheckInId == checkInId);
@@ -206,6 +261,10 @@ public class BusinessLogic : IBusinessLogic
         return CheckInLogError.None;
     }
 
+    /// <summary>
+    /// Deletes all check in logs
+    /// </summary>
+    /// <returns>Whether the delete was successful</returns>
     public async Task<CheckInLogError> DeleteAllCheckInLogs()
     {
         try

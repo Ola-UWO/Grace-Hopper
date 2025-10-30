@@ -36,6 +36,10 @@ public class Database : IDatabase
 		await supabaseClient.InitializeAsync();
 	}
 
+	/// <summary>
+    /// Selects all call logs
+    /// </summary>
+    /// <returns>Every call log</returns>
 	public async Task<ObservableCollection<CallLog>> SelectAllCallLogs()
 	{
 		await waitingForInitialization;
@@ -49,6 +53,11 @@ public class Database : IDatabase
 		return callLogs;
 	}
 
+	/// <summary>
+    /// Selects a specific call log
+    /// </summary>
+    /// <param name="callId">Unique identifier for the call log</param>
+    /// <returns>The call log specified</returns>
 	public async Task<CallLog?> SelectCallLog(int callId)
 	{
 		var response = await supabaseClient.From<CallLog>().Where(callLog => callLog.CallId == callId).Get();
@@ -59,6 +68,11 @@ public class Database : IDatabase
 		return null;
 	}
 
+	/// <summary>
+	/// Adds a call log to the database
+	/// </summary>
+	/// <param name="callLog">A complete call log</param>
+	/// <returns>Whether the insert was successful</returns>
 	public async Task<CallLogError> InsertCallLog(CallLog callLog)
 	{
 		await waitingForInitialization;
@@ -76,6 +90,11 @@ public class Database : IDatabase
 		return CallLogError.None;
 	}
 	
+	/// <summary>
+    /// Deletes a call log
+    /// </summary>
+    /// <param name="callId">Unique identifier for a call log</param>
+    /// <returns>Whether the delete was successful</returns>
 	public async Task<CallLogError> DeleteCallLog(int callId)
     {
         try
@@ -90,6 +109,10 @@ public class Database : IDatabase
         return CallLogError.None;
     }
 
+	/// <summary>
+    /// Selects all check in logs
+    /// </summary>
+    /// <returns>Every check in log</returns>
 	public async Task<ObservableCollection<CheckInLog>> SelectAllCheckInLogs()
 	{
 		await waitingForInitialization;
@@ -103,6 +126,11 @@ public class Database : IDatabase
 		return checkInLogs;
 	}
 
+	/// <summary>
+    /// Selects a specific check in log
+    /// </summary>
+    /// <param name="checkInId">Unique identifier for a check in log</param>
+    /// <returns>The specified check in log</returns>
 	public async Task<CheckInLog?> SelectCheckInLog(int checkInId)
 	{
 		var response = await supabaseClient.From<CheckInLog>().Where(checkInLog => checkInLog.CheckInId == checkInId).Get();
@@ -113,6 +141,11 @@ public class Database : IDatabase
 		return null;
 	}
 
+	/// <summary>
+	/// Inserts a check in log
+	/// </summary>
+	/// <param name="checkInLog">Complete check in log to be inserted</param>
+	/// <returns>Whether the insert was successful</returns>
 	public async Task<CheckInLogError> InsertCheckInLog(CheckInLog checkInLog)
 	{
 		try
@@ -128,6 +161,11 @@ public class Database : IDatabase
 		return CheckInLogError.None;
 	}
 	
+	/// <summary>
+    /// Deletes a specified check in log
+    /// </summary>
+    /// <param name="checkInId">Unique identifier for check in id to be deleted</param>
+    /// <returns>Whether the delete was successful</returns>
 	public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
     {
         try
