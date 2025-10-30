@@ -27,4 +27,8 @@ public partial class EventCheckIn : ContentPage
 			await DisplayAlert("Addition has failed", error.ToString(), "OK");
 		}
     }
+	public void OnViewEventLogPage(object sender, EventArgs e)
+	{
+		Shell.Current.GoToAsync(nameof(EventCheckInLogs));
+	}
 }

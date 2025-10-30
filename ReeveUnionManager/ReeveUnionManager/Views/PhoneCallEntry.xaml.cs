@@ -28,4 +28,9 @@ public partial class PhoneCallEntry : ContentPage
 			await DisplayAlert("Addition has failed", error.ToString(), "OK");
 		}
     }
+
+    public void OnViewPhoneLogClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(PhoneCallLogs));
+    }
 }
