@@ -64,26 +64,18 @@ public partial class UploadNotesTemplate : ContentView
                 Image = ImageSource.FromFile(newFile), FileName = photo.FileName});
         }
     }
-    
-    public class PhotoInfo
-{
-    public ImageSource Image { get; set; }
-    public string FileName { get; set; }
-}
 
-    /* 
     public async void HandleSubmit(object sender, EventArgs args)
     {
 
         string notes = NotesBox.Text;
 
-
-        CallLogError error = await MauiProgram.businessLogic.AddCallLog(callId, callerName, timeOfCall, callNotes);
+        CallLogError error = await MauiProgram.businessLogic.AddBasicEntry(Title, notes, Photos);
         if (error != CallLogError.None)
         {
-            await DisplayAlert("Addition has failed", error.ToString(), "OK");
+            //await DisplayAlert("Addition has failed", error.ToString(), "OK");
         }
     }
-
-    */
+    
+    
 }
