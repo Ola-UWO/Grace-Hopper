@@ -24,8 +24,8 @@
 
             
         <Grid ColumnDefinitions="*,*" Grid.Row="2" ColumnSpacing="10">
-            <Button Grid.Column="0" Text="Upload Photo" IsEnabled="False"/>
-            <Button Grid.Column="1" Text="Capture Photo" IsEnabled="False"/>
+            <Button Grid.Column="0" Text="Upload Photo" Clicked="OnUploadPhotoClicked"/>
+            <Button Grid.Column="1" Text="Capture Photo" Clicked="OnCapturePhotoClicked"/>
         </Grid>
 
         <VerticalStackLayout Grid.Row="3" VerticalOptions="Fill">
