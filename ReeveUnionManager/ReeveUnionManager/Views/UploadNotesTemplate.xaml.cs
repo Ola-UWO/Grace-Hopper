@@ -1,5 +1,6 @@
 namespace ReeveUnionManager.Views;
 
+using System.Collections.ObjectModel;
 using ReeveUnionManager.Models;
 using Microsoft.Maui.Media;
 using Microsoft.Maui.Storage;
@@ -11,6 +12,7 @@ using System.IO;
 /// </summary>
 public partial class UploadNotesTemplate : ContentView
 {
+    public ObservableCollection<PhotoInfo> Photos { get; set; } = new();
     FileResult photo;
 
     public static readonly BindableProperty TitleProperty
@@ -25,18 +27,50 @@ public partial class UploadNotesTemplate : ContentView
     public UploadNotesTemplate()
     {
         InitializeComponent();
-        BindingContext = MauiProgram.businessLogic;
+        BindingContext = this;
     }
 
     public async void OnUploadPhotoClicked(object sender, EventArgs args)
     {
         FileResult photo = await MediaPicker.Default.PickPhotoAsync();
+        var newFile = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
+        using (var stream = await photo.OpenReadAsync())
+        using (var newStream = File.OpenWrite(newFile))
+        {
+            await stream.CopyToAsync(newStream);
+        }
+            
+        if (photo != null)
+        {
+            Photos.Add(new PhotoInfo{
+                Image = ImageSource.FromFile(newFile), FileName = photo.FileName});
+        }
     }
+    
 
     public async void OnCapturePhotoClicked(object sender, EventArgs args)
     {
         FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
+        var newFile = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
+        using (var stream = await photo.OpenReadAsync())
+        using (var newStream = File.OpenWrite(newFile))
+        {
+            await stream.CopyToAsync(newStream);
+        }
+            
+        if (photo != null)
+        {
+            Photos.Add(new PhotoInfo{
+                Image = ImageSource.FromFile(newFile), FileName = photo.FileName});
+        }
     }
+    
+    public class PhotoInfo
+{
+    public ImageSource Image { get; set; }
+    public string FileName { get; set; }
+}
+
     /* 
     public async void HandleSubmit(object sender, EventArgs args)
     {
