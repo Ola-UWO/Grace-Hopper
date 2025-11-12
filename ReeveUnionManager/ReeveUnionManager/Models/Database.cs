@@ -18,6 +18,7 @@ public class Database : IDatabase
 	private Supabase.Client? supabaseClient;
 	private ObservableCollection<CallLog> callLogs = new();
 	private ObservableCollection<CheckInLog> checkInLogs = new();
+	private ObservableCollection<ScrapeEvent> scrapeEvents = new();
 	private Task waitingForInitialization;
 
 	public Database()
@@ -58,7 +59,7 @@ public class Database : IDatabase
     /// </summary>
     /// <param name="callId">Unique identifier for the call log</param>
     /// <returns>The call log specified</returns>
-	public async Task<CallLog?> SelectCallLog(int callId)
+	public async Task<CallLog?> SelectCallLog(Guid callId)
 	{
 		var response = await supabaseClient.From<CallLog>().Where(callLog => callLog.CallId == callId).Get();
 		if (response != null)
@@ -95,7 +96,7 @@ public class Database : IDatabase
     /// </summary>
     /// <param name="callId">Unique identifier for a call log</param>
     /// <returns>Whether the delete was successful</returns>
-	public async Task<CallLogError> DeleteCallLog(int callId)
+	public async Task<CallLogError> DeleteCallLog(Guid callId)
     {
         try
         {
@@ -131,7 +132,7 @@ public class Database : IDatabase
     /// </summary>
     /// <param name="checkInId">Unique identifier for a check in log</param>
     /// <returns>The specified check in log</returns>
-	public async Task<CheckInLog?> SelectCheckInLog(int checkInId)
+	public async Task<CheckInLog?> SelectCheckInLog(Guid checkInId)
 	{
 		var response = await supabaseClient.From<CheckInLog>().Where(checkInLog => checkInLog.CheckInId == checkInId).Get();
 		if (response != null)
@@ -160,23 +161,54 @@ public class Database : IDatabase
 
 		return CheckInLogError.None;
 	}
-	
+
 	/// <summary>
-    /// Deletes a specified check in log
-    /// </summary>
-    /// <param name="checkInId">Unique identifier for check in id to be deleted</param>
-    /// <returns>Whether the delete was successful</returns>
-	public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
-    {
-        try
-        {
-            var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
-            return CheckInLogError.DeleteError;
-        }
-        return CheckInLogError.None;
-    }
+	/// Deletes a specified check in log
+	/// </summary>
+	/// <param name="checkInId">Unique identifier for check in id to be deleted</param>
+	/// <returns>Whether the delete was successful</returns>
+	public async Task<CheckInLogError> DeleteCheckInLog(Guid checkInId)
+	{
+		try
+		{
+			var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+			return CheckInLogError.DeleteError;
+		}
+		return CheckInLogError.None;
+	}
+
+	public async Task<ScrapeEventError> InsertEvent(ScrapeEvent scrapeEvent)
+	{
+		await waitingForInitialization;
+
+		try
+		{
+			await supabaseClient.From<ScrapeEvent>().Insert(scrapeEvent);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
+			return ScrapeEventError.InsertionError;
+		}
+
+		return ScrapeEventError.None;
+	}
+
+	public async Task<ScrapeEventError> DeleteAllEvents()
+	{
+		try
+		{
+            await supabaseClient.Rpc("truncate_events", new { });
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+			return ScrapeEventError.DeleteError;
+		}
+		return ScrapeEventError.None;
+	}
 }

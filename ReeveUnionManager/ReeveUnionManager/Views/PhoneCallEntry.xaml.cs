@@ -7,7 +7,6 @@ using ReeveUnionManager.Models;
 /// </summary>
 public partial class PhoneCallEntry : ContentPage
 {
-    int callId = 0;
     public PhoneCallEntry()
     {
         InitializeComponent();
@@ -16,8 +15,7 @@ public partial class PhoneCallEntry : ContentPage
 
     public async void HandleSubmit(object sender, EventArgs args)
     {
-        callId += 1;    // FIXME: IMPLEMENT AUTO INCREMENT LATER IN BUSINESSLOGIC
-        // String timeOfCall = DateTime.Now.ToString();    // ADD THIS IN SPRINT 3
+        Guid callId = Guid.NewGuid();
         string timeOfCall = TimeOfCallEntry.Text;
 		string callerName = CallerEntry.Text;
         string callNotes = PhoneCallNotesEntry.Text;

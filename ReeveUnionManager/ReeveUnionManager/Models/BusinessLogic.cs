@@ -7,6 +7,11 @@ using Android.Telecom;
 using Android.Text.Format;
 #endif
 using ReeveUnionManager.Models;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Net;
 
 namespace ReeveUnionManager.Models;
 
@@ -15,6 +20,7 @@ public class BusinessLogic : IBusinessLogic
     private readonly IDatabase _database;
     public ObservableCollection<CallLog> CallLogs { get; set; }
     public ObservableCollection<CheckInLog> CheckInLogs { get; set; }
+    public ObservableCollection<ScrapeEvent> ScrapeEvents {get; set; }
 
     public BusinessLogic(IDatabase database)
     {
@@ -77,7 +83,7 @@ public class BusinessLogic : IBusinessLogic
     /// <param name="timeOfCall">The time of the call</param>
     /// <param name="callNotes">Notes about the call</param>
     /// <returns></returns>
-    public async Task<CallLogError> AddCallLog(int callId, string callerName, string timeOfCall, string callNotes)
+    public async Task<CallLogError> AddCallLog(Guid callId, string callerName, string timeOfCall, string callNotes)
     {
         CallLog? existingCallLog = await _database.SelectCallLog(callId);
         if (existingCallLog != null)
@@ -126,7 +132,7 @@ public class BusinessLogic : IBusinessLogic
     /// <param name="callId">Unique identifier for a call log</param>
     /// <returns>A specific call Log</returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Task<CallLog> FindCallLog(int callId)
+    public async Task<CallLog> FindCallLog(Guid callId)
     {
         CallLog? cl = await _database.SelectCallLog(callId);
 
@@ -138,7 +144,7 @@ public class BusinessLogic : IBusinessLogic
     /// </summary>
     /// <param name="callId">Call log to be deleted</param>
     /// <returns>Whether the delete was successful</returns>
-    public async Task<CallLogError> DeleteCallLog(int callId)
+    public async Task<CallLogError> DeleteCallLog(Guid callId)
     {
         var callLog = CallLogs.FirstOrDefault(cl => cl.CallId == callId);
         if (callLog == null)
@@ -187,7 +193,7 @@ public class BusinessLogic : IBusinessLogic
         return await _database.SelectAllCheckInLogs();
     }
 
-    public async Task<CheckInLogError> AddCheckInLog(int checkInId, string checkInName, string checkInTime, string checkInLocation, string checkInNotes)
+    public async Task<CheckInLogError> AddCheckInLog(Guid checkInId, string checkInName, string checkInTime, string checkInLocation, string checkInNotes)
     {
         CheckInLog? existingCheckInLog = await _database.SelectCheckInLog(checkInId);
         if (existingCheckInLog != null)
@@ -215,6 +221,7 @@ public class BusinessLogic : IBusinessLogic
             CheckInId = checkInId,
             CheckInName = checkInName,
             TimeOfCheckIn = checkInTime,
+            CheckInLocation = checkInLocation,
             CheckInNotes = checkInNotes
         };
         try
@@ -235,7 +242,7 @@ public class BusinessLogic : IBusinessLogic
     /// </summary>
     /// <param name="checkInId">The unique id for a check in log</param>
     /// <returns>The check in log specified</returns>
-    public async Task<CheckInLog> FindCheckInLog(int checkInId)
+    public async Task<CheckInLog> FindCheckInLog(Guid checkInId)
     {
         CheckInLog? cil = await _database.SelectCheckInLog(checkInId);
 
@@ -247,7 +254,7 @@ public class BusinessLogic : IBusinessLogic
     /// </summary>
     /// <param name="checkInId">The unique identifier for a check in id</param>
     /// <returns>Whether the delete was successful</returns>
-    public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
+    public async Task<CheckInLogError> DeleteCheckInLog(Guid checkInId)
     {
         var checkInLog = CheckInLogs.FirstOrDefault(cil => cil.CheckInId == checkInId);
         if (checkInLog == null)
@@ -285,5 +292,65 @@ public class BusinessLogic : IBusinessLogic
             Console.WriteLine($"Error deleting all clubs -- {ex}");
             return CheckInLogError.DeleteError;
         }
+    }
+
+    public async Task<ScrapeEventError> Scrape25Live()
+    {
+        await _database.DeleteAllEvents();
+
+        var doc = XDocument.Load("https://25livepub.collegenet.com/calendars/2016-today-in-reeve.rss");
+
+        var scrapeEvents = doc.Descendants("item").Select(item =>
+        {
+            string description = (string)item.Element("description") ?? "";
+            description = CleanHtmlEntities(description);
+
+            string[] parts = description.Split(["<br/>", "<br />"], StringSplitOptions.None);
+
+            string location = parts.Length > 0 ? CleanHtmlEntities(parts[0]) : string.Empty;
+            string dateAndTime = parts.Length > 1 ? CleanHtmlEntities(parts[1]) : string.Empty;
+
+            if (dateAndTime.Contains('—'))
+            {
+                dateAndTime = dateAndTime.TrimEnd('—').Trim();
+            }
+
+            return new ScrapeEvent
+            {
+                EventTitle = (string)item.Element("title"),
+                EventLocation = location,
+                EventDateandTime = dateAndTime
+            };
+        });
+
+        foreach (var ev in scrapeEvents)
+        {
+            try
+            {
+                await _database.InsertEvent(ev);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting all events -- {ex}");
+                return ScrapeEventError.InsertionError;
+            }
+        }
+        return ScrapeEventError.None;
+    }
+    
+    private static string CleanHtmlEntities(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return string.Empty;
+
+        string decoded = WebUtility.HtmlDecode(input);
+
+        decoded = decoded
+            .Replace('\u00A0', ' ')
+            .Replace('\u2013', '-')
+            .Replace('\u2014', '-')
+            .TrimEnd('-', '–', '—', ' ')
+            .Trim();
+
+        return decoded;
     }
 }

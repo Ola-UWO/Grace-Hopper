@@ -24,3 +24,10 @@ public enum CheckInLogError
     DeleteError,
     CheckInLogIdNotFound
 }
+
+public enum ScrapeEventError
+{
+    None,
+    InsertionError,
+    DeleteError
+}
