@@ -38,7 +38,7 @@ namespace ReeveUnionManager.Models
         }
 
         [Column("event_date_and_time")]
-        public string EventDateandTime
+        public string EventDateAndTime
         {
             get => _eventDateAndTime;
             set => SetProperty(ref _eventDateAndTime, value);
@@ -50,15 +50,15 @@ namespace ReeveUnionManager.Models
         {
             EventTitle = eventTitle;
             EventLocation = eventLocation;
-            EventDateandTime = eventDateAndTime;
+            EventDateAndTime = eventDateAndTime;
         }
 
         public override string ToString()
-            => $"Event title: {EventTitle}, Location: {EventLocation}, Time: {EventDateandTime}";
+            => $"Event title: {EventTitle}, Location: {EventLocation}, Time: {EventDateAndTime}";
 
         public bool Equals(ScrapeEvent? other)
         {
-            throw new NotImplementedException();
+            return EventId == other.EventId;
         }
     }
 }

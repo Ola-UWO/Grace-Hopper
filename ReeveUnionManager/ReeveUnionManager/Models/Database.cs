@@ -10,6 +10,7 @@ using Supabase.Gotrue;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using ReeveUnionManager.Views;
+using System.Diagnostics;
 
 namespace ReeveUnionManager.Models;
 

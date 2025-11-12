@@ -1,9 +1,13 @@
+using System.Diagnostics;
+
 namespace ReeveUnionManager;
 /// <summary>
 /// <!-- Kevin Kraiss -->
 /// </summary>
 public partial class AppShell : Shell
 {
+    private bool _hasScraped = false;
+    
     public AppShell()
     {
         InitializeComponent();
@@ -27,20 +31,24 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(Views.TechnologyPage), typeof(Views.TechnologyPage));
         Routing.RegisterRoute(nameof(Views.RetailServicesPage), typeof(Views.RetailServicesPage));
         Routing.RegisterRoute(nameof(Views.MiscellaneousPage), typeof(Views.MiscellaneousPage));
-
-        Loaded += async (_, _) => await OnLoaded();
     }
 
-    private async Task OnLoaded()
+    protected override async void OnAppearing()
     {
+        base.OnAppearing();
+
+        if (_hasScraped) return;
+        _hasScraped = true;
+
+        Debug.WriteLine("AppShell appearing — starting scrape…");
         try
         {
             await MauiProgram.businessLogic.Scrape25Live();
-            Console.WriteLine("Scrape succeeded");
+            Debug.WriteLine("Scrape succeeded");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Scrape failed: {ex.Message}");
+            Debug.WriteLine($"Scrape failed: {ex.Message}");
         }
     }
 }

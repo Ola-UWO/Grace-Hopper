@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
+using System.Diagnostics;
 
 namespace ReeveUnionManager.Models;
 
@@ -302,7 +303,14 @@ public class BusinessLogic : IBusinessLogic
 
     public async Task<ScrapeEventError> Scrape25Live()
     {
-        await _database.DeleteAllEvents();
+        try
+        {
+            await _database.DeleteAllEvents();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error deleting all events -- {ex}");
+        }
 
         var doc = XDocument.Load("https://25livepub.collegenet.com/calendars/2016-today-in-reeve.rss");
 
@@ -326,7 +334,7 @@ public class BusinessLogic : IBusinessLogic
                 EventId = Guid.NewGuid(),
                 EventTitle = (string)item.Element("title"),
                 EventLocation = location,
-                EventDateandTime = dateAndTime
+                EventDateAndTime = dateAndTime
             };
         });
 
@@ -334,11 +342,13 @@ public class BusinessLogic : IBusinessLogic
         {
             try
             {
+                Debug.WriteLine("Before DB Insert");
                 await _database.InsertEvent(ev);
+                Debug.WriteLine("After DB Insert");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting all events -- {ex}");
+                Console.WriteLine($"Error inserting event -- {ex}");
                 return ScrapeEventError.InsertionError;
             }
         }
