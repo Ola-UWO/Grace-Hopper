@@ -294,6 +294,13 @@ public class BusinessLogic : IBusinessLogic
         }
     }
 
+    public async Task<CallLogError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+        
+        return CallLogError.None;
+        
+    }
+
     public async Task<ScrapeEventError> Scrape25Live()
     {
         await _database.DeleteAllEvents();
