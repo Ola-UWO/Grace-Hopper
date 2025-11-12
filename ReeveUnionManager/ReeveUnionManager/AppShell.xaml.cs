@@ -27,5 +27,20 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(Views.TechnologyPage), typeof(Views.TechnologyPage));
         Routing.RegisterRoute(nameof(Views.RetailServicesPage), typeof(Views.RetailServicesPage));
         Routing.RegisterRoute(nameof(Views.MiscellaneousPage), typeof(Views.MiscellaneousPage));
+
+        Loaded += async (_, _) => await OnLoaded();
+    }
+
+    private async Task OnLoaded()
+    {
+        try
+        {
+            await MauiProgram.businessLogic.Scrape25Live();
+            Console.WriteLine("Scrape succeeded");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Scrape failed: {ex.Message}");
+        }
     }
 }

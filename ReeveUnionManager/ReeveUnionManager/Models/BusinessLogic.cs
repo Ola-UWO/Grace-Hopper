@@ -7,7 +7,6 @@ using Android.Telecom;
 using Android.Text.Format;
 #endif
 using ReeveUnionManager.Models;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -324,6 +323,7 @@ public class BusinessLogic : IBusinessLogic
 
             return new ScrapeEvent
             {
+                EventId = Guid.NewGuid(),
                 EventTitle = (string)item.Element("title"),
                 EventLocation = location,
                 EventDateandTime = dateAndTime

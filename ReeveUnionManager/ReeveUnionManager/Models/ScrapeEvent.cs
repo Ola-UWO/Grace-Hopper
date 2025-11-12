@@ -9,12 +9,19 @@ namespace ReeveUnionManager.Models
     public class ScrapeEvent : ObservableBaseModel, IEquatable<ScrapeEvent>
     {
         // Backing fields
+        Guid _eventId = Guid.Empty;
         string _eventTitle = "";
         string _eventLocation = "";
         string _eventDateAndTime = "";
 
-        [Column("id")]
-        public Guid Id { get; set; }
+        // [Column("id")]
+        // public Guid Id { get; set; }
+        [PrimaryKey("event_id", true)]
+        public Guid EventId
+        {
+            get => _eventId;
+            set => SetProperty(ref _eventId, value);
+        }
 
         [Column("event_title")]
         public string EventTitle
