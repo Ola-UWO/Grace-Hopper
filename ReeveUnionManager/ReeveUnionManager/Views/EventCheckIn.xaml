@@ -52,7 +52,7 @@
             <Button Text="View Event Log" WidthRequest="200" HeightRequest="50"
                 HorizontalOptions="Center" Clicked="OnViewEventLogPage"/>
 
-            <Button Text="Submit" WidthRequest="200" HeightRequest="50"
+            <Button Text="Submit" Clicked="HandleSubmit" WidthRequest="200" HeightRequest="50"
                 HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
