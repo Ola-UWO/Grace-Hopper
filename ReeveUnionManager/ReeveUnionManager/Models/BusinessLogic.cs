@@ -287,4 +287,11 @@ public class BusinessLogic : IBusinessLogic
             return CheckInLogError.DeleteError;
         }
     }
+
+    public async Task<CallLogError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+        
+        return CallLogError.None;
+        
+    }
 }
