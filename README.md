@@ -1,3 +1,9 @@
+Sprint 3 changes:
+
+-Implemented web scraping in order to get an up-to-date list of events
+
+-Cleaned up the database implementation and added loose RLS
+
 Sprint 2 changes:
 
 -Made all necessary screens as of this version of the app (some new features are in discussion)
