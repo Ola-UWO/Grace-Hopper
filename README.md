@@ -1,4 +1,7 @@
 Sprint 3 changes:
+
+-Added some funtionality to managerlogs page
+
 -Implemented a funtional opening checklist
 
 -Implemented a funtional closing checklist
