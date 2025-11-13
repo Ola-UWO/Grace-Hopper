@@ -20,13 +20,14 @@ public class BusinessLogic : IBusinessLogic
     private readonly IDatabase _database;
     public ObservableCollection<CallLog> CallLogs { get; set; }
     public ObservableCollection<CheckInLog> CheckInLogs { get; set; }
-    public ObservableCollection<ScrapeEvent> ScrapeEvents {get; set; }
+    public ObservableCollection<ScrapeEvent> ScrapeEvents { get; set; }
 
     public BusinessLogic(IDatabase database)
     {
         _database = database;
         CallLogs = new ObservableCollection<CallLog>();
         CheckInLogs = new ObservableCollection<CheckInLog>();
+        ScrapeEvents = new ObservableCollection<ScrapeEvent>();
 
         LoadAllDataAsync();
     }
@@ -296,9 +297,9 @@ public class BusinessLogic : IBusinessLogic
 
     public async Task<CallLogError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos)
     {
-        
+
         return CallLogError.None;
-        
+
     }
 
     /// <summary>
@@ -333,13 +334,15 @@ public class BusinessLogic : IBusinessLogic
                 dateAndTime = dateAndTime.TrimEnd('—').Trim();
             }
 
-            return new ScrapeEvent
+            var se = new ScrapeEvent
             {
                 EventId = Guid.NewGuid(),
                 EventTitle = (string)item.Element("title"),
                 EventLocation = location,
                 EventDateAndTime = dateAndTime
             };
+            ScrapeEvents.Add(se); // Also adds the event to the observable collection only when scraping, 
+            return se;            //if not scraping there will be nothing in observable collection.
         });
 
         foreach (var ev in scrapeEvents) // Passes every ScrapeEvent into Database layer
@@ -358,7 +361,7 @@ public class BusinessLogic : IBusinessLogic
         }
         return ScrapeEventError.None;
     }
-    
+
     /// <summary>
     /// Replaces html entities with characters
     /// </summary>

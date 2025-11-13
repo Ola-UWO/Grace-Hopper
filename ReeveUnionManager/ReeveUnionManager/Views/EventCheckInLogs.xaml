@@ -31,31 +31,18 @@
                     <Label Grid.Column="1" Text="Time" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                     <Label Grid.Column="2" Text="Location" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                 </Grid>
-<!--
-                <VerticalStackLayout Grid.Row="1" Spacing="5" Margin="0,10,0,0">
-                    <Grid ColumnDefinitions="*,*,*">
-                        <Label Grid.Column="0" Text="Task 1" HorizontalTextAlignment="Center" />
-                        <Label Grid.Column="1" Text="10:00 AM" HorizontalTextAlignment="Center" />
-                        <Label Grid.Column="2" Text="Room A" HorizontalTextAlignment="Center" />
-                    </Grid>
-                    <Grid ColumnDefinitions="*,*,*">
-                        <Label Grid.Column="0" Text="Task 2" HorizontalTextAlignment="Center" />
-                        <Label Grid.Column="1" Text="11:00 AM" HorizontalTextAlignment="Center" />
-                        <Label Grid.Column="2" Text="Room B" HorizontalTextAlignment="Center" />
-                    </Grid>
-                </VerticalStackLayout>
--->
+
                 <CollectionView Grid.Row="1"
-                                ItemsSource="{Binding CheckInLogs}"
+                                ItemsSource="{Binding ScrapeEvents}"
                                 HorizontalOptions="FillAndExpand">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="local:CheckInLog">
+                        <DataTemplate x:DataType="local:ScrapeEvent">
                             <Grid ColumnDefinitions="*,*,*"
                                   Padding="0,5"
                                   HorizontalOptions="FillAndExpand">
-                                <Label Grid.Column="0" Text="{Binding CheckInName}" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="1" Text="{Binding TimeOfCheckIn}" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="2" Text="{Binding CheckInLocation}" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="0" Text="{Binding EventTitle}" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="1" Text="{Binding EventDateAndTime}" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="2" Text="{Binding EventLocation}" HorizontalTextAlignment="Center" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
