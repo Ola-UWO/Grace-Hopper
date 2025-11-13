@@ -9,14 +9,14 @@ namespace ReeveUnionManager.Models
     public class CheckInLog : ObservableBaseModel, IEquatable<CheckInLog>
     {
         // Backing fields
-        int _checkInId = -1;
+        Guid _checkInId = Guid.Empty;
         string _checkInName = "";
         string _timeOfCheckIn = "";
         string _checkInLocation = "";
         string _checkInNotes = "";
 
         [PrimaryKey("check_in_id", true)]
-        public int CheckInId
+        public Guid CheckInId
         {
             get => _checkInId;
             set => SetProperty(ref _checkInId, value);
@@ -52,7 +52,7 @@ namespace ReeveUnionManager.Models
 
         public CheckInLog() { }
 
-        public CheckInLog(int checkInId, string checkInName, string timeOfCheckIn, string checkInLocation, string checkInNotes)
+        public CheckInLog(Guid checkInId, string checkInName, string timeOfCheckIn, string checkInLocation, string checkInNotes)
         {
             CheckInId = checkInId;
             CheckInName = checkInName;
@@ -62,7 +62,7 @@ namespace ReeveUnionManager.Models
         }
 
         public override string ToString()
-            => $"Call ID: {CheckInId}, Caller Name: {CheckInName}, Time: {TimeOfCheckIn}, Location: {CheckInLocation},Call Notes: {CheckInNotes}";
+            => $"Check In ID: {CheckInId}, Check In Name: {CheckInName}, Time: {TimeOfCheckIn}, Location: {CheckInLocation}, Check In Notes: {CheckInNotes}";
 
 
         public override bool Equals(object? obj)

@@ -6,8 +6,6 @@ namespace ReeveUnionManager.Views;
 /// </summary>
 public partial class EventCheckIn : ContentPage
 {
-	int checkInId = 0;
-
 	public EventCheckIn()
 	{
 		InitializeComponent();
@@ -15,7 +13,7 @@ public partial class EventCheckIn : ContentPage
 
 	public async void HandleSubmit(object sender, EventArgs args)
     {
-        checkInId += 1;    // FIXME: IMPLEMENT AUTO INCREMENT LATER IN BUSINESSLOGIC
+		Guid checkInId = Guid.NewGuid();
 		string checkInName = CheckInNameEntry.Text;
 		string timeOfCheckIn = TimeOfCheckInEntry.Text;
 		string checkInLocation = CheckInLocationEntry.Text;
