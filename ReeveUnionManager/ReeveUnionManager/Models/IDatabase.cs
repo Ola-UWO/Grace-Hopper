@@ -13,10 +13,9 @@ public interface IDatabase
 	Task<ObservableCollection<CheckInLog>> SelectAllCheckInLogs();
 	Task<CheckInLog?> SelectCheckInLog(Guid checkInId);
 	Task<CheckInLogError> InsertCheckInLog(CheckInLog checkInLog);
-	Task<CheckInLogError> DeleteCheckInLog(int checkInId);
+	Task<CheckInLogError> DeleteCheckInLog(Guid checkInId);
 	Task<BasicEntryError> InsertBasicEntry(BasicEntry entry);
 	Task<string[]> UploadPhotosAsync(ObservableCollection<PhotoInfo> photos);
-	Task<CheckInLogError> DeleteCheckInLog(Guid checkInId);
 	Task<ScrapeEventError> InsertEvent(ScrapeEvent scrapeEvent);
 	Task<ScrapeEventError> DeleteAllEvents();
 }
