@@ -209,7 +209,6 @@ public class Database : IDatabase
 		int count = 0;
         foreach (var photo in photos)
 		{
-			count++;
             try
             {
 				// Convert the ImageSource into a Stream
@@ -244,14 +243,15 @@ public class Database : IDatabase
                     {
                         CacheControl = "3600",
                         Upsert = false,
-                        ContentType = "image/jpeg"
+                        ContentType = "application/octet-stream"
                     });
 
                 // Get the public URL
                 string publicUrl = imagesBucket.GetPublicUrl(fileName);
                 uploadedUrls[count] = publicUrl;
 
-                Console.WriteLine($"Uploaded {fileName} -> {publicUrl}");
+				Console.WriteLine($"Uploaded {fileName} -> {publicUrl}");
+				count++;
             }
             catch (Exception ex)
             {

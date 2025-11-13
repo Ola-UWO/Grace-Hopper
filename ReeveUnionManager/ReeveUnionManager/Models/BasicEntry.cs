@@ -9,16 +9,15 @@ namespace ReeveUnionManager.Models
     public class BasicEntry : ObservableBaseModel, IEquatable<BasicEntry>
     {
         // Backing fields
-        int _entryId = -1;
         string _section = "";
         string _notes = "";
         string[] _images = {};
 
-        [PrimaryKey("id", true)]
-        public int EntryId
+        [PrimaryKey("id", false)]
+        public Guid EntryId
         {
-            get => _entryId;
-            set => SetProperty(ref _entryId, value);
+            get;
+            set;
         }
 
         [Column("section")]
@@ -44,7 +43,7 @@ namespace ReeveUnionManager.Models
 
         public BasicEntry() { }
 
-        public BasicEntry(int entryId, string section, string notes, string[] images)
+        public BasicEntry(Guid entryId, string section, string notes, string[] images)
         {
             EntryId = entryId;
             Section = section;
