@@ -20,6 +20,8 @@ public class Database : IDatabase
 	private ObservableCollection<CallLog> callLogs = new();
 	private ObservableCollection<CheckInLog> checkInLogs = new();
 	private ObservableCollection<ScrapeEvent> scrapeEvents = new();
+	// collection for manager_logs table
+	private ObservableCollection<ManagerLog> managerLogs = new();
 	private Task waitingForInitialization;
 
 	public Database()
@@ -221,4 +223,48 @@ public class Database : IDatabase
 		}
 		return ScrapeEventError.None;
 	}
+    /// Deletes a specified check in log
+    /// </summary>
+    /// <param name="checkInId">Unique identifier for check in id to be deleted</param>
+    /// <returns>Whether the delete was successful</returns>
+	public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
+    {
+        try
+        {
+            var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+            return CheckInLogError.DeleteError;
+        }
+        return CheckInLogError.None;
+    }
+
+	/// <summary>
+/// Selects the most recent manager logs, ordered by Date (newest first).
+/// For now we just limit to the most recent 7 entries.
+/// </summary>
+public async Task<ObservableCollection<ManagerLog>> SelectRecentManagerLogsAsync(int limit = 7)
+{
+    await waitingForInitialization;
+
+    var table = supabaseClient!.From<ManagerLog>();
+    var response = await table.Get();
+
+    managerLogs.Clear();
+
+    // sort here to avoid needing extra Supabase/Postgrest ordering APIs here
+    var ordered = response.Models
+        .OrderByDescending(m => m.Date)
+        .Take(limit);
+
+    foreach (var log in ordered)
+    {
+        managerLogs.Add(log);
+    }
+
+    return managerLogs;
+}
+
 }
