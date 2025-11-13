@@ -20,7 +20,6 @@ public class Database : IDatabase
 	private ObservableCollection<CallLog> callLogs = new();
 	private ObservableCollection<CheckInLog> checkInLogs = new();
 	private ObservableCollection<ScrapeEvent> scrapeEvents = new();
-	// collection for manager_logs table
 	private ObservableCollection<ManagerLog> managerLogs = new();
 	private Task waitingForInitialization;
 
@@ -41,9 +40,9 @@ public class Database : IDatabase
 	}
 
 	/// <summary>
-    /// Selects all call logs
-    /// </summary>
-    /// <returns>Every call log</returns>
+	/// Selects all call logs
+	/// </summary>
+	/// <returns>Every call log</returns>
 	public async Task<ObservableCollection<CallLog>> SelectAllCallLogs()
 	{
 		await waitingForInitialization;
@@ -58,10 +57,10 @@ public class Database : IDatabase
 	}
 
 	/// <summary>
-    /// Selects a specific call log
-    /// </summary>
-    /// <param name="callId">Unique identifier for the call log</param>
-    /// <returns>The call log specified</returns>
+	/// Selects a specific call log
+	/// </summary>
+	/// <param name="callId">Unique identifier for the call log</param>
+	/// <returns>The call log specified</returns>
 	public async Task<CallLog?> SelectCallLog(Guid callId)
 	{
 		var response = await supabaseClient.From<CallLog>().Where(callLog => callLog.CallId == callId).Get();
@@ -93,30 +92,30 @@ public class Database : IDatabase
 
 		return CallLogError.None;
 	}
-	
-	/// <summary>
-    /// Deletes a call log
-    /// </summary>
-    /// <param name="callId">Unique identifier for a call log</param>
-    /// <returns>Whether the delete was successful</returns>
-	public async Task<CallLogError> DeleteCallLog(Guid callId)
-    {
-        try
-        {
-            var unused = await supabaseClient.From<CallLog>().Delete(await SelectCallLog(callId));
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
-            return CallLogError.DeleteError;
-        }
-        return CallLogError.None;
-    }
 
 	/// <summary>
-    /// Selects all check in logs
-    /// </summary>
-    /// <returns>Every check in log</returns>
+	/// Deletes a call log
+	/// </summary>
+	/// <param name="callId">Unique identifier for a call log</param>
+	/// <returns>Whether the delete was successful</returns>
+	public async Task<CallLogError> DeleteCallLog(Guid callId)
+	{
+		try
+		{
+			var unused = await supabaseClient.From<CallLog>().Delete(await SelectCallLog(callId));
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+			return CallLogError.DeleteError;
+		}
+		return CallLogError.None;
+	}
+
+	/// <summary>
+	/// Selects all check in logs
+	/// </summary>
+	/// <returns>Every check in log</returns>
 	public async Task<ObservableCollection<CheckInLog>> SelectAllCheckInLogs()
 	{
 		await waitingForInitialization;
@@ -131,10 +130,10 @@ public class Database : IDatabase
 	}
 
 	/// <summary>
-    /// Selects a specific check in log
-    /// </summary>
-    /// <param name="checkInId">Unique identifier for a check in log</param>
-    /// <returns>The specified check in log</returns>
+	/// Selects a specific check in log
+	/// </summary>
+	/// <param name="checkInId">Unique identifier for a check in log</param>
+	/// <returns>The specified check in log</returns>
 	public async Task<CheckInLog?> SelectCheckInLog(Guid checkInId)
 	{
 		var response = await supabaseClient.From<CheckInLog>().Where(checkInLog => checkInLog.CheckInId == checkInId).Get();
@@ -185,10 +184,10 @@ public class Database : IDatabase
 	}
 
 	/// <summary>
-    /// Inserts events into the database
-    /// </summary>
-    /// <param name="scrapeEvent">The event being inserted</param>
-    /// <returns>Whether the insert was successful or not</returns>
+	/// Inserts events into the database
+	/// </summary>
+	/// <param name="scrapeEvent">The event being inserted</param>
+	/// <returns>Whether the insert was successful or not</returns>
 	public async Task<ScrapeEventError> InsertEvent(ScrapeEvent scrapeEvent)
 	{
 		await waitingForInitialization;
@@ -207,9 +206,9 @@ public class Database : IDatabase
 	}
 
 	/// <summary>
-    /// Deletes all events stored in the database, uses a method designed to truncate the table
-    /// </summary>
-    /// <returns>Whether the task failed or succeeded</returns>
+	/// Deletes all events stored in the database, uses a method designed to truncate the table
+	/// </summary>
+	/// <returns>Whether the task failed or succeeded</returns>
 	public async Task<ScrapeEventError> DeleteAllEvents()
 	{
 		try
@@ -223,48 +222,26 @@ public class Database : IDatabase
 		}
 		return ScrapeEventError.None;
 	}
-    /// Deletes a specified check in log
-    /// </summary>
-    /// <param name="checkInId">Unique identifier for check in id to be deleted</param>
-    /// <returns>Whether the delete was successful</returns>
-	public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
-    {
-        try
-        {
-            var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
-            return CheckInLogError.DeleteError;
-        }
-        return CheckInLogError.None;
-    }
 
-	/// <summary>
-/// Selects the most recent manager logs, ordered by Date (newest first).
-/// For now we just limit to the most recent 7 entries.
-/// </summary>
-public async Task<ObservableCollection<ManagerLog>> SelectRecentManagerLogsAsync(int limit = 7)
-{
-    await waitingForInitialization;
+	public async Task<ObservableCollection<ManagerLog>> SelectRecentManagerLogsAsync(int limit = 7)
+	{
+		await waitingForInitialization;
 
-    var table = supabaseClient!.From<ManagerLog>();
-    var response = await table.Get();
+		var table = supabaseClient!.From<ManagerLog>();
+		var response = await table.Get();
 
-    managerLogs.Clear();
+		managerLogs.Clear();
 
-    // sort here to avoid needing extra Supabase/Postgrest ordering APIs here
-    var ordered = response.Models
-        .OrderByDescending(m => m.Date)
-        .Take(limit);
+		// sort here to avoid needing extra Supabase/Postgrest ordering APIs here
+		var ordered = response.Models
+			.OrderByDescending(m => m.Date)
+			.Take(limit);
 
-    foreach (var log in ordered)
-    {
-        managerLogs.Add(log);
-    }
+		foreach (var log in ordered)
+		{
+			managerLogs.Add(log);
+		}
 
-    return managerLogs;
-}
-
+		return managerLogs;
+	}
 }
