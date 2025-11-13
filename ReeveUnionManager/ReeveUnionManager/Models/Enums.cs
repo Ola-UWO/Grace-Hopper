@@ -25,8 +25,17 @@ public enum CheckInLogError
     CheckInLogIdNotFound
 }
 
+
 public enum BasicEntryError
 {
     None,
     InsertionError
+}
+
+public enum ScrapeEventError
+{
+    None,
+    InsertionError,
+    DeleteError
+
 }

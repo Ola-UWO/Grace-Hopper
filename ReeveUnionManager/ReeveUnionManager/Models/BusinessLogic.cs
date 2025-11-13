@@ -7,6 +7,11 @@ using Android.Telecom;
 using Android.Text.Format;
 #endif
 using ReeveUnionManager.Models;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Net;
+using System.Diagnostics;
 
 namespace ReeveUnionManager.Models;
 
@@ -15,12 +20,14 @@ public class BusinessLogic : IBusinessLogic
     private readonly IDatabase _database;
     public ObservableCollection<CallLog> CallLogs { get; set; }
     public ObservableCollection<CheckInLog> CheckInLogs { get; set; }
+    public ObservableCollection<ScrapeEvent> ScrapeEvents { get; set; }
 
     public BusinessLogic(IDatabase database)
     {
         _database = database;
         CallLogs = new ObservableCollection<CallLog>();
         CheckInLogs = new ObservableCollection<CheckInLog>();
+        ScrapeEvents = new ObservableCollection<ScrapeEvent>();
 
         LoadAllDataAsync();
     }
@@ -77,7 +84,7 @@ public class BusinessLogic : IBusinessLogic
     /// <param name="timeOfCall">The time of the call</param>
     /// <param name="callNotes">Notes about the call</param>
     /// <returns></returns>
-    public async Task<CallLogError> AddCallLog(int callId, string callerName, string timeOfCall, string callNotes)
+    public async Task<CallLogError> AddCallLog(Guid callId, string callerName, string timeOfCall, string callNotes)
     {
         CallLog? existingCallLog = await _database.SelectCallLog(callId);
         if (existingCallLog != null)
@@ -126,7 +133,7 @@ public class BusinessLogic : IBusinessLogic
     /// <param name="callId">Unique identifier for a call log</param>
     /// <returns>A specific call Log</returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Task<CallLog> FindCallLog(int callId)
+    public async Task<CallLog> FindCallLog(Guid callId)
     {
         CallLog? cl = await _database.SelectCallLog(callId);
 
@@ -138,7 +145,7 @@ public class BusinessLogic : IBusinessLogic
     /// </summary>
     /// <param name="callId">Call log to be deleted</param>
     /// <returns>Whether the delete was successful</returns>
-    public async Task<CallLogError> DeleteCallLog(int callId)
+    public async Task<CallLogError> DeleteCallLog(Guid callId)
     {
         var callLog = CallLogs.FirstOrDefault(cl => cl.CallId == callId);
         if (callLog == null)
@@ -187,7 +194,7 @@ public class BusinessLogic : IBusinessLogic
         return await _database.SelectAllCheckInLogs();
     }
 
-    public async Task<CheckInLogError> AddCheckInLog(int checkInId, string checkInName, string checkInTime, string checkInLocation, string checkInNotes)
+    public async Task<CheckInLogError> AddCheckInLog(Guid checkInId, string checkInName, string checkInTime, string checkInLocation, string checkInNotes)
     {
         CheckInLog? existingCheckInLog = await _database.SelectCheckInLog(checkInId);
         if (existingCheckInLog != null)
@@ -236,7 +243,7 @@ public class BusinessLogic : IBusinessLogic
     /// </summary>
     /// <param name="checkInId">The unique id for a check in log</param>
     /// <returns>The check in log specified</returns>
-    public async Task<CheckInLog> FindCheckInLog(int checkInId)
+    public async Task<CheckInLog> FindCheckInLog(Guid checkInId)
     {
         CheckInLog? cil = await _database.SelectCheckInLog(checkInId);
 
@@ -248,7 +255,7 @@ public class BusinessLogic : IBusinessLogic
     /// </summary>
     /// <param name="checkInId">The unique identifier for a check in id</param>
     /// <returns>Whether the delete was successful</returns>
-    public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
+    public async Task<CheckInLogError> DeleteCheckInLog(Guid checkInId)
     {
         var checkInLog = CheckInLogs.FirstOrDefault(cil => cil.CheckInId == checkInId);
         if (checkInLog == null)
@@ -290,6 +297,7 @@ public class BusinessLogic : IBusinessLogic
 
     public async Task<BasicEntryError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos)
     {
+
         string[] photoURLs = await _database.UploadPhotosAsync(photos);
         var newBasicEntry = new BasicEntry
         {
@@ -309,5 +317,88 @@ public class BusinessLogic : IBusinessLogic
 
         return BasicEntryError.None;
         
+
+    }
+
+    /// <summary>
+    /// Gathers the event data from 25Live and formats it
+    /// </summary>
+    /// <returns>Whether or not the scrape succeeded</returns>
+    public async Task<ScrapeEventError> Scrape25Live()
+    {
+        try
+        {
+            await _database.DeleteAllEvents(); // Clears the database so outdated and duplicate data does not appear
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error deleting all events -- {ex}");
+        }
+
+        var doc = XDocument.Load("https://25livepub.collegenet.com/calendars/2016-today-in-reeve.rss"); // Where the data is being pulled from
+
+        var scrapeEvents = doc.Descendants("item").Select(item =>
+        {
+            string description = (string)item.Element("description") ?? ""; // pulls out the pieces of information needed
+            description = CleanHtmlEntities(description);
+
+            string[] parts = description.Split(["<br/>", "<br />"], StringSplitOptions.None);
+
+            string location = parts.Length > 0 ? CleanHtmlEntities(parts[0]) : string.Empty;
+            string dateAndTime = parts.Length > 1 ? CleanHtmlEntities(parts[1]) : string.Empty;
+
+            if (dateAndTime.Contains('—'))
+            {
+                dateAndTime = dateAndTime.TrimEnd('—').Trim();
+            }
+
+            var se = new ScrapeEvent
+            {
+                EventId = Guid.NewGuid(),
+                EventTitle = (string)item.Element("title"),
+                EventLocation = location,
+                EventDateAndTime = dateAndTime
+            };
+            ScrapeEvents.Add(se); // Also adds the event to the observable collection only when scraping, 
+            return se;            //if not scraping there will be nothing in observable collection.
+        });
+
+        foreach (var ev in scrapeEvents) // Passes every ScrapeEvent into Database layer
+        {
+            try
+            {
+                Debug.WriteLine("Before DB Insert");
+                await _database.InsertEvent(ev);
+                Debug.WriteLine("After DB Insert");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inserting event -- {ex}");
+                return ScrapeEventError.InsertionError;
+            }
+        }
+        return ScrapeEventError.None;
+    }
+
+    /// <summary>
+    /// Replaces html entities with characters
+    /// </summary>
+    /// <param name="input">The string that is getting cleaned</param>
+    /// <returns>The string with html entities swapped for characters</returns>
+    private static string CleanHtmlEntities(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return string.Empty;
+
+        string decoded = WebUtility.HtmlDecode(input);
+
+        decoded = decoded
+            .Replace('\u00A0', ' ')
+            .Replace('\u2013', '-')
+            .Replace('\u2014', '-')
+            .TrimEnd('-', '–', '—', ' ')
+            .Trim();
+
+        return decoded;
+
     }
 }

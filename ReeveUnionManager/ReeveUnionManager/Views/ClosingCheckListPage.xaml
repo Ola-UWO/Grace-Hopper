@@ -1,99 +1,105 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ReeveUnionManager.ViewModels"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:ReeveUnionManager.Converters"
              x:Class="ReeveUnionManager.Views.ClosingCheckListPage">
 
-    <VerticalStackLayout Spacing="0">
-        
-        <Border StrokeThickness="1"
-                HeightRequest="45"
-                WidthRequest="410"
-                BackgroundColor="WhiteSmoke">
-            
-            <Label Text="CLOSING CHECKLIST"
-                   VerticalOptions="Center"
-                   Padding="12"
-                   FontSize="14"
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToTextDecorationsConverter x:Key="BoolToStrikethroughConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <Border StrokeThickness="1"
+                    HeightRequest="45"
+                    WidthRequest="410"
+                    BackgroundColor="WhiteSmoke">
+
+                <Label Text="CLOSING CHECKLIST"
+                       VerticalOptions="Center"
+                       Padding="12"
+                       FontSize="14"
+                       FontAttributes="Bold"/>
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="50,50,0,0"/>
+                </Border.StrokeShape>
+
+            </Border>
+
+            <Label x:Name="DateLabel"
+                   Text="{Binding Source={x:Static System:DateTime.Now}, StringFormat='{0:MMMM dd, yyyy}'}"
+                   Padding="20,15,20,5"
+                   FontSize="16"
                    FontAttributes="Bold"/>
-                
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="50,50,0,0"/>
-            </Border.StrokeShape>
 
-        </Border>
+            <VerticalStackLayout Padding="20,10,20,20"
+                    Spacing="8">
+                <Label Text="{Binding ProgressText}"
+                       FontSize="14"/>
+                <ProgressBar Progress="{Binding Progress}"
+                             HeightRequest="8"/>
+            </VerticalStackLayout>
 
-        <Label x:Name="DateLabel"
-               Text="Date shows"
-               Padding="20,15,20,5"
-               FontSize="16"
-               FontAttributes="Bold"/>
+            <ScrollView VerticalOptions="FillAndExpand">
+                <CollectionView ItemsSource="{Binding Items}"
+                                Margin="10,0,10,0">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
 
-        <VerticalStackLayout Padding="20,10,20,20" Spacing="8">
-            <Label x:Name="ProgressLabel" 
-                   Text="0 of 10 completed"
-                   FontSize="14"/>
-            <ProgressBar x:Name="CompletionProgressBar" 
-                         Progress="0"
-                         HeightRequest="8"/>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete"
+                                                   BackgroundColor="Red"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ChecklistViewModel}}, Path=DeleteTaskCommand}"
+                                                   CommandParameter="{Binding .}"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Padding="15,12"
+                                        Margin="0,0,0,1"
+                                        BackgroundColor="White"
+                                        StrokeThickness="0">
+
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <CheckBox Grid.Column="0"
+                                                  IsChecked="{Binding IsCompleted}"
+                                                  VerticalOptions="Center"/>
+
+                                        <Label Grid.Column="1"
+                                               Text="{Binding TaskName}"
+                                               VerticalOptions="Center"
+                                               Padding="10,0,0,0"
+                                               FontSize="16"
+                                               TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethroughConverter}}"/>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+
+            <Grid Padding="20"
+                  ColumnDefinitions="*,*"
+                  ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Add Task"
+                        Command="{Binding AddTaskCommand}"/>
+                <Button Grid.Column="1"
+                        Text="Reset All"
+                        Command="{Binding ResetAllCommand}"/>
+            </Grid>
+
         </VerticalStackLayout>
 
-        <ScrollView VerticalOptions="FillAndExpand">
-            <VerticalStackLayout x:Name="ChecklistContainer" 
-                                 Spacing="0" 
-                                 Padding="10,0,10,0">
-                
-                <Border Padding="15,12" 
-                        Margin="0,0,0,1">
-                    <Grid ColumnDefinitions="Auto,*">
-                        
-                        <Label Grid.Column="1" 
-                               Text="Task 1" 
-                               VerticalOptions="Center"
-                               Padding="10,0,0,0"
-                               FontSize="16"/>
-                    </Grid>
-                </Border>
+    </ScrollView>
 
-                <Border Padding="15,12" 
-                        Margin="0,0,0,1">
-                    <Grid ColumnDefinitions="Auto,*">
-                        
-                                  
-                        <Label Grid.Column="1" 
-                               Text="Task 2" 
-                               VerticalOptions="Center"
-                               Padding="10,0,0,0"
-                               FontSize="16"/>
-                    </Grid>
-                </Border>
-
-                <Border Padding="15,12" 
-                        Margin="0,0,0,1">
-                    <Grid ColumnDefinitions="Auto,*">
-                      
-                        <Label Grid.Column="1" 
-                               Text="Task 3" 
-                               VerticalOptions="Center"
-                               Padding="10,0,0,0"
-                               FontSize="16"/>
-                    </Grid>
-                </Border>
-
-
-            </VerticalStackLayout>
-        </ScrollView>
-
-        <Grid Padding="20" 
-              ColumnDefinitions="*,*" 
-              ColumnSpacing="10">
-            <Button Grid.Column="0" 
-                    Text="Add Task" 
-                    />
-            <Button Grid.Column="1" 
-                    Text="Reset All" 
-                    />
-        </Grid>
-
-    </VerticalStackLayout>
-    
 </ContentPage>

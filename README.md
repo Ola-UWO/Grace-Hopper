@@ -1,3 +1,18 @@
+Sprint 3 changes:
+
+-Added some funtionality to managerlogs page
+
+-Implemented a funtional opening checklist
+
+-Implemented a funtional closing checklist
+
+-Implemented web scraping in order to get an up-to-date list of events
+
+-Cleaned up the database implementation and added loose RLS
+
+- Replaced the hard-coded Manager Logs list with a dynamic CollectionView that loads the most recent entries from the `manager_logs` table. Added the `ManagerLog` model and database retrieval methods to support live data.
+
+
 Sprint 2 changes:
 
 -Made all necessary screens as of this version of the app (some new features are in discussion)

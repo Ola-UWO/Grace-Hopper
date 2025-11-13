@@ -9,13 +9,13 @@ namespace ReeveUnionManager.Models
     public class CallLog : ObservableBaseModel, IEquatable<CallLog>
     {
         // Backing fields
-        int _callId = -1;
+        Guid _callId = Guid.Empty;
         string _callerName = "";
         string _timeOfCall = "";
         string _callNotes = "";
 
         [PrimaryKey("call_id", true)]
-        public int CallId
+        public Guid CallId
         {
             get => _callId;
             set => SetProperty(ref _callId, value);
@@ -44,7 +44,7 @@ namespace ReeveUnionManager.Models
 
         public CallLog() { }
 
-        public CallLog(int callId, string callerName, string timeOfCall, string callNotes)
+        public CallLog(Guid callId, string callerName, string timeOfCall, string callNotes)
         {
             CallId = callId;
             CallerName = callerName;
