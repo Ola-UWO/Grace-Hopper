@@ -1,4 +1,7 @@
 Sprint 3 changes:
+-Implemented a funtional opening checklist
+
+-Implemented a funtional closing checklist
 
 -Implemented web scraping in order to get an up-to-date list of events
 
