@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ReeveUnionManager.ViewModels"
              x:Class="ReeveUnionManager.Views.ManagerLogsPage">
+
+    <!-- PAGE-LEVEL RESOURCES -->
+    <ContentPage.Resources>
+        <!-- Navigation ViewModel scoped to the button only -->
+        <viewModels:PageViewModel x:Key="PageViewModel" />
+    </ContentPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -45,16 +52,16 @@
                     Padding="20,10"
                     Margin="12,0,0,0"
                     VerticalOptions="Center"
-                    Command="{Binding NavigateCommand}"
+                    Command="{Binding NavigateCommand, Source={StaticResource PageViewModel}}"
                     CommandParameter="NewLogEntryPage" />
-
         </Grid>
 
         <!-- Scrollable List of Logs -->
         <CollectionView Grid.Row="1"
                         x:Name="LogsList"
                         Margin="16,0,16,16">
-            <!-- Add spacing between rows -->
+
+            <!-- Spacing between rows -->
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical"
                                    ItemSpacing="12" />
