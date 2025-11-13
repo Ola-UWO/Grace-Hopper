@@ -19,7 +19,9 @@
                                 <Image Source="{Binding Image}" Aspect="AspectFill" HeightRequest="150" WidthRequest="150"/>
                                 <Button Text="X" 
                                         HorizontalOptions="End" 
-                                        VerticalOptions="Start"/>
+                                        VerticalOptions="Start"
+                                        Clicked="RemoveImage"
+                                        CommandParameter="{Binding .}"/>
                             </Grid>
                         </Frame>
                     </DataTemplate>

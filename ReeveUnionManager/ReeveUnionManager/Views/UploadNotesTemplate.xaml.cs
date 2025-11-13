@@ -46,7 +46,7 @@ public partial class UploadNotesTemplate : ContentView
                 Image = ImageSource.FromFile(newFile), FileName = photo.FileName});
         }
     }
-    
+
 
     public async void OnCapturePhotoClicked(object sender, EventArgs args)
     {
@@ -57,11 +57,25 @@ public partial class UploadNotesTemplate : ContentView
         {
             await stream.CopyToAsync(newStream);
         }
-            
+
         if (photo != null)
         {
-            Photos.Add(new PhotoInfo{
-                Image = ImageSource.FromFile(newFile), FileName = photo.FileName});
+            Photos.Add(new PhotoInfo
+            {
+                Image = ImageSource.FromFile(newFile),
+                FileName = photo.FileName
+            });
+        }
+    }
+    
+    public async void RemoveImage(object sender, EventArgs args)
+    {
+        
+        if (sender is Button button && button.CommandParameter is PhotoInfo photo)
+        {
+
+            Photos.Remove(photo);
+
         }
     }
 
