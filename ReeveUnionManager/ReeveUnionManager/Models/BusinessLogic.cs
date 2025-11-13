@@ -301,22 +301,26 @@ public class BusinessLogic : IBusinessLogic
         
     }
 
+    /// <summary>
+    /// Gathers the event data from 25Live and formats it
+    /// </summary>
+    /// <returns>Whether or not the scrape succeeded</returns>
     public async Task<ScrapeEventError> Scrape25Live()
     {
         try
         {
-            await _database.DeleteAllEvents();
+            await _database.DeleteAllEvents(); // Clears the database so outdated and duplicate data does not appear
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error deleting all events -- {ex}");
         }
 
-        var doc = XDocument.Load("https://25livepub.collegenet.com/calendars/2016-today-in-reeve.rss");
+        var doc = XDocument.Load("https://25livepub.collegenet.com/calendars/2016-today-in-reeve.rss"); // Where the data is being pulled from
 
         var scrapeEvents = doc.Descendants("item").Select(item =>
         {
-            string description = (string)item.Element("description") ?? "";
+            string description = (string)item.Element("description") ?? ""; // pulls out the pieces of information needed
             description = CleanHtmlEntities(description);
 
             string[] parts = description.Split(["<br/>", "<br />"], StringSplitOptions.None);
@@ -338,7 +342,7 @@ public class BusinessLogic : IBusinessLogic
             };
         });
 
-        foreach (var ev in scrapeEvents)
+        foreach (var ev in scrapeEvents) // Passes every ScrapeEvent into Database layer
         {
             try
             {
@@ -355,6 +359,11 @@ public class BusinessLogic : IBusinessLogic
         return ScrapeEventError.None;
     }
     
+    /// <summary>
+    /// Replaces html entities with characters
+    /// </summary>
+    /// <param name="input">The string that is getting cleaned</param>
+    /// <returns>The string with html entities swapped for characters</returns>
     private static string CleanHtmlEntities(string input)
     {
         if (string.IsNullOrEmpty(input)) return string.Empty;
