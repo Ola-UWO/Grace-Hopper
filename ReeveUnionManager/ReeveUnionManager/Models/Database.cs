@@ -182,6 +182,11 @@ public class Database : IDatabase
 		return CheckInLogError.None;
 	}
 
+	/// <summary>
+    /// Inserts events into the database
+    /// </summary>
+    /// <param name="scrapeEvent">The event being inserted</param>
+    /// <returns>Whether the insert was successful or not</returns>
 	public async Task<ScrapeEventError> InsertEvent(ScrapeEvent scrapeEvent)
 	{
 		await waitingForInitialization;
@@ -199,11 +204,15 @@ public class Database : IDatabase
 		return ScrapeEventError.None;
 	}
 
+	/// <summary>
+    /// Deletes all events stored in the database, uses a method designed to truncate the table
+    /// </summary>
+    /// <returns>Whether the task failed or succeeded</returns>
 	public async Task<ScrapeEventError> DeleteAllEvents()
 	{
 		try
 		{
-            await supabaseClient.Rpc("truncate_events", new { });
+			await supabaseClient.Rpc("truncate_events", new { });
 		}
 		catch (Exception ex)
 		{
