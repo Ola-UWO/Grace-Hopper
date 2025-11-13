@@ -70,8 +70,8 @@ public partial class UploadNotesTemplate : ContentView
 
         string notes = NotesBox.Text;
 
-        CallLogError error = await MauiProgram.businessLogic.AddBasicEntry(Title, notes, Photos);
-        if (error != CallLogError.None)
+        BasicEntryError error = await MauiProgram.businessLogic.AddBasicEntry(Title, notes, Photos);
+        if (error != BasicEntryError.None)
         {
             //await DisplayAlert("Addition has failed", error.ToString(), "OK");
         }

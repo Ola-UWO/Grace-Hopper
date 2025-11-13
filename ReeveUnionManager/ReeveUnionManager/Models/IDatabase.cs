@@ -13,5 +13,7 @@ public interface IDatabase
 	Task<ObservableCollection<CheckInLog>> SelectAllCheckInLogs();
 	Task<CheckInLog?> SelectCheckInLog(int checkInId);
 	Task<CheckInLogError> InsertCheckInLog(CheckInLog checkInLog);
-    Task<CheckInLogError> DeleteCheckInLog(int checkInId);
+	Task<CheckInLogError> DeleteCheckInLog(int checkInId);
+	Task<BasicEntryError> InsertBasicEntry(BasicEntry entry);
+	Task<string[]> UploadPhotosAsync(ObservableCollection<PhotoInfo> photos);
 }

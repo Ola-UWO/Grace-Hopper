@@ -10,12 +10,15 @@ using Supabase.Gotrue;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using ReeveUnionManager.Views;
+using Supabase.Storage;
+using Supabase.Storage.Interfaces;
 
 namespace ReeveUnionManager.Models;
 
 public class Database : IDatabase
 {
 	private Supabase.Client? supabaseClient;
+	private IStorageFileApi<FileObject>? imagesBucket;
 	private ObservableCollection<CallLog> callLogs = new();
 	private ObservableCollection<CheckInLog> checkInLogs = new();
 	private Task waitingForInitialization;
@@ -160,23 +163,102 @@ public class Database : IDatabase
 
 		return CheckInLogError.None;
 	}
-	
+
 	/// <summary>
-    /// Deletes a specified check in log
-    /// </summary>
-    /// <param name="checkInId">Unique identifier for check in id to be deleted</param>
-    /// <returns>Whether the delete was successful</returns>
+	/// Deletes a specified check in log
+	/// </summary>
+	/// <param name="checkInId">Unique identifier for check in id to be deleted</param>
+	/// <returns>Whether the delete was successful</returns>
 	public async Task<CheckInLogError> DeleteCheckInLog(int checkInId)
+	{
+		try
+		{
+			var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+			return CheckInLogError.DeleteError;
+		}
+		return CheckInLogError.None;
+	}
+
+
+	public async Task<BasicEntryError> InsertBasicEntry(BasicEntry entry)
+	{
+		await waitingForInitialization;
+
+		try
+		{
+			await supabaseClient.From<BasicEntry>().Insert(entry);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
+			return BasicEntryError.InsertionError;
+		}
+
+		return BasicEntryError.None;
+	}
+	
+	//Takes collection of images and stores them in supabase storing their reference urls in an array that will be returned
+	public async Task<string[]> UploadPhotosAsync(ObservableCollection<PhotoInfo> photos)
     {
-        try
-        {
-            var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
+		string[] uploadedUrls = new string[photos.Count];
+		imagesBucket = supabaseClient.Storage.From("images");
+		int count = 0;
+        foreach (var photo in photos)
+		{
+			count++;
+            try
+            {
+				// Convert the ImageSource into a Stream
+				Stream? stream = null;
+				if (photo.Image is FileImageSource fileImageSource)
+				{
+					stream =  File.OpenRead(fileImageSource.File);
+				}
+				else if (photo.Image is StreamImageSource streamImageSource)
+				{
+					stream = await streamImageSource.Stream(CancellationToken.None);
+				}
+		
+                if (stream == null) continue;
+
+				// create file name
+				string fileName = $"{Guid.NewGuid()}_{photo.FileName}";
+
+				// put into storage
+				byte[] bytes = null;
+				using(var memoryStream = new MemoryStream())
+				{
+					stream.CopyTo(memoryStream);
+					bytes = memoryStream.ToArray();
+				}
+
+
+                var response = await imagesBucket.Upload(
+                    bytes,
+                    fileName,
+                    new Supabase.Storage.FileOptions
+                    {
+                        CacheControl = "3600",
+                        Upsert = false,
+                        ContentType = "image/jpeg"
+                    });
+
+                // Get the public URL
+                string publicUrl = imagesBucket.GetPublicUrl(fileName);
+                uploadedUrls[count] = publicUrl;
+
+                Console.WriteLine($"Uploaded {fileName} -> {publicUrl}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error uploading {photo.FileName}: {ex.Message}");
+            }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
-            return CheckInLogError.DeleteError;
-        }
-        return CheckInLogError.None;
+
+        return uploadedUrls;
     }
 }

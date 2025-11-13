@@ -24,3 +24,9 @@ public enum CheckInLogError
     DeleteError,
     CheckInLogIdNotFound
 }
+
+public enum BasicEntryError
+{
+    None,
+    InsertionError
+}

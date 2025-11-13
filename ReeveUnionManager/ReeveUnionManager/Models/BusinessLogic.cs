@@ -288,10 +288,26 @@ public class BusinessLogic : IBusinessLogic
         }
     }
 
-    public async Task<CallLogError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos)
+    public async Task<BasicEntryError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos)
     {
-        
-        return CallLogError.None;
+        string[] photoURLs = await _database.UploadPhotosAsync(photos);
+        var newBasicEntry = new BasicEntry
+        {
+            Section = title,
+            Notes = notes,
+            Images = photoURLs
+
+        };
+        try
+        {
+            await _database.InsertBasicEntry(newBasicEntry);
+        }
+        catch (Exception ex)
+        {
+            Console.Write($"Attention: {ex.ToString()}");
+        }
+
+        return BasicEntryError.None;
         
     }
 }
