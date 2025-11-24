@@ -33,7 +33,7 @@
             <Button Grid.Column="1" Text="Capture Photo" Clicked="OnCapturePhotoClicked"/>
         </Grid>
 
-        <VerticalStackLayout Grid.Row="3" VerticalOptions="Fill">
+        <VerticalStackLayout Grid.Row="3" VerticalOptions="Fill" Spacing="5">
             
             <Label Text="Category" FontAttributes="Bold"/>
             <Picker Title="Select category" WidthRequest="300">
