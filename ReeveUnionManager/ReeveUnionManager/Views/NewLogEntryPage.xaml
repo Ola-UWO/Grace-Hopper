@@ -86,7 +86,7 @@
         <Frame Grid.Row="5" Grid.Column="0" Padding="0" CornerRadius="15" 
                HeightRequest="100" HasShadow="True">
             <Button Text="Event Log" BackgroundColor="White" TextColor="Black"
-                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="EventCheckIn"/>
+                    FontSize="16" Command="{Binding NavigateCommand}" CommandParameter="EventCheckInLogs"/>
         </Frame>
         
         <Frame Grid.Row="5" Grid.Column="1" Padding="0" CornerRadius="15" 

@@ -12,10 +12,6 @@ public interface IBusinessLogic
     Task<CallLog> FindCallLog(Guid callId);
     Task<CallLogError> DeleteCallLog(Guid callId);
     Task<CallLogError> DeleteAllCallLogs();
-    Task<ObservableCollection<CheckInLog>> GetCheckInLogs();
-    Task<CheckInLogError> AddCheckInLog(Guid checkInId, string checkInName, string checkInTime, string checkInLocation, string checkInNotes);
-    Task<CheckInLog> FindCheckInLog(Guid checkInId);
-    Task<CheckInLogError> DeleteCheckInLog(Guid checkInId);
-    Task<CheckInLogError> DeleteAllCheckInLogs();
+    Task<BasicEntryError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos);
     Task<ScrapeEventError> Scrape25Live();
 }

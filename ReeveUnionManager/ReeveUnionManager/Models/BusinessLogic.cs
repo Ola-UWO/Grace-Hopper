@@ -19,14 +19,14 @@ public class BusinessLogic : IBusinessLogic
 {
     private readonly IDatabase _database;
     public ObservableCollection<CallLog> CallLogs { get; set; }
-    public ObservableCollection<CheckInLog> CheckInLogs { get; set; }
+    // public ObservableCollection<CheckInLog> CheckInLogs { get; set; }
     public ObservableCollection<ScrapeEvent> ScrapeEvents { get; set; }
 
     public BusinessLogic(IDatabase database)
     {
         _database = database;
         CallLogs = new ObservableCollection<CallLog>();
-        CheckInLogs = new ObservableCollection<CheckInLog>();
+        // CheckInLogs = new ObservableCollection<CheckInLog>();
         ScrapeEvents = new ObservableCollection<ScrapeEvent>();
 
         LoadAllDataAsync();
@@ -40,8 +40,8 @@ public class BusinessLogic : IBusinessLogic
         try
         {
             await Task.WhenAll(
-                LoadCollectionAsync(CallLogs, _database.SelectAllCallLogs),
-                LoadCollectionAsync(CheckInLogs, _database.SelectAllCheckInLogs)
+                LoadCollectionAsync(CallLogs, _database.SelectAllCallLogs)
+                // LoadCollectionAsync(CheckInLogs, _database.SelectAllCheckInLogs)
             );
         }
         catch (Exception ex)
@@ -185,116 +185,6 @@ public class BusinessLogic : IBusinessLogic
         }
     }
 
-    /// <summary>
-    /// Gets all check in logs
-    /// </summary>
-    /// <returns>All check in logs</returns>
-    public async Task<ObservableCollection<CheckInLog>> GetCheckInLogs()
-    {
-        return await _database.SelectAllCheckInLogs();
-    }
-
-    public async Task<CheckInLogError> AddCheckInLog(Guid checkInId, string checkInName, string checkInTime, string checkInLocation, string checkInNotes)
-    {
-        CheckInLog? existingCheckInLog = await _database.SelectCheckInLog(checkInId);
-        if (existingCheckInLog != null)
-        {
-            return CheckInLogError.DuplicateCheckInId;
-        }
-
-        if (string.IsNullOrWhiteSpace(checkInName))
-        {
-            return CheckInLogError.NameTooShort;
-        }
-
-        if (checkInTime == "")
-        {
-            return CheckInLogError.MissingDate;
-        }
-
-        if (checkInLocation == "")
-        {
-            return CheckInLogError.MissingLocation;
-        }
-
-        var newCheckInLog = new CheckInLog
-        {
-            CheckInId = checkInId,
-            CheckInName = checkInName,
-            TimeOfCheckIn = checkInTime,
-            CheckInLocation = checkInLocation,
-            CheckInNotes = checkInNotes
-        };
-        try
-        {
-            await _database.InsertCheckInLog(newCheckInLog);
-        }
-        catch (Exception ex)
-        {
-            Console.Write($"Attention: {ex.ToString()}");
-        }
-        CheckInLogs.Add(newCheckInLog);
-
-        return CheckInLogError.None;
-    }
-
-    /// <summary>
-    /// Finds a specific check in log
-    /// </summary>
-    /// <param name="checkInId">The unique id for a check in log</param>
-    /// <returns>The check in log specified</returns>
-    public async Task<CheckInLog> FindCheckInLog(Guid checkInId)
-    {
-        CheckInLog? cil = await _database.SelectCheckInLog(checkInId);
-
-        return cil;
-    }
-
-    /// <summary>
-    /// Deletes a check in log
-    /// </summary>
-    /// <param name="checkInId">The unique identifier for a check in id</param>
-    /// <returns>Whether the delete was successful</returns>
-    public async Task<CheckInLogError> DeleteCheckInLog(Guid checkInId)
-    {
-        var checkInLog = CheckInLogs.FirstOrDefault(cil => cil.CheckInId == checkInId);
-        if (checkInLog == null)
-        {
-            return CheckInLogError.CheckInLogIdNotFound;
-        }
-
-        await _database.DeleteCheckInLog(checkInId);
-        CheckInLogs.Remove(checkInLog);
-
-        return CheckInLogError.None;
-    }
-
-    /// <summary>
-    /// Deletes all check in logs
-    /// </summary>
-    /// <returns>Whether the delete was successful</returns>
-    public async Task<CheckInLogError> DeleteAllCheckInLogs()
-    {
-        try
-        {
-            var checkInsToDelete = CheckInLogs.ToList();
-            foreach (var cil in checkInsToDelete)
-            {
-                var result = await DeleteCheckInLog(cil.CheckInId);
-                if (result != CheckInLogError.None)
-                {
-                    return result;
-                }
-            }
-            return CheckInLogError.None;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error deleting all clubs -- {ex}");
-            return CheckInLogError.DeleteError;
-        }
-    }
-
     public async Task<BasicEntryError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos)
     {
 
@@ -399,6 +289,10 @@ public class BusinessLogic : IBusinessLogic
             .Trim();
 
         return decoded;
-
     }
+
+    // private static Task<ManagerLogError> CreateManagerLogFile()
+    // {
+        
+    // }
 }

@@ -13,19 +13,6 @@ public enum CallLogError
     CallLogIdNotFound
 }
 
-public enum CheckInLogError
-{
-    None,
-    InsertionError,
-    DuplicateCheckInId,
-    NameTooShort,
-    MissingDate,
-    MissingLocation,
-    DeleteError,
-    CheckInLogIdNotFound
-}
-
-
 public enum BasicEntryError
 {
     None,
@@ -38,4 +25,9 @@ public enum ScrapeEventError
     InsertionError,
     DeleteError
 
+}
+
+public enum ManagerLogError
+{
+    
 }
