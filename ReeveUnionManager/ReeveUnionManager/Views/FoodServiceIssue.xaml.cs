@@ -27,9 +27,9 @@ public partial class FoodServiceIssue : ContentPage
 
     private void OnSubmitClicked(object sender, EventArgs e)
     {
-        _log.FoodServiceCategory = FoodServiceCategory.SelectedItem?.ToString();
-        _log.FoodServiceLocation = FoodServiceLocation.Text;
-        _log.FoodServiceDescription = FoodServiceDescription.Text;
+        _log.FoodServiceCategory = CategoryPicker.SelectedItem?.ToString();
+        _log.FoodServiceLocation = LocationBox.Text;
+        _log.FoodServiceDescription = NotesBox.Text;
         // _log.FoodServicePictures = FoodServicePictures.Image;          // FIXME: Another picture area
 
         Navigation.PopAsync();

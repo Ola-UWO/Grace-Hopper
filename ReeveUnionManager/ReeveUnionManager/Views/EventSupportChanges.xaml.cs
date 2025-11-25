@@ -29,10 +29,10 @@ public partial class EventSupportChanges : ContentPage
 
     private void OnSubmitClicked(object sender, EventArgs e)
     {
-        _log.EventSupportChangesName = EventName.Text;
-        _log.EventSupportChangesTime = EventTime.Text;
-        _log.EventSupportChangesLocation = EventLocation.Text;
-        _log.EventSupportChangesDetails = EventChangeDetails.Text;
+        _log.EventSupportChangesName = NameBox.Text;
+        _log.EventSupportChangesTime = TimePicker.Time.ToString(@"hh\:mm");
+        _log.EventSupportChangesLocation = LocationBox.Text;
+        _log.EventSupportChangesDetails = NotesBox.Text;
         // _log.EventSupportChangesPictures = ShiftEnd.Time.ToString(@"hh\:mm");           FIXME: FIGURE OUT PICTURES LATER
         
         Navigation.PopAsync();
