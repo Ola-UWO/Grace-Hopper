@@ -12,18 +12,21 @@ namespace ReeveUnionManager.Services
         {
             _pca = PublicClientApplicationBuilder
                 .Create(AuthenticationConfig.ClientId)
-                .WithTenantId(AuthenticationConfig.TenantId)
+                // Allow ANY org + personal Microsoft accounts
+                .WithAuthority(
+                    AzureCloudInstance.AzurePublic,
+                    AadAuthorityAudience.AzureAdAndPersonalMicrosoftAccount)
                 .WithRedirectUri(AuthenticationConfig.RedirectUri)
                 .Build();
         }
 
         /// <summary>
-        /// Get the last acquired access token (null if not signed in).
+        /// Last acquired access token (null if not signed in).
         /// </summary>
         public static string? AccessToken => _lastResult?.AccessToken;
 
         /// <summary>
-        /// Get the username / UPN for the signed-in account (for debugging / UI).
+        /// Username / UPN for the signed-in account (for UI).
         /// </summary>
         public static string? SignedInUser =>
             _lastResult?.Account?.Username;
@@ -41,8 +44,10 @@ namespace ReeveUnionManager.Services
 
                 if (firstAccount != null)
                 {
-                    _lastResult = await _pca.AcquireTokenSilent(AuthenticationConfig.Scopes, firstAccount)
-                                            .ExecuteAsync();
+                    _lastResult = await _pca
+                        .AcquireTokenSilent(AuthenticationConfig.Scopes, firstAccount)
+                        .ExecuteAsync();
+
                     return _lastResult;
                 }
             }
@@ -76,11 +81,22 @@ namespace ReeveUnionManager.Services
         /// </summary>
         public static async Task SignOutAsync()
         {
-            var accounts = await _pca.GetAccountsAsync();
-            foreach (var account in accounts)
+            if (_pca == null)
+                return;
+
+            try
             {
-                await _pca.RemoveAsync(account);
+                var accounts = await _pca.GetAccountsAsync();
+                foreach (var account in accounts)
+                {
+                    await _pca.RemoveAsync(account);
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[AuthService] Sign-out failed: {ex}");
+            }
+
             _lastResult = null;
         }
     }
