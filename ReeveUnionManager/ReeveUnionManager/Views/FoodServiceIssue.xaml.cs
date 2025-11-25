@@ -73,16 +73,18 @@ public partial class FoodServiceIssue : ContentPage
 
     public async void HandleSubmit(object sender, EventArgs args)
     {
-        /*
+        string category = CategoryPicker.SelectedItem as string;
+
+        string location = LocationBox.Text;
         string notes = NotesBox.Text;
 
-        BasicEntryError error = await MauiProgram.businessLogic.AddBasicEntry(Title, notes, Photos);
+        BasicEntryError error = await MauiProgram.businessLogic.AddFoodIssue(category, location, notes, Photos);
         if (error != BasicEntryError.None)
         {
-            //await DisplayAlert("Addition has failed", error.ToString(), "OK");
+            await DisplayAlert("Addition has failed", error.ToString(), "OK");
         }
-        */
         
+
         await Navigation.PopAsync();
     }
 }

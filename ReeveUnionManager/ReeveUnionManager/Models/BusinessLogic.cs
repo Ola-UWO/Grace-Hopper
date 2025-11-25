@@ -401,4 +401,31 @@ public class BusinessLogic : IBusinessLogic
         return decoded;
 
     }
+
+    //Builds new food issue
+    public async Task<BasicEntryError> AddFoodIssue(string category, string location, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+
+        string[] photoURLs = await _database.UploadPhotosAsync(photos);
+        var newFoodIssue = new FoodServiceIssue
+        {
+            Category = category,
+            Location = location,
+            Notes = notes,
+            Images = photoURLs
+
+        };
+        try
+        {
+            await _database.InsertFoodIssue(newFoodIssue);
+        }
+        catch (Exception ex)
+        {
+            Console.Write($"Attention: {ex.ToString()}");
+        }
+
+        return BasicEntryError.None;
+        
+
+    }
 }

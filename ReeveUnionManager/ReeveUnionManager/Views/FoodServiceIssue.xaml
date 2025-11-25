@@ -36,7 +36,7 @@
         <VerticalStackLayout Grid.Row="3" VerticalOptions="Fill" Spacing="5">
             
             <Label Text="Category" FontAttributes="Bold"/>
-            <Picker Title="Select category" WidthRequest="300">
+            <Picker Title="Select category" WidthRequest="300" x:Name="CategoryPicker">
                 <Picker.Items>
                     <x:String>Missing Item</x:String>
                     <x:String>Quality Concern</x:String>
@@ -46,11 +46,11 @@
             </Picker>
 
             <Label Text="Location" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., RU Kitchen, Ballroom" WidthRequest="300"/>
+            <Entry Placeholder="e.g., RU Kitchen, Ballroom" WidthRequest="300" x:Name="LocationBox"/>
 
             <Label Text="Description" FontAttributes="Bold"/>
             <Editor Placeholder="Describe the issue/request..."
-                    AutoSize="TextChanges" HeightRequest="120"/>
+                    AutoSize="TextChanges" HeightRequest="120" x:Name="NotesBox"/>
 
         </VerticalStackLayout>
         
