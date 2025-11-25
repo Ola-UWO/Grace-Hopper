@@ -54,6 +54,10 @@
                     VerticalOptions="Center"
                     Command="{Binding NavigateCommand, Source={StaticResource PageViewModel}}"
                     CommandParameter="NewLogEntryPage"/>
+
+            <Button
+                Text="Sign in with Microsoft"
+                Clicked="OnSignInWithMicrosoftClicked"/>
         </Grid>
 
         <!-- Scrollable List of Logs -->

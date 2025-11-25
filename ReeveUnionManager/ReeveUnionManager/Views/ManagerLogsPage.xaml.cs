@@ -1,5 +1,6 @@
 using ReeveUnionManager.Models;
 using ReeveUnionManager.ViewModels;
+using ReeveUnionManager.Services;
 
 namespace ReeveUnionManager.Views;
 
@@ -22,5 +23,25 @@ public partial class ManagerLogsPage : ContentPage
 
         // Bind them to the CollectionView
         LogsList.ItemsSource = logs;
+    }
+
+    private async void OnSignInWithMicrosoftClicked(object sender, EventArgs e)
+    {
+        var result = await AuthService.SignInAsync();
+
+        if (result != null)
+        {
+            await DisplayAlert(
+                "Signed In",
+                $"You are signed in as:\n{AuthService.SignedInUser}",
+                "OK");
+        }
+        else
+        {
+            await DisplayAlert(
+                "Sign-In Failed",
+                "Unable to sign in. Please try again.",
+                "OK");
+        }
     }
 }
