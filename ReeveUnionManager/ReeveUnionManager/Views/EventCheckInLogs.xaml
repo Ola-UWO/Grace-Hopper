@@ -19,35 +19,80 @@
                      Color="Gray"
                      HorizontalOptions="FillAndExpand" />
 
-            <Grid RowDefinitions="Auto,*"
-                  Padding="0"
-                  HorizontalOptions="FillAndExpand">
-
-                <Grid Grid.Row="0"
-                      ColumnDefinitions="*,*,*"
-                      Padding="0,0,0,5"
-                      HorizontalOptions="FillAndExpand">
-                    <Label Grid.Column="0" Text="Name" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-                    <Label Grid.Column="1" Text="Time" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-                    <Label Grid.Column="2" Text="Location" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-                </Grid>
-
-                <CollectionView Grid.Row="1"
-                                ItemsSource="{Binding ScrapeEvents}"
-                                HorizontalOptions="FillAndExpand">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="local:ScrapeEvent">
-                            <Grid ColumnDefinitions="*,*,*"
-                                  Padding="0,5"
-                                  HorizontalOptions="FillAndExpand">
-                                <Label Grid.Column="0" Text="{Binding EventTitle}" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="1" Text="{Binding EventDateAndTime}" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="2" Text="{Binding EventLocation}" HorizontalTextAlignment="Center" />
+            <CollectionView ItemsSource="{Binding ScrapeEvents}"
+                            HorizontalOptions="FillAndExpand">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ScrapeEvent">
+                        <Border Padding="15"
+                                Margin="0,10"
+                                StrokeThickness="3"
+                                BackgroundColor="White">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12"/>
+                            </Border.StrokeShape>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" 
+                                           Binding="{Binding HasNotes}" 
+                                           Value="True">
+                                    <Setter Property="Stroke" Value="Green"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Border" 
+                                           Binding="{Binding HasNotes}" 
+                                           Value="False">
+                                    <Setter Property="Stroke" Value="LightGray"/>
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnEventTapped" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                                <!-- Name Row -->
+                                <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="Auto,*">
+                                    <Label Grid.Column="0" 
+                                           Text="Name: " 
+                                           FontAttributes="Bold" 
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding EventTitle}" 
+                                           VerticalOptions="Center" />
+                                </Grid>
+                                
+                                <!-- Time Row -->
+                                <Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="Auto,*">
+                                    <Label Grid.Column="0" 
+                                           Text="Time: " 
+                                           FontAttributes="Bold" 
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding EventDateAndTime}" 
+                                           VerticalOptions="Center" />
+                                </Grid>
+                                
+                                <!-- Location Row -->
+                                <Grid Grid.Row="2" Grid.Column="0" ColumnDefinitions="Auto,*">
+                                    <Label Grid.Column="0" 
+                                           Text="Location: " 
+                                           FontAttributes="Bold" 
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding EventLocation}" 
+                                           VerticalOptions="Center" />
+                                </Grid>
+                                
+                                <!-- Check mark indicator -->
+                                <Label Grid.Row="0" Grid.Column="1" Grid.RowSpan="3"
+                                       Text="✓"
+                                       FontSize="32"
+                                       TextColor="Green"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="End"
+                                       IsVisible="{Binding HasNotes}" />
                             </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

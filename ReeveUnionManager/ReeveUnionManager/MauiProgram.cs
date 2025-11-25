@@ -8,7 +8,8 @@ namespace ReeveUnionManager;
 /// </summary>
 public static class MauiProgram
 {
-	public static BusinessLogic businessLogic = new BusinessLogic(new Database());
+	public static Database database = new Database();
+	public static BusinessLogic businessLogic = new BusinessLogic(database);
 
 	public static MauiApp CreateMauiApp()
 	{

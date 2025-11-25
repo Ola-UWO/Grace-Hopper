@@ -358,7 +358,8 @@ public class BusinessLogic : IBusinessLogic
                 EventId = Guid.NewGuid(),
                 EventTitle = (string)item.Element("title"),
                 EventLocation = location,
-                EventDateAndTime = dateAndTime
+                EventDateAndTime = dateAndTime,
+                EventNotes = ""
             };
             ScrapeEvents.Add(se); // Also adds the event to the observable collection only when scraping, 
             return se;            //if not scraping there will be nothing in observable collection.
