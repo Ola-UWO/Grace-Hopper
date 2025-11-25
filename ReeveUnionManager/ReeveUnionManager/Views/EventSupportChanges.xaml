@@ -1,51 +1,64 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ReeveUnionManager.Views.EventSupportChanges" >
-    <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="18">
-            <Label Text="Event Support: Last-Minute Changes" Margin="0,20,0,0"
-                   FontSize="Large" HorizontalTextAlignment="Center" />
+             x:Class="ReeveUnionManager.Views.EventSupportChanges">
 
-            <Label Text="Event Name" FontAttributes="Bold"/>
-            <Entry Placeholder="Event name..." WidthRequest="300"/>
+    <Grid RowDefinitions="Auto, *, Auto, Auto, Auto" VerticalOptions="Fill" RowSpacing="20" Padding="10">
 
-            <Label Text="Time" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., 7:00 PM" WidthRequest="300"/>
-
-            <Label Text="Location" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., Ballroom A" WidthRequest="300"/>
-
-            <Label Text="Change Details" FontAttributes="Bold"/>
-            <Editor Placeholder="Describe last-minute changes..."
-                    AutoSize="TextChanges" HeightRequest="120"/>
-
-            <HorizontalStackLayout Spacing="10">
-                <Button Text="Add Photo" IsEnabled="False"/>
-                <Button Text="Take Photo" IsEnabled="False"/>
-            </HorizontalStackLayout>
-
-            <CollectionView HeightRequest="120">
-                <CollectionView.ItemsSource>
-                    <x:Array Type="{x:Type ImageSource}">
-                        <FileImageSource File="ph.png" />
-                        <FileImageSource File="ph.png" />
-                    </x:Array>
-                </CollectionView.ItemsSource>
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Horizontal" Span="1"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
+        <Label Text="Event Support: Last-Minute Changes" HorizontalOptions="Center" VerticalOptions="Start" FontSize="30" Margin="0,10,0,0" Grid.Row="0"></Label>
+        
+        <CollectionView x:Name="UploadedPhotos" ItemsSource="{Binding Photos}" Grid.Row="1">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="4" Margin="4" HasShadow="False" BorderColor="{DynamicResource Gray200}">
-                            <Image Source="{Binding}" WidthRequest="100" HeightRequest="100" Aspect="AspectFill"/>
+                        <Frame Padding="0" Margin="5" BorderColor="LightGray" CornerRadius="10">
+                            <Grid>
+                                <Image Source="{Binding Image}" Aspect="AspectFill" HeightRequest="150" WidthRequest="150"/>
+                                <Button Text="X" 
+                                        HorizontalOptions="End" 
+                                        VerticalOptions="Start"
+                                        Clicked="RemoveImage"
+                                        CommandParameter="{Binding .}"/>
+                            </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>
+        </CollectionView>
 
-            <Button Text="Submit" WidthRequest="200" HeightRequest="50"
-                    HorizontalOptions="Center" IsEnabled="False"/>
+            
+        <Grid ColumnDefinitions="*,*" Grid.Row="2" ColumnSpacing="10">
+            <Button Grid.Column="0" Text="Upload Photo" Clicked="OnUploadPhotoClicked"/>
+            <Button Grid.Column="1" Text="Capture Photo" Clicked="OnCapturePhotoClicked"/>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="3" VerticalOptions="Fill" Spacing="5">
+            
+            <Label Text="Event Name" FontAttributes="Bold"/>
+            <Entry Placeholder="Event name..." WidthRequest="300" x:Name="NameBox"/>
+
+            <Label Text="Time" FontAttributes="Bold"/>
+            <TimePicker x:Name="TimePicker" WidthRequest="300"/>
+
+            <Label Text="Location" FontAttributes="Bold"/>
+            <Entry Placeholder="e.g., Ballroom A" WidthRequest="300" x:Name="LocationBox"/>
+
+            <Label Text="Change Details" FontAttributes="Bold"/>
+            <Editor Placeholder="Describe last-minute changes..."
+                    AutoSize="TextChanges" HeightRequest="120" x:Name="NotesBox"/>
+
         </VerticalStackLayout>
-    </ScrollView>
+        
+        <Button
+            x:Name="BackToHome"
+            Text="Submit"
+            HorizontalOptions="Fill"
+            VerticalOptions="End"
+            Margin="0,0,0,0"
+            Grid.Row="4"
+            Clicked="HandleSubmit"
+            />
+    </Grid>
+
 </ContentPage>

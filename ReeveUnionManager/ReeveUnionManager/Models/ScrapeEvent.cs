@@ -13,6 +13,7 @@ namespace ReeveUnionManager.Models
         string _eventTitle = "";
         string _eventLocation = "";
         string _eventDateAndTime = "";
+        string _eventNotes = "";
 
         // [Column("id")]
         // public Guid Id { get; set; }
@@ -44,13 +45,21 @@ namespace ReeveUnionManager.Models
             set => SetProperty(ref _eventDateAndTime, value);
         }
 
+        [Column("event_notes")]
+        public string EventNotes
+        {
+            get => _eventNotes;
+            set => SetProperty(ref _eventNotes, value);
+        }
+
         public ScrapeEvent() { }
 
-        public ScrapeEvent(string eventTitle, string eventLocation, string eventDateAndTime)
+        public ScrapeEvent(string eventTitle, string eventLocation, string eventDateAndTime, string eventNotes)
         {
             EventTitle = eventTitle;
             EventLocation = eventLocation;
             EventDateAndTime = eventDateAndTime;
+            EventNotes = eventNotes;
         }
 
         public override string ToString()
@@ -60,5 +69,8 @@ namespace ReeveUnionManager.Models
         {
             return EventId == other.EventId;
         }
+
+        public bool HasNotes => !string.IsNullOrWhiteSpace(EventNotes);
+
     }
 }

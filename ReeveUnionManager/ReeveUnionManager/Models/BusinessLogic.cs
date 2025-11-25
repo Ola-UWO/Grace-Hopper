@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
 using System.Diagnostics;
+using ReeveUnionManager.Views;
 
 namespace ReeveUnionManager.Models;
 
@@ -357,7 +358,8 @@ public class BusinessLogic : IBusinessLogic
                 EventId = Guid.NewGuid(),
                 EventTitle = (string)item.Element("title"),
                 EventLocation = location,
-                EventDateAndTime = dateAndTime
+                EventDateAndTime = dateAndTime,
+                EventNotes = ""
             };
             ScrapeEvents.Add(se); // Also adds the event to the observable collection only when scraping, 
             return se;            //if not scraping there will be nothing in observable collection.
@@ -399,6 +401,60 @@ public class BusinessLogic : IBusinessLogic
             .Trim();
 
         return decoded;
+
+    }
+
+    //Builds new food issue
+    public async Task<BasicEntryError> AddFoodIssue(string category, string location, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+
+        string[] photoURLs = await _database.UploadPhotosAsync(photos);
+        var newFoodIssue = new FoodServiceIssue
+        {
+            Category = category,
+            Location = location,
+            Notes = notes,
+            Images = photoURLs
+
+        };
+        try
+        {
+            await _database.InsertFoodIssue(newFoodIssue);
+        }
+        catch (Exception ex)
+        {
+            Console.Write($"Attention: {ex.ToString()}");
+        }
+
+        return BasicEntryError.None;
+        
+
+    }
+
+    public async Task<BasicEntryError> AddEventSupportChange(string name, TimeOnly time, string location, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+
+        string[] photoURLs = await _database.UploadPhotosAsync(photos);
+        var newEventSupportChange = new EventSupportChange
+        {
+            Name = name,
+            Time = time,
+            Location = location,
+            Notes = notes,
+            Images = photoURLs
+
+        };
+        try
+        {
+            await _database.InsertEventSupportChange(newEventSupportChange);
+        }
+        catch (Exception ex)
+        {
+            Console.Write($"Attention: {ex.ToString()}");
+        }
+
+        return BasicEntryError.None;
+        
 
     }
 }

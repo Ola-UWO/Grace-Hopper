@@ -332,4 +332,38 @@ public class Database : IDatabase
 
         return uploadedUrls;
     }
+
+	public async Task<BasicEntryError> InsertFoodIssue(FoodServiceIssue issue)
+	{
+		await waitingForInitialization;
+
+		try
+		{
+			await supabaseClient.From<FoodServiceIssue>().Insert(issue);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
+			return BasicEntryError.InsertionError;
+		}
+
+		return BasicEntryError.None;
+	}
+
+	public async Task<BasicEntryError> InsertEventSupportChange(EventSupportChange change)
+	{
+		await waitingForInitialization;
+
+		try
+		{
+			await supabaseClient.From<EventSupportChange>().Insert(change);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
+			return BasicEntryError.InsertionError;
+		}
+
+		return BasicEntryError.None;
+	}
 }

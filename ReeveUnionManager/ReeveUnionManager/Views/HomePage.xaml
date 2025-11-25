@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ReeveUnionManager.Views.HomePage">
 
-       <Frame HeightRequest="750"
+       <Frame HeightRequest="690"
               WidthRequest="400"
               CornerRadius="20">
 
@@ -52,6 +52,13 @@
                                                  Padding="0"
                                                  HasShadow="False"
                                                  HorizontalOptions="Start">
+
+                                          <Frame.GestureRecognizers>
+                                                 <TapGestureRecognizer
+                                                        Command="{Binding NavigateCommand}"
+                                                        CommandParameter="ManagerLogsPage"/>
+                                          </Frame.GestureRecognizers>
+
                                                  <Label Text="📋"
                                                         FontSize="32"
                                                         HorizontalOptions="Center"
@@ -63,7 +70,7 @@
                                                         FontSize="20"
                                                         FontAttributes="Bold"
                                                         TextColor="#2C3E50"/>
-                                                 <Label Text="View all building logs from last 30 days"
+                                                 <Label Text="View all building logs from the last 7 days"
                                                         FontSize="14"
                                                         TextColor="#7F8C8D"
                                                         LineBreakMode="WordWrap"/>
@@ -95,6 +102,13 @@
                                                  Padding="0"
                                                  HasShadow="False"
                                                  HorizontalOptions="Start">
+
+                                          <Frame.GestureRecognizers>
+                                          <TapGestureRecognizer
+                                                 Command="{Binding NavigateCommand}"
+                                                 CommandParameter="OpeningCheckListPage"/>
+                                          </Frame.GestureRecognizers>
+
                                                  <Label Text="☀️"
                                                         FontSize="32"
                                                         HorizontalOptions="Center"
@@ -138,6 +152,13 @@
                                                  Padding="0"
                                                  HasShadow="False"
                                                  HorizontalOptions="Start">
+
+                                                 <Frame.GestureRecognizers>
+                                          <TapGestureRecognizer
+                                                 Command="{Binding NavigateCommand}"
+                                                 CommandParameter="ClosingCheckListPage"/>
+                                          </Frame.GestureRecognizers>
+
                                                  <Label Text="🌙"
                                                         FontSize="32"
                                                         HorizontalOptions="Center"
