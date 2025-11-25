@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
 using System.Diagnostics;
+using ReeveUnionManager.Views;
 
 namespace ReeveUnionManager.Models;
 
@@ -418,6 +419,33 @@ public class BusinessLogic : IBusinessLogic
         try
         {
             await _database.InsertFoodIssue(newFoodIssue);
+        }
+        catch (Exception ex)
+        {
+            Console.Write($"Attention: {ex.ToString()}");
+        }
+
+        return BasicEntryError.None;
+        
+
+    }
+
+    public async Task<BasicEntryError> AddEventSupportChange(string name, TimeOnly time, string location, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+
+        string[] photoURLs = await _database.UploadPhotosAsync(photos);
+        var newEventSupportChange = new EventSupportChange
+        {
+            Name = name,
+            Time = time,
+            Location = location,
+            Notes = notes,
+            Images = photoURLs
+
+        };
+        try
+        {
+            await _database.InsertEventSupportChange(newEventSupportChange);
         }
         catch (Exception ex)
         {

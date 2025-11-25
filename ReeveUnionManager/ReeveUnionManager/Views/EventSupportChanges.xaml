@@ -36,17 +36,17 @@
         <VerticalStackLayout Grid.Row="3" VerticalOptions="Fill" Spacing="5">
             
             <Label Text="Event Name" FontAttributes="Bold"/>
-            <Entry Placeholder="Event name..." WidthRequest="300"/>
+            <Entry Placeholder="Event name..." WidthRequest="300" x:Name="NameBox"/>
 
             <Label Text="Time" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., 7:00 PM" WidthRequest="300"/>
+            <TimePicker x:Name="TimePicker" WidthRequest="300"/>
 
             <Label Text="Location" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., Ballroom A" WidthRequest="300"/>
+            <Entry Placeholder="e.g., Ballroom A" WidthRequest="300" x:Name="LocationBox"/>
 
             <Label Text="Change Details" FontAttributes="Bold"/>
             <Editor Placeholder="Describe last-minute changes..."
-                    AutoSize="TextChanges" HeightRequest="120"/>
+                    AutoSize="TextChanges" HeightRequest="120" x:Name="NotesBox"/>
 
         </VerticalStackLayout>
         

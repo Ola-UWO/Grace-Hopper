@@ -19,4 +19,5 @@ public interface IDatabase
 	Task<ScrapeEventError> InsertEvent(ScrapeEvent scrapeEvent);
 	Task<ScrapeEventError> DeleteAllEvents();
 	Task<BasicEntryError> InsertFoodIssue(FoodServiceIssue issue);
+	Task<BasicEntryError> InsertEventSupportChange(EventSupportChange change);
 }

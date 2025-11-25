@@ -349,4 +349,21 @@ public class Database : IDatabase
 
 		return BasicEntryError.None;
 	}
+
+	public async Task<BasicEntryError> InsertEventSupportChange(EventSupportChange change)
+	{
+		await waitingForInitialization;
+
+		try
+		{
+			await supabaseClient.From<EventSupportChange>().Insert(change);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
+			return BasicEntryError.InsertionError;
+		}
+
+		return BasicEntryError.None;
+	}
 }

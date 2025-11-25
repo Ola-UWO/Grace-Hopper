@@ -73,15 +73,17 @@ public partial class EventSupportChanges : ContentPage
 
     public async void HandleSubmit(object sender, EventArgs args)
     {
-        /*
+        string name = NameBox.Text;
+        TimeOnly time = TimeOnly.FromTimeSpan(TimePicker.Time);
+        string location = LocationBox.Text;
         string notes = NotesBox.Text;
 
-        BasicEntryError error = await MauiProgram.businessLogic.AddBasicEntry(Title, notes, Photos);
+        BasicEntryError error = await MauiProgram.businessLogic.AddEventSupportChange(name, time, location, notes, Photos);
         if (error != BasicEntryError.None)
         {
             //await DisplayAlert("Addition has failed", error.ToString(), "OK");
         }
-        */
+        
 
         await Navigation.PopAsync();
     }
