@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace ReeveUnionManager.Models;
 
@@ -41,7 +46,6 @@ public class BusinessLogic : IBusinessLogic
         {
             await Task.WhenAll(
                 LoadCollectionAsync(CallLogs, _database.SelectAllCallLogs)
-                // LoadCollectionAsync(CheckInLogs, _database.SelectAllCheckInLogs)
             );
         }
         catch (Exception ex)
@@ -291,8 +295,45 @@ public class BusinessLogic : IBusinessLogic
         return decoded;
     }
 
-    // private static Task<ManagerLogError> CreateManagerLogFile()
-    // {
-        
-    // }
+    private static Task<ManagerLogError> CreateManagerLogFile()
+    {
+        using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(
+            filePath, WordprocessingDocumentType.Document))
+        {
+            MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+            mainPart.Document = new Document();
+            Body body = new Body();
+
+            // Loop over each property in the class
+            foreach (PropertyInfo prop in typeof(ManagerLogObject).GetProperties())
+            {
+                string label = prop.Name;
+                object? value = prop.GetValue(log);
+
+                string textToWrite;
+
+                if (value == null)
+                {
+                    textToWrite = $"{label}: (none)";
+                }
+                else if (value is string strValue)
+                {
+                    textToWrite = $"{label}: {strValue}";
+                }
+                else
+                {
+                    // for picture fields / object fields
+                    textToWrite = $"{label}: [Object data present]";
+                }
+
+                Paragraph para = new Paragraph(
+                    new Run(new Text(textToWrite))
+                );
+
+                body.Append(para);
+            }
+
+            mainPart.Document.Append(body);
+        }
+    }
 }

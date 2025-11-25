@@ -8,7 +8,7 @@
                    FontSize="Large" HorizontalTextAlignment="Center" />
 
             <Label Text="Category" FontAttributes="Bold"/>
-            <Picker Title="Select category" WidthRequest="300">
+            <Picker x:Name="FoodServiceCategory" Title="Select category" WidthRequest="300">
                 <Picker.Items>
                     <x:String>Missing Item</x:String>
                     <x:String>Quality Concern</x:String>
@@ -18,10 +18,10 @@
             </Picker>
 
             <Label Text="Location" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., RU Kitchen, Ballroom" WidthRequest="300"/>
+            <Entry x:Name="FoodServiceLocation" Placeholder="e.g., RU Kitchen, Ballroom" WidthRequest="300"/>
 
             <Label Text="Description" FontAttributes="Bold"/>
-            <Editor Placeholder="Describe the issue/request..."
+            <Editor x:Name="FoodServiceDescription" Placeholder="Describe the issue/request..."
                     AutoSize="TextChanges" HeightRequest="120"/>
 
             <HorizontalStackLayout Spacing="10">

@@ -5,12 +5,21 @@ namespace ReeveUnionManager.Views;
 /// </summary>
 public partial class FoodServiceIssue : ContentPage
 {
-    private readonly ManagerLogObject _managerLogObject;
+    private readonly ManagerLogObject _log;
 
-    public FoodServiceIssue(ManagerLogObject managerLogObject)
+    public FoodServiceIssue(ManagerLogObject log)
     {
         InitializeComponent();
-        _managerLogObject = managerLogObject;
-        BindingContext = _managerLogObject;
+        _log = log;
+    }
+
+    private void OnSubmitClicked(object sender, EventArgs e)
+    {
+        _log.FoodServiceCategory = FoodServiceCategory.SelectedItem?.ToString();
+        _log.FoodServiceLocation = FoodServiceLocation.Text;
+        _log.FoodServiceDescription = FoodServiceDescription.Text;
+        // _log.FoodServicePictures = FoodServicePictures.Image;          // FIXME: Another picture area
+
+        Navigation.PopAsync();
     }
 }

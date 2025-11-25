@@ -8,16 +8,16 @@
                    FontSize="Large" HorizontalTextAlignment="Center" />
 
             <Label Text="Event Name" FontAttributes="Bold"/>
-            <Entry Placeholder="Event name..." WidthRequest="300"/>
+            <Entry x:Name="EventName" Placeholder="Event name..." WidthRequest="300"/>
 
             <Label Text="Time" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., 7:00 PM" WidthRequest="300"/>
+            <Entry x:Name="EventTime" Placeholder="e.g., 7:00 PM" WidthRequest="300"/>
 
             <Label Text="Location" FontAttributes="Bold"/>
-            <Entry Placeholder="e.g., Ballroom A" WidthRequest="300"/>
+            <Entry x:Name="EventLocation" Placeholder="e.g., Ballroom A" WidthRequest="300"/>
 
             <Label Text="Change Details" FontAttributes="Bold"/>
-            <Editor Placeholder="Describe last-minute changes..."
+            <Editor x:Name="EventChangeDetails" Placeholder="Describe last-minute changes..."
                     AutoSize="TextChanges" HeightRequest="120"/>
 
             <HorizontalStackLayout Spacing="10">
