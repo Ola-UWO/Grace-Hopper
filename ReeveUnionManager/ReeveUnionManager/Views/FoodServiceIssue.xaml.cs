@@ -82,5 +82,7 @@ public partial class FoodServiceIssue : ContentPage
             //await DisplayAlert("Addition has failed", error.ToString(), "OK");
         }
         */
+        
+        await Navigation.PopAsync();
     }
 }

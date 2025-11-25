@@ -82,6 +82,8 @@ public partial class EventSupportChanges : ContentPage
             //await DisplayAlert("Addition has failed", error.ToString(), "OK");
         }
         */
+
+        await Navigation.PopAsync();
     }
 
 
