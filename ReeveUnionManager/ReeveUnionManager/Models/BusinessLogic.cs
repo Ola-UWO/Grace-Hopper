@@ -297,8 +297,10 @@ public class BusinessLogic : IBusinessLogic
         return decoded;
     }
 
-    private static Task<ManagerLogError> CreateManagerLogFile()
+    private async Task<ManagerLogError> CreateManagerLogFile(ManagerLogObject log)
     {
+        string filePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
+
         using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(
             filePath, WordprocessingDocumentType.Document))
         {
@@ -336,6 +338,61 @@ public class BusinessLogic : IBusinessLogic
             }
 
             mainPart.Document.Append(body);
+
+            return ManagerLogError.None;
         }
+    }
+
+    public async Task<BasicEntryError> AddFoodIssue(string category, string location, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+
+        string[] photoURLs = await _database.UploadPhotosAsync(photos);
+        var newFoodIssue = new FoodServiceIssue
+        {
+            Category = category,
+            Location = location,
+            Notes = notes,
+            Images = photoURLs
+
+        };
+        try
+        {
+            await _database.InsertFoodIssue(newFoodIssue);
+        }
+        catch (Exception ex)
+        {
+            Console.Write($"Attention: {ex.ToString()}");
+        }
+
+        return BasicEntryError.None;
+        
+
+    }
+
+    public async Task<BasicEntryError> AddEventSupportChange(string name, TimeOnly time, string location, string notes, ObservableCollection<PhotoInfo> photos)
+    {
+
+        string[] photoURLs = await _database.UploadPhotosAsync(photos);
+        var newEventSupportChange = new EventSupportChange
+        {
+            Name = name,
+            Time = time,
+            Location = location,
+            Notes = notes,
+            Images = photoURLs
+
+        };
+        try
+        {
+            await _database.InsertEventSupportChange(newEventSupportChange);
+        }
+        catch (Exception ex)
+        {
+            Console.Write($"Attention: {ex.ToString()}");
+        }
+
+        return BasicEntryError.None;
+        
+
     }
 }

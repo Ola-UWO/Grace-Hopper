@@ -29,5 +29,5 @@ public enum ScrapeEventError
 
 public enum ManagerLogError
 {
-    
+    None
 }
