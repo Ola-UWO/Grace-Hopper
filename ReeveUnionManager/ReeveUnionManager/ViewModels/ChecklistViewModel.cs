@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using ReeveUnionManager.Models;
 using System.Text.Json;
+using JetBrains.Annotations;
 
 namespace ReeveUnionManager.ViewModels
 {
@@ -39,6 +40,7 @@ namespace ReeveUnionManager.ViewModels
         public ICommand AddTaskCommand { get; }
         public ICommand ResetAllCommand { get; }
         public ICommand DeleteTaskCommand { get; }
+        public ICommand EditTaskCommand { get; }
         public ChecklistViewModel(ChecklistType checklistType)
         {
             _checklistType = checklistType;
@@ -57,6 +59,7 @@ namespace ReeveUnionManager.ViewModels
             AddTaskCommand = new Command(OnAddTask);
             ResetAllCommand = new Command(OnResetAll);
             DeleteTaskCommand = new Command<ChecklistItem>(OnDeleteTask);
+            EditTaskCommand = new Command<ChecklistItem>(OnEditTask);
 
             UpdateProgress();
         }
@@ -171,6 +174,22 @@ namespace ReeveUnionManager.ViewModels
                 item.PropertyChanged -= Item_PropertyChanged;
                 Items.Remove(item);
                 UpdateProgress();
+                SaveChecklist();
+            }
+        }
+
+        private async void OnEditTask(ChecklistItem item)
+        {
+            string result = await Application.Current.MainPage.DisplayPromptAsync(
+                "Edit Task",
+                "Update task name:",
+                "Save",
+                "Cancel",
+                initialValue: item.TaskName);
+
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                item.TaskName = result;
                 SaveChecklist();
             }
         }

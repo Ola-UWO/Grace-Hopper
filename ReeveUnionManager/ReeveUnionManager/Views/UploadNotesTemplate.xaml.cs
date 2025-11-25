@@ -100,5 +100,6 @@ public partial class UploadNotesTemplate : ContentView
         // {
         //     //await DisplayAlert("Addition has failed", error.ToString(), "OK");
         // }
+        await Navigation.PopAsync();
     }
 }

@@ -19,7 +19,7 @@
             <Border StrokeThickness="1"
                     HeightRequest="45"
                     WidthRequest="410"
-                    BackgroundColor="WhiteSmoke">
+                    BackgroundColor="White">
 
                 <Label Text="CLOSING CHECKLIST"
                        VerticalOptions="Center"
@@ -67,6 +67,11 @@
                                         Margin="0,0,0,1"
                                         BackgroundColor="White"
                                         StrokeThickness="0">
+                                    
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ChecklistViewModel}}, Path=EditTaskCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
 
                                     <Grid ColumnDefinitions="Auto,*">
                                         <CheckBox Grid.Column="0"

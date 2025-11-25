@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ReeveUnionManager.ViewModels"
              x:Class="ReeveUnionManager.Views.ManagerLogsPage">
+
+    <!-- PAGE-LEVEL RESOURCES -->
+    <ContentPage.Resources>
+        <!-- Navigation ViewModel scoped to the button only -->
+        <viewModels:PageViewModel x:Key="PageViewModel"/>
+    </ContentPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
         <Grid Grid.Row="0"
               Padding="20,20,20,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- Title Section -->
@@ -23,16 +30,16 @@
                                  VerticalOptions="Center">
                 <Label Text="Manager Logs"
                        FontSize="25"
-                       FontAttributes="Bold" />
+                       FontAttributes="Bold"/>
                 <HorizontalStackLayout Spacing="8"
                                        Margin="0,4,0,0">
                     <Label Text="🗓️"
                            WidthRequest="20"
                            HeightRequest="20"
-                           VerticalOptions="Center" />
-                    <Label Text="Last 7 Days"
+                           VerticalOptions="Center"/>
+                    <Label Text="Last 7 Log Entries"
                            FontSize="16"
-                           VerticalOptions="Center" />
+                           VerticalOptions="Center"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
@@ -45,19 +52,19 @@
                     Padding="20,10"
                     Margin="12,0,0,0"
                     VerticalOptions="Center"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NewLogEntryPage" />
-
+                    Command="{Binding NavigateCommand, Source={StaticResource PageViewModel}}"
+                    CommandParameter="NewLogEntryPage"/>
         </Grid>
 
         <!-- Scrollable List of Logs -->
         <CollectionView Grid.Row="1"
                         x:Name="LogsList"
                         Margin="16,0,16,16">
-            <!-- Add spacing between rows -->
+
+            <!-- Spacing between rows -->
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="12" />
+                                   ItemSpacing="12"/>
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
@@ -66,18 +73,18 @@
                     <Border Padding="16"
                             StrokeThickness="1">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="12"/>
                         </Border.StrokeShape>
                         <Border.Shadow>
                             <Shadow Radius="8"
-                                    Opacity="0.35" />
+                                    Opacity="0.35"/>
                         </Border.Shadow>
 
                         <Grid ColumnSpacing="12">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
                             <!-- Icon "card" -->
@@ -88,7 +95,7 @@
                                     StrokeThickness="0"
                                     VerticalOptions="Start">
                                 <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="12" />
+                                    <RoundRectangle CornerRadius="12"/>
                                 </Border.StrokeShape>
 
                                 <Label Text="📄"
@@ -96,22 +103,22 @@
                                        HeightRequest="56"
                                        HorizontalTextAlignment="Center"
                                        VerticalTextAlignment="Center"
-                                       FontSize="40" />
+                                       FontSize="40"/>
                             </Border>
 
                             <!-- Content -->
                             <VerticalStackLayout Grid.Column="1"
                                                  Spacing="4">
-                                <!-- Static name for now -->
-                                <Label Text="Bldg Mgr Log.docx"
+                                <!-- Log Name with corresponding date -->
+                                <Label Text="{Binding Date, StringFormat='{0:MM/d/yyyy}'}"
                                        FontSize="20"
-                                       FontAttributes="Bold" />
+                                       FontAttributes="Bold"/>
 
                                 <HorizontalStackLayout Spacing="16">
                                     <HorizontalStackLayout Spacing="6">
-                                        <!-- Date from DB -->
-                                        <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}"
-                                               FontSize="12" />
+                                        <!-- Last Edited Date from DB -->
+                                        <Label Text="{Binding LastEdited, StringFormat='Last Edit: {0:MM/dd/yyyy h:mm tt}'}"
+                                               FontSize="14"/>
                                     </HorizontalStackLayout>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
