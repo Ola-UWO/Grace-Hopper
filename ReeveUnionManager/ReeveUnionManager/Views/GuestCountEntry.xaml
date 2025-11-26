@@ -8,17 +8,17 @@
                    FontSize="Large" HorizontalTextAlignment="Center" />
 
             <Label Text="Date" FontAttributes="Bold"/>
-            <DatePicker />
+            <DatePicker x:Name="GuestCountDate" />
 
             <Label Text="Hour Before Closing" FontAttributes="Bold"/>
-            <Entry Placeholder="Enter number" Keyboard="Numeric" WidthRequest="200"/>
+            <Entry x:Name="GuestCountHourBeforeClosing" Placeholder="Enter number" Keyboard="Numeric" WidthRequest="200"/>
 
             <Label Text="At Closing" FontAttributes="Bold"/>
-            <Entry Placeholder="Enter number" Keyboard="Numeric" WidthRequest="200"/>
+            <Entry x:Name="GuestCountAtClosing" Placeholder="Enter number" Keyboard="Numeric" WidthRequest="200"/>
 
             <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto,Auto" ColumnSpacing="10">
                 <Label Grid.Row="0" Grid.Column="0" Text="Notes" FontAttributes="Bold"/>
-                <Editor Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                <Editor x:Name="GuestCountClosingNotes" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                         Placeholder="Optional notes..."
                         AutoSize="TextChanges" HeightRequest="100"/>
             </Grid>

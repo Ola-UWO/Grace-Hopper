@@ -22,7 +22,6 @@ public class Database : IDatabase
 	private Supabase.Client? supabaseClient;
 	private IStorageFileApi<FileObject>? imagesBucket;
 	private ObservableCollection<CallLog> callLogs = new();
-	private ObservableCollection<CheckInLog> checkInLogs = new();
 	private ObservableCollection<ScrapeEvent> scrapeEvents = new();
 	private ObservableCollection<ManagerLog> managerLogs = new();
 	private Task waitingForInitialization;
@@ -115,79 +114,6 @@ public class Database : IDatabase
 		}
 		return CallLogError.None;
 	}
-
-	/// <summary>
-	/// Selects all check in logs
-	/// </summary>
-	/// <returns>Every check in log</returns>
-	public async Task<ObservableCollection<CheckInLog>> SelectAllCheckInLogs()
-	{
-		await waitingForInitialization;
-		var table = supabaseClient!.From<CheckInLog>();
-		var response = await table.Get();
-		checkInLogs.Clear();
-		foreach (CheckInLog cil in response.Models)
-		{
-			checkInLogs.Add(cil);
-		}
-		return checkInLogs;
-	}
-
-	/// <summary>
-	/// Selects a specific check in log
-	/// </summary>
-	/// <param name="checkInId">Unique identifier for a check in log</param>
-	/// <returns>The specified check in log</returns>
-	public async Task<CheckInLog?> SelectCheckInLog(Guid checkInId)
-	{
-		var response = await supabaseClient.From<CheckInLog>().Where(checkInLog => checkInLog.CheckInId == checkInId).Get();
-		if (response != null)
-		{
-			return response!.Models.FirstOrDefault();
-		}
-		return null;
-	}
-
-	/// <summary>
-	/// Inserts a check in log
-	/// </summary>
-	/// <param name="checkInLog">Complete check in log to be inserted</param>
-	/// <returns>Whether the insert was successful</returns>
-	public async Task<CheckInLogError> InsertCheckInLog(CheckInLog checkInLog)
-	{
-		try
-		{
-			await supabaseClient.From<CheckInLog>().Insert(checkInLog);
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"ATTN: Error while inserting -- {ex.ToString()}");
-			return CheckInLogError.InsertionError;
-		}
-
-		return CheckInLogError.None;
-	}
-
-	/// <summary>
-	/// Deletes a specified check in log
-	/// </summary>
-	/// <param name="checkInId">Unique identifier for check in id to be deleted</param>
-	/// <returns>Whether the delete was successful</returns>
-
-	public async Task<CheckInLogError> DeleteCheckInLog(Guid checkInId)
-	{
-		try
-		{
-			var unused = await supabaseClient.From<CheckInLog>().Delete(await SelectCheckInLog(checkInId));
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
-			return CheckInLogError.DeleteError;
-		}
-		return CheckInLogError.None;
-	}
-
 
 	/// <summary>
 	/// Inserts events into the database
@@ -366,4 +292,36 @@ public class Database : IDatabase
 
 		return BasicEntryError.None;
 	}
+
+	public async Task UploadManagerLogFileAsync(string localFilePath)
+    {
+		await waitingForInitialization;
+
+    try
+    {
+        var bucket = supabaseClient!.Storage.From("manager-logs");
+        Debug.WriteLine("1.12");
+
+        string remotePath = $"logs/{Guid.NewGuid()}.docx";
+        Debug.WriteLine("1.13");
+
+        await bucket.Upload(
+            localFilePath,
+            remotePath,
+            new Supabase.Storage.FileOptions
+            {
+                ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                Upsert = false
+            }
+        );
+
+        Debug.WriteLine("1.14");
+    }
+    catch (Exception ex)
+    {
+        Debug.WriteLine($"UPLOAD ERROR: {ex.GetType().Name} - {ex.Message}");
+        Debug.WriteLine(ex.StackTrace);
+        throw;
+    }
+    }
 }

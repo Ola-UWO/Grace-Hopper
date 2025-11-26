@@ -1,11 +1,26 @@
+using ReeveUnionManager.Models;
+
 namespace ReeveUnionManager.Views;
 /// <summary>
 /// <!-- Kevin Kraiss -->
 /// </summary>
 public partial class GuestCountEntry : ContentPage
 {
-    public GuestCountEntry()
+    private readonly ManagerLogObject _log;
+
+    public GuestCountEntry(ManagerLogObject log)
     {
         InitializeComponent();
+        _log = log;
+    }
+    
+    private void OnSubmitClicked(object sender, EventArgs e)
+    {
+        _log.NumberOfGuestsDate = GuestCountDate.Date.ToString("MM-dd-yyy");
+        _log.NumberOfGuestsHourBeforeClosing = GuestCountHourBeforeClosing.Text;
+        _log.NumberofGuestsAtClosing = GuestCountAtClosing.Text;
+        _log.NumberOfGuestsNotes = GuestCountClosingNotes.Text;
+
+        Navigation.PopAsync();
     }
 }

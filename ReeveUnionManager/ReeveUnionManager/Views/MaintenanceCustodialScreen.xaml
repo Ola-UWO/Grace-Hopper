@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ReeveUnionManager.Views.MaintenanceCustodialScreen"
              xmlns:local="clr-namespace:ReeveUnionManager.Views">
-    <local:UploadNotesTemplate Title ="Maintenance/Custodial"></local:UploadNotesTemplate>
+    <local:UploadNotesTemplate x:Name="MaintenanceCustodialTemplate" Title ="Maintenance/Custodial"></local:UploadNotesTemplate>
 
     
 

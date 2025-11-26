@@ -79,18 +79,27 @@ public partial class UploadNotesTemplate : ContentView
         }
     }
 
+    public string Notes
+    {
+        get => NotesBox.Text;
+        set => NotesBox.Text = value;
+    }
+
+    public IReadOnlyCollection<PhotoInfo> SelectedPhotos => Photos;
+
+    public event EventHandler SubmitClicked;
+
     public async void HandleSubmit(object sender, EventArgs args)
     {
+        SubmitClicked?.Invoke(this, EventArgs.Empty);
 
-        string notes = NotesBox.Text;
+        // string notes = NotesBox.Text;
 
-        BasicEntryError error = await MauiProgram.businessLogic.AddBasicEntry(Title, notes, Photos);
-        if (error != BasicEntryError.None)
-        {
-            //await DisplayAlert("Addition has failed", error.ToString(), "OK");
-        }
+        // BasicEntryError error = await MauiProgram.businessLogic.AddBasicEntry(Title, notes, Photos);
+        // if (error != BasicEntryError.None)
+        // {
+        //     //await DisplayAlert("Addition has failed", error.ToString(), "OK");
+        // }
         await Navigation.PopAsync();
     }
-    
-    
 }
