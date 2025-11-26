@@ -23,6 +23,7 @@ public partial class FoodServiceIssue : ContentPage
     {
         InitializeComponent();
         _log = log;
+        BindingContext = this;
     }
 
     private void OnSubmitClicked(object sender, EventArgs e)
