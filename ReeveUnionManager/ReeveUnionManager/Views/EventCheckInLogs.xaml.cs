@@ -27,6 +27,6 @@ public partial class EventCheckInLogs : ContentPage
             { "EventNotes", scrapeEvent.EventNotes ?? "" }
         };
         
-        await Shell.Current.GoToAsync(nameof(NewLogEntryPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(EventCheckIn), navigationParameter);
 	}
 }

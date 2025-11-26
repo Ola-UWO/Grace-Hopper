@@ -18,6 +18,7 @@ using System.Reflection;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace ReeveUnionManager.Models;
 
@@ -297,50 +298,55 @@ public class BusinessLogic : IBusinessLogic
         return decoded;
     }
 
-    private async Task<ManagerLogError> CreateManagerLogFile(ManagerLogObject log)
+    public async Task<ManagerLogError> CreateManagerLogFile(ManagerLogObject log)
     {
         string filePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
+
+        // Prevent OpenXML from crashing on existing file
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);    
+        }
 
         using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(
             filePath, WordprocessingDocumentType.Document))
         {
             MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
-            mainPart.Document = new Document();
+
             Body body = new Body();
-
-            // Loop over each property in the class
-            foreach (PropertyInfo prop in typeof(ManagerLogObject).GetProperties())
+            foreach (var prop in typeof(ManagerLogObject).GetProperties())
             {
-                string label = prop.Name;
-                object? value = prop.GetValue(log);
+                object? value = null;
 
+                string label = prop.Name;
+                value = prop.GetValue(log);
                 string textToWrite;
 
-                if (value == null)
+                if (value == null) 
                 {
-                    textToWrite = $"{label}: (none)";
+                    textToWrite = $"{label}: (none)"; 
                 }
                 else if (value is string strValue)
-                {
+                { 
                     textToWrite = $"{label}: {strValue}";
-                }
-                else
+                } 
+                else 
                 {
                     // for picture fields / object fields
                     textToWrite = $"{label}: [Object data present]";
                 }
-
-                Paragraph para = new Paragraph(
-                    new Run(new Text(textToWrite))
-                );
-
+                
+                Paragraph para = new Paragraph(new Run(new Text(textToWrite)));
                 body.Append(para);
             }
+            mainPart.Document = new Document(body);
 
-            mainPart.Document.Append(body);
-
-            return ManagerLogError.None;
+            mainPart.Document.Save();
         }
+        string newFilePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
+        await _database.UploadManagerLogFileAsync(newFilePath);
+
+        return ManagerLogError.None;
     }
 
     public async Task<BasicEntryError> AddFoodIssue(string category, string location, string notes, ObservableCollection<PhotoInfo> photos)

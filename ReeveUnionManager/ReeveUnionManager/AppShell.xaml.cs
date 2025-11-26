@@ -16,6 +16,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(Views.PhoneCallEntry), typeof(Views.PhoneCallEntry));
         Routing.RegisterRoute(nameof(Views.PhoneCallLogs), typeof(Views.PhoneCallLogs));
         Routing.RegisterRoute(nameof(Views.EventSupportChanges), typeof(Views.EventSupportChanges));
+        Routing.RegisterRoute(nameof(Views.EventCheckIn), typeof(Views.EventCheckIn));
         Routing.RegisterRoute(nameof(Views.EventCheckInLogs), typeof(Views.EventCheckInLogs));
         Routing.RegisterRoute(nameof(Views.RoomSetsScreen), typeof(Views.RoomSetsScreen));
         Routing.RegisterRoute(nameof(Views.MaintenanceCustodialScreen), typeof(Views.MaintenanceCustodialScreen));

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ReeveUnionManager.Models;
 
 namespace ReeveUnionManager.Views;
@@ -8,6 +9,7 @@ public partial class ShiftDetails : ContentPage
 
     public ShiftDetails(ManagerLogObject log)
     {
+        Debug.WriteLine(log == null ? "⚠ log passed to page is NULL" : "✔ log passed is OK");
         InitializeComponent();
         _log = log;
     }

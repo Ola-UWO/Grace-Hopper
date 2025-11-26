@@ -16,4 +16,5 @@ public interface IDatabase
 	Task<ScrapeEventError> DeleteAllEvents();
 	Task<BasicEntryError> InsertFoodIssue(FoodServiceIssue issue);
 	Task<BasicEntryError> InsertEventSupportChange(EventSupportChange change);
+	Task UploadManagerLogFileAsync(string localFilePath);
 }

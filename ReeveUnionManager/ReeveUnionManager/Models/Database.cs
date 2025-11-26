@@ -292,4 +292,36 @@ public class Database : IDatabase
 
 		return BasicEntryError.None;
 	}
+
+	public async Task UploadManagerLogFileAsync(string localFilePath)
+    {
+		await waitingForInitialization;
+
+    try
+    {
+        var bucket = supabaseClient!.Storage.From("manager-logs");
+        Debug.WriteLine("1.12");
+
+        string remotePath = $"logs/{Guid.NewGuid()}.docx";
+        Debug.WriteLine("1.13");
+
+        await bucket.Upload(
+            localFilePath,
+            remotePath,
+            new Supabase.Storage.FileOptions
+            {
+                ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                Upsert = false
+            }
+        );
+
+        Debug.WriteLine("1.14");
+    }
+    catch (Exception ex)
+    {
+        Debug.WriteLine($"UPLOAD ERROR: {ex.GetType().Name} - {ex.Message}");
+        Debug.WriteLine(ex.StackTrace);
+        throw;
+    }
+    }
 }
