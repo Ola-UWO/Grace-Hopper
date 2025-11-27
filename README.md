@@ -7,6 +7,8 @@ Sprint 4 To Do List:
 
 -Update the UI for various pages ✅
 
+-Connect more pages to the database ✅
+
 Sprint 3 changes:
 
 -Added some funtionality to managerlogs page
