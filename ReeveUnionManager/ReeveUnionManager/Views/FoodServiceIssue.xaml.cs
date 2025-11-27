@@ -1,3 +1,4 @@
+using ReeveUnionManager.Models;
 namespace ReeveUnionManager.Views;
 
 using System.Collections.ObjectModel;
@@ -12,13 +13,27 @@ using System.IO;
 /// </summary>
 public partial class FoodServiceIssue : ContentPage
 {
+    private readonly ManagerLogObject _log;
+
 
     public ObservableCollection<PhotoInfo> Photos { get; set; } = new();
     FileResult photo;
 
-    public FoodServiceIssue()
+    public FoodServiceIssue(ManagerLogObject log)
     {
         InitializeComponent();
+        _log = log;
+        BindingContext = this;
+    }
+
+    private void OnSubmitClicked(object sender, EventArgs e)
+    {
+        _log.FoodServiceCategory = CategoryPicker.SelectedItem?.ToString();
+        _log.FoodServiceLocation = LocationBox.Text;
+        _log.FoodServiceDescription = NotesBox.Text;
+        // _log.FoodServicePictures = FoodServicePictures.Image;          // FIXME: Another picture area
+
+        Navigation.PopAsync();
         BindingContext = this;
     }
 

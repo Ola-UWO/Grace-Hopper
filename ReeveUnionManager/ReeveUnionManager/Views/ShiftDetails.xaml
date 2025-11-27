@@ -21,7 +21,7 @@
                 <Entry x:Name="NameENT" Placeholder="Name" FontSize="16" Grid.Column="1" Grid.Row="0" Margin="0,0,0,10"/>
 
                 <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">Date:</Label>
-                <DatePicker Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"/>
+                <DatePicker x:Name="ShiftDate" Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"/>
 
                 <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="2" Margin="0,0,0,10">Day of Week:</Label>
                 <Entry x:Name="DayOfWeekENT" Placeholder="Monday" FontSize="16" Grid.Column="1" Grid.Row="2" Margin="0,0,0,10"/>
@@ -29,21 +29,22 @@
                 <Label VerticalTextAlignment="Center" FontSize="16" Grid.Column="0" Grid.Row="3" Margin="0,0,0,10">Shift:</Label>
                 
                 <HorizontalStackLayout Grid.Column="1" Grid.Row="3" HorizontalOptions="Center">
-                    <TimePicker VerticalOptions="Center"></TimePicker>
+                    <TimePicker x:Name="ShiftStart" VerticalOptions="Center"></TimePicker>
                     <Label  VerticalOptions="Center">-</Label>
-                    <TimePicker VerticalOptions="Center"></TimePicker>
+                    <TimePicker x:Name="ShiftEnd" VerticalOptions="Center"></TimePicker>
                 </HorizontalStackLayout>
             </Grid> 
 
 
         <Button
                     x:Name="BackToHome"
+                    Clicked="OnSubmitClicked"
                     Text="Submit"
                     HorizontalOptions="Fill"
                     Grid.Row="2"
                     VerticalOptions="End"
                     Margin="0,0,0,0"
-                    IsEnabled="False"
+                    IsEnabled="True"
                     />
 
     </Grid>

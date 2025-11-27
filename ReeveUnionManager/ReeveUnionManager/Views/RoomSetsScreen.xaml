@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ReeveUnionManager.Views.RoomSetsScreen"
              xmlns:local="clr-namespace:ReeveUnionManager.Views">
-    <local:UploadNotesTemplate Title ="Room Sets"></local:UploadNotesTemplate>
+    <local:UploadNotesTemplate x:Name="RoomSetsTemplate" Title ="Room Sets"></local:UploadNotesTemplate>
 
     
 

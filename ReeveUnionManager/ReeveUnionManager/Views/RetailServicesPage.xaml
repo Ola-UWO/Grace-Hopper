@@ -3,5 +3,5 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ReeveUnionManager.Views.RetailServicesPage"
              xmlns:local="clr-namespace:ReeveUnionManager.Views" >
-    <local:UploadNotesTemplate Title ="Retail Services"></local:UploadNotesTemplate>
+    <local:UploadNotesTemplate x:Name="RetailServicesTemplate" Title ="Retail Services"></local:UploadNotesTemplate>
 </ContentPage>

@@ -1,3 +1,5 @@
+using ReeveUnionManager.Models;
+
 namespace ReeveUnionManager.Views;
 
 using System.Collections.ObjectModel;
@@ -13,13 +15,28 @@ using System.IO;
 public partial class EventSupportChanges : ContentPage
 {
 
+    private readonly ManagerLogObject _log;
+
+
     public ObservableCollection<PhotoInfo> Photos { get; set; } = new();
     FileResult photo;
 
-    public EventSupportChanges()
+    public EventSupportChanges(ManagerLogObject log)
     {
         InitializeComponent();
+        _log = log;
         BindingContext = this;
+    }
+
+    private void OnSubmitClicked(object sender, EventArgs e)
+    {
+        _log.EventSupportChangesName = NameBox.Text;
+        _log.EventSupportChangesTime = TimePicker.Time.ToString(@"hh\:mm");
+        _log.EventSupportChangesLocation = LocationBox.Text;
+        _log.EventSupportChangesDetails = NotesBox.Text;
+        // _log.EventSupportChangesPictures = ShiftEnd.Time.ToString(@"hh\:mm");           FIXME: FIGURE OUT PICTURES LATER
+        
+        Navigation.PopAsync();
     }
 
     public async void OnUploadPhotoClicked(object sender, EventArgs args)

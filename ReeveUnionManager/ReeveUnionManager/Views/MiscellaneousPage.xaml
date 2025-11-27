@@ -3,5 +3,5 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ReeveUnionManager.Views.MiscellaneousPage"
              xmlns:local="clr-namespace:ReeveUnionManager.Views">
-    <local:UploadNotesTemplate Title ="Miscellaneous"></local:UploadNotesTemplate>
+    <local:UploadNotesTemplate x:Name="MiscTemplate" Title ="Miscellaneous"></local:UploadNotesTemplate>
 </ContentPage>

@@ -49,8 +49,8 @@
                     HorizontalOptions="FillAndExpand" />                
             </Grid>
 
-            <Button Text="View Event Log" WidthRequest="200" HeightRequest="50"
-                HorizontalOptions="Center" Clicked="OnViewEventLogPage"/>
+            <!-- <Button Text="View Event Log" WidthRequest="200" HeightRequest="50"
+                HorizontalOptions="Center" Clicked="OnViewEventLogPage"/> -->
 
             <Button Text="Submit" Clicked="HandleSubmit" WidthRequest="200" HeightRequest="50"
                 HorizontalOptions="Center" />

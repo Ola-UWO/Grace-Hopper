@@ -1,5 +1,6 @@
 Sprint 4 changes: 
-- Integrated Microsoft authentication (MSAL) with proper iOS keychain entitlements and Azure AD app registration to support secure sign-in.
+
+- Integrated Microsoft authentication (MSAL) with proper iOS keychain entitlements and Azure AD app registration to support secure sign-in. Not configured for android yet.
 
 - Implemented OneDrive access through Microsoft Graph v5, including token handoff from MSAL and a custom Graph authentication provider.
 
@@ -8,6 +9,17 @@ Sprint 4 changes:
 - Enabled file downloads and system-level opening via Launcher.OpenAsync for viewing OneDrive log documents on device.
 
 - Refined UI behavior, including loading indicators, button state changes based on sign-in status, empty-state messaging, and a fully scrollable logs list.
+
+-Connect our app to Microsoft Services ✅
+
+-Create a manager log file
+    -Semi complete, the file needs reformatting 
+
+-Update the UI for various pages ✅
+
+-Connect more pages to the database ✅
+
+-Completely functional checklist pages and some UI enhancements 
 
 Sprint 3 changes:
 
