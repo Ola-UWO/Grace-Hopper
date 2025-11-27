@@ -1,3 +1,11 @@
+Sprint 4 To Do List:
+-Connect our app to Microsoft Services ✅
+
+-Create a manager log file
+    -Semi complete, the file needs reformatting and to be automatically added to OneDrive
+
+-Update the UI for various pages ✅
+
 Sprint 3 changes:
 
 -Added some funtionality to managerlogs page
