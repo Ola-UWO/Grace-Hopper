@@ -36,7 +36,8 @@ namespace ReeveUnionManager.Services
 
     public static class OneDriveService
     {
-        private const string FolderName = "Manager Logs (TEST)";
+        public static string SelectedFolderName { get; set; } = "Manager Logs (TEST)";
+
 
         private static GraphServiceClient CreateGraphClient()
         {
@@ -70,7 +71,7 @@ namespace ReeveUnionManager.Services
 
             // 3) Find the "Manager Logs (TEST)" folder by name
             var logsFolder = rootItems
-                .FirstOrDefault(i => i.Folder != null && i.Name == FolderName);
+                .FirstOrDefault(i => i.Folder != null && i.Name == SelectedFolderName);
 
             if (logsFolder == null || string.IsNullOrEmpty(logsFolder.Id))
                 return new List<DriveItem>(); // folder not found, just return empty

@@ -73,17 +73,24 @@ public partial class ManagerLogsPage : ContentPage
 
     private async void OnLoadLogsClicked(object sender, EventArgs e)
     {
-        if (!_isSignedIn)
-        {
-            await DisplayAlert(
-                "Not Signed In",
-                "Please sign in with Microsoft before loading logs.",
-                "OK");
-            return;
-        }
+        // Prompt for folder name
+        string folderName = await DisplayPromptAsync(
+            "Choose OneDrive Folder",
+            "Enter the folder name where your log files are stored:",
+            accept: "Load",
+            cancel: "Cancel",
+            initialValue: OneDriveService.SelectedFolderName);
 
+        if (string.IsNullOrWhiteSpace(folderName))
+            return;
+
+        // Save selection
+        OneDriveService.SelectedFolderName = folderName.Trim();
+
+        // Load files
         await LoadOneDriveLogsAsync();
     }
+
 
     private async Task LoadOneDriveLogsAsync()
     {
@@ -131,46 +138,46 @@ public partial class ManagerLogsPage : ContentPage
         }
     }
 
-private async void OnLogSelected(object sender, SelectionChangedEventArgs e)
-{
-    var collectionView = (CollectionView)sender;
-    DriveItem? selected = null;
-
-    try
+    private async void OnLogSelected(object sender, SelectionChangedEventArgs e)
     {
-        selected = e.CurrentSelection?.FirstOrDefault() as DriveItem;
-        if (selected == null)
-            return;
+        var collectionView = (CollectionView)sender;
+        DriveItem? selected = null;
 
-        LoadingIndicator.IsVisible = true;
-        LoadingIndicator.IsRunning = true;
-
-        // Download the file locally
-        var localPath = await OneDriveService.DownloadFileToLocalAsync(selected);
-
-        // Open with platform launcher (Word, Pages, Files App, etc)
-        await Launcher.OpenAsync(new OpenFileRequest
+        try
         {
-            File = new ReadOnlyFile(localPath),
-            Title = selected.Name ?? "Manager Log"
-        });
-    }
-    catch (Exception ex)
-    {
-        await DisplayAlert(
-            "Open Log Error",
-            $"Unable to open this log.\n\nDetails: {ex.Message}",
-            "OK");
-    }
-    finally
-    {
-        // ALWAYS clear the highlight no matter what happens
-        collectionView.SelectedItem = null;
+            selected = e.CurrentSelection?.FirstOrDefault() as DriveItem;
+            if (selected == null)
+                return;
 
-        LoadingIndicator.IsRunning = false;
-        LoadingIndicator.IsVisible = false;
+            LoadingIndicator.IsVisible = true;
+            LoadingIndicator.IsRunning = true;
+
+            // Download the file locally
+            var localPath = await OneDriveService.DownloadFileToLocalAsync(selected);
+
+            // Open with platform launcher (Word, Pages, Files App, etc)
+            await Launcher.OpenAsync(new OpenFileRequest
+            {
+                File = new ReadOnlyFile(localPath),
+                Title = selected.Name ?? "Manager Log"
+            });
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert(
+                "Open Log Error",
+                $"Unable to open this log.\n\nDetails: {ex.Message}",
+                "OK");
+        }
+        finally
+        {
+            // ALWAYS clear the highlight no matter what happens
+            collectionView.SelectedItem = null;
+
+            LoadingIndicator.IsRunning = false;
+            LoadingIndicator.IsVisible = false;
+        }
     }
-}
 
 
     private void UpdateAuthUi()
