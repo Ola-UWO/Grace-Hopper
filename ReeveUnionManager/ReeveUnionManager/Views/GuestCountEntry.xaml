@@ -24,7 +24,8 @@
             </Grid>
 
             <Button Text="Submit" WidthRequest="200" HeightRequest="50"
-                    HorizontalOptions="Center" IsEnabled="False"/>
+                    HorizontalOptions="Center" IsEnabled="True"
+                    Clicked="OnSubmitClicked"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

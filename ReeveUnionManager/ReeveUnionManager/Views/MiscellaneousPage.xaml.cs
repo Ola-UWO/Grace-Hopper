@@ -10,9 +10,10 @@ public partial class MiscellaneousPage : ContentPage
     {
         InitializeComponent();
         _log = log;
+        MiscTemplate.SubmitClicked += OnSubmitFromTemplate;
     }
 
-	private void HandleSubmit(object sender, EventArgs e)
+	private void OnSubmitFromTemplate(object sender, EventArgs e)
     {
         _log.MiscNotes = MiscTemplate.Notes;
         _log.MiscPictures = MiscTemplate.Photos;

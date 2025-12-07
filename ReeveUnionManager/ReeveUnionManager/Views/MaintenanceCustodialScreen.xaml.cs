@@ -12,9 +12,10 @@ public partial class MaintenanceCustodialScreen : ContentPage
     {
         InitializeComponent();
         _log = log;
+        MaintenanceCustodialTemplate.SubmitClicked += OnSubmitFromTemplate;
     }
 
-	private void HandleSubmit(object sender, EventArgs e)
+	private void OnSubmitFromTemplate(object sender, EventArgs e)
     {
         _log.CustiodialNotes = MaintenanceCustodialTemplate.Notes;
         _log.CustiodialPictures = MaintenanceCustodialTemplate.Photos;

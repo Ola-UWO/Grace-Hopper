@@ -31,7 +31,7 @@ public partial class EventSupportChanges : ContentPage
     private void OnSubmitClicked(object sender, EventArgs e)
     {
         _log.EventSupportChangesName = NameBox.Text;
-        _log.EventSupportChangesTime = TimePicker.Time.ToString(@"hh\:mm");
+        _log.EventSupportChangesTime = TimeSelector.Time.ToString(@"hh\:mm");
         _log.EventSupportChangesLocation = LocationBox.Text;
         _log.EventSupportChangesDetails = NotesBox.Text;
         // _log.EventSupportChangesPictures = ShiftEnd.Time.ToString(@"hh\:mm");           FIXME: FIGURE OUT PICTURES LATER
@@ -90,16 +90,21 @@ public partial class EventSupportChanges : ContentPage
 
     public async void HandleSubmit(object sender, EventArgs args)
     {
-        string name = NameBox.Text;
-        TimeOnly time = TimeOnly.FromTimeSpan(TimePicker.Time);
-        string location = LocationBox.Text;
-        string notes = NotesBox.Text;
+        // _log.EventSupportChangesName = NameBox.Text;
+        // _log.EventSupportChangesTime = TimeSelector.Time.ToString(@"hh\:mm");
+        // _log.EventSupportChangesLocation = LocationBox.Text;
+        // _log.EventSupportChangesDetails = NotesBox.Text;
+        
+        // string name = NameBox.Text;
+        // TimeOnly time = TimeOnly.FromTimeSpan(TimePicker.Time);
+        // string location = LocationBox.Text;
+        // string notes = NotesBox.Text;
 
-        BasicEntryError error = await MauiProgram.businessLogic.AddEventSupportChange(name, time, location, notes, Photos);
-        if (error != BasicEntryError.None)
-        {
-            //await DisplayAlert("Addition has failed", error.ToString(), "OK");
-        }
+        // BasicEntryError error = await MauiProgram.businessLogic.AddEventSupportChange(name, time, location, notes, Photos);
+        // if (error != BasicEntryError.None)
+        // {
+        //     //await DisplayAlert("Addition has failed", error.ToString(), "OK");
+        // }
         
 
         await Navigation.PopAsync();

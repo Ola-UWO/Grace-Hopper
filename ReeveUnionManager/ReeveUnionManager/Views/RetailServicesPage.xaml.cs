@@ -10,9 +10,10 @@ public partial class RetailServicesPage : ContentPage
     {
         InitializeComponent();
         _log = log;
+        RetailServicesTemplate.SubmitClicked += OnSubmitFromTemplate;
     }
 
-	private void HandleSubmit(object sender, EventArgs e)
+	private void OnSubmitFromTemplate(object sender, EventArgs e)
     {
         _log.RetailServicesNotes = RetailServicesTemplate.Notes;
         _log.RoomSetsPictures = RetailServicesTemplate.Photos;
