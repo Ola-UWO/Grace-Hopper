@@ -78,6 +78,9 @@ namespace ReeveUnionManager.Services
                 _lastResult = await _pca
                     .AcquireTokenInteractive(AuthenticationConfig.Scopes)
                     .WithPrompt(Prompt.SelectAccount)
+#if ANDROID
+                    .WithParentActivityOrWindow(Platform.CurrentActivity)
+#endif
                     .ExecuteAsync();
 
                 return _lastResult;
