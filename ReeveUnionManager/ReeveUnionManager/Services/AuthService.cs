@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
+using Microsoft.Maui.ApplicationModel; // Platform.CurrentActivity (Android)
 
 namespace ReeveUnionManager.Services
 {
@@ -17,14 +18,15 @@ namespace ReeveUnionManager.Services
 
         static AuthService()
         {
-            _pca = PublicClientApplicationBuilder
+            var builder = PublicClientApplicationBuilder
                 .Create(AuthenticationConfig.ClientId)
                 // Allow any organization + personal Microsoft accounts
                 .WithAuthority(
                     AzureCloudInstance.AzurePublic,
                     AadAuthorityAudience.AzureAdAndPersonalMicrosoftAccount)
-                .WithRedirectUri(AuthenticationConfig.RedirectUri)
-                .Build();
+                .WithRedirectUri(AuthenticationConfig.RedirectUri);
+
+            _pca = builder.Build();
         }
 
         /// <summary>
@@ -46,10 +48,11 @@ namespace ReeveUnionManager.Services
         /// <summary>
         /// Signs in the user.
         /// Attempts silent login first using any cached account, then falls back to interactive.
-        /// Returns the <see cref="AuthenticationResult"/> or null if sign-in fails.
+        /// Returns the <see cref="AuthenticationResult"/> or throws if sign-in fails.
         /// </summary>
         public static async Task<AuthenticationResult?> SignInAsync()
         {
+            // 1) Try silent sign-in with any cached account
             try
             {
                 var accounts = await _pca.GetAccountsAsync();
@@ -73,19 +76,31 @@ namespace ReeveUnionManager.Services
                 Debug.WriteLine($"[AuthService] Silent sign-in failed: {ex}");
             }
 
+            // 2) Interactive sign-in — use system browser on ALL platforms
+            var interactiveBuilder = _pca
+                .AcquireTokenInteractive(AuthenticationConfig.Scopes)
+                .WithPrompt(Prompt.SelectAccount);
+
+#if ANDROID
+            // Ensure MSAL knows which Activity initiated the interactive flow
+            var activity = Platform.CurrentActivity;
+            interactiveBuilder = interactiveBuilder.WithParentActivityOrWindow(() => activity);
+#endif
+
             try
             {
-                _lastResult = await _pca
-                    .AcquireTokenInteractive(AuthenticationConfig.Scopes)
-                    .WithPrompt(Prompt.SelectAccount)
-                    .ExecuteAsync();
-
+                _lastResult = await interactiveBuilder.ExecuteAsync();
                 return _lastResult;
+            }
+            catch (MsalException ex)
+            {
+                Debug.WriteLine($"[AuthService] Interactive MSAL sign-in failed: {ex}");
+                throw;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[AuthService] Interactive sign-in failed: {ex}");
-                return null;
+                throw;
             }
         }
 

@@ -8,6 +8,7 @@ using Microsoft.Maui.Storage;
 using Microsoft.Maui.Graphics;
 using ReeveUnionManager.Services;
 using ReeveUnionManager.ViewModels;
+using Microsoft.Identity.Client;
 
 namespace ReeveUnionManager.Views;
 
@@ -42,7 +43,7 @@ public partial class ManagerLogsPage : ContentPage
         LogsList.ItemsSource = _oneDriveLogs;
 
         // Initialize sign-in state from AuthService
-        _isSignedIn = !string.IsNullOrWhiteSpace(AuthService.SignedInUser);
+        _isSignedIn = AuthService.IsSignedIn;
         _hasLoadedLogsSuccessfully = false;
 
         UpdateAuthUi();
@@ -51,14 +52,44 @@ public partial class ManagerLogsPage : ContentPage
     }
 
     /// <summary>
-    /// Handles full sign-in flow, folder selection, and initial log load.
-    /// Returns true if the sign-in flow completed (even if user declined folder selection).
+    /// Handles the sign-in flow and updates auth UI, but does not select a folder or load logs.
     /// </summary>
-    private async Task<bool> SignInAndLoadLogsAsync()
+    private async Task<bool> SignInAsync()
     {
-        var result = await AuthService.SignInAsync();
+        AuthenticationResult? result = null;
 
-        if (result == null)
+        try
+        {
+            result = await AuthService.SignInAsync();
+        }
+        catch (MsalException ex)
+        {
+            await DisplayAlert(
+                "Microsoft Sign-In Error",
+                $"We couldn't complete sign-in.\n\nDetails:\n{ex.ErrorCode}: {ex.Message}",
+                "OK");
+
+            _isSignedIn = false;
+            _hasLoadedLogsSuccessfully = false;
+            UpdateAuthUi();
+            UpdateStatusBar();
+            return false;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert(
+                "Microsoft Sign-In Error",
+                $"An unexpected error occurred while signing in.\n\n{ex.Message}",
+                "OK");
+
+            _isSignedIn = false;
+            _hasLoadedLogsSuccessfully = false;
+            UpdateAuthUi();
+            UpdateStatusBar();
+            return false;
+        }
+
+        if (result == null || string.IsNullOrWhiteSpace(AuthService.AccessToken))
         {
             await DisplayAlert(
                 "Sign-In Failed",
@@ -67,12 +98,12 @@ public partial class ManagerLogsPage : ContentPage
 
             _isSignedIn = false;
             _hasLoadedLogsSuccessfully = false;
-
             UpdateAuthUi();
             UpdateStatusBar();
             return false;
         }
 
+        // Success
         _isSignedIn = true;
         _hasLoadedLogsSuccessfully = false;
 
@@ -81,23 +112,9 @@ public partial class ManagerLogsPage : ContentPage
 
         await DisplayAlert(
             "Signed In",
-            $"You are signed in as:\n{AuthService.SignedInUser}",
+            $"You are signed in as:\n{AuthService.SignedInUser ?? "<unknown>"}",
             "OK");
 
-        // Prompt for OneDrive folder
-        var folderChosen = await EnsureFolderSelectedAsync();
-        if (!folderChosen)
-        {
-            // Signed in but no folder selected yet → banner will show yellow state
-            _hasLoadedLogsSuccessfully = false;
-            UpdateStatusBar();
-            return true;
-        }
-
-        _oneDriveLogs.Clear();
-        UpdateEmptyState();
-
-        await LoadOneDriveLogsAsync();
         return true;
     }
 
@@ -112,7 +129,7 @@ public partial class ManagerLogsPage : ContentPage
         }
         else
         {
-            await SignInAndLoadLogsAsync();
+            await SignInAsync();
         }
     }
 
@@ -138,14 +155,15 @@ public partial class ManagerLogsPage : ContentPage
 
     /// <summary>
     /// Handles taps on the status bar:
-    /// - If not signed in: starts sign-in + folder selection + load.
+    /// - If not signed in: starts the sign-in flow.
     /// - If signed in: opens folder picker and reloads logs if selection changes.
     /// </summary>
     private async void OnStatusBarTapped(object sender, TappedEventArgs e)
     {
         if (!_isSignedIn)
         {
-            await SignInAndLoadLogsAsync();
+            var signedIn = await SignInAsync();
+            // If sign-in fails, do nothing else.
             return;
         }
 
@@ -373,41 +391,20 @@ public partial class ManagerLogsPage : ContentPage
     }
 
     /// <summary>
-    /// Central initialization: refreshes sign-in state and loads logs (with user prompt if needed).
+    /// Central initialization: refreshes sign-in state and loads logs (with user prompt if already signed in).
     /// </summary>
     private async Task InitializeAsync()
     {
         // Refresh sign-in state in case it changed while the app was running
-        _isSignedIn = !string.IsNullOrWhiteSpace(AuthService.SignedInUser);
+        _isSignedIn = AuthService.IsSignedIn;
 
         UpdateAuthUi();
         UpdateEmptyState();
         UpdateStatusBar();
 
-        if (!_isSignedIn)
-        {
-            bool signInNow = await DisplayAlert(
-                "Microsoft Sign-In Required",
-                "To view manager logs, you need to connect a Microsoft account. Would you like to sign in now?",
-                "Sign In",
-                "Not Now");
-
-            if (!signInNow)
-            {
-                return;
-            }
-
-            var success = await SignInAndLoadLogsAsync();
-            if (!success)
-            {
-                return;
-            }
-
-            return;
-        }
-
-        // Already signed in: auto-load logs if none are present yet
-        if (_oneDriveLogs.Count == 0)
+        // If already signed in, auto-load logs if none are present yet.
+        // If not signed in, do NOTHING here – user uses the header button or banner.
+        if (_isSignedIn && _oneDriveLogs.Count == 0)
         {
             await LoadOneDriveLogsAsync();
         }
