@@ -5,14 +5,14 @@
              Title="Manager Logs">
 
     <ContentPage.Resources>
-        <viewModels:PageViewModel x:Key="PageViewModel" />
+        <viewModels:PageViewModel x:Key="PageViewModel"/>
     </ContentPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Header: buttons + status bar -->
@@ -20,12 +20,13 @@
               Padding="20,20,20,8">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- Left: Sign In / Sign Out -->
@@ -39,11 +40,23 @@
                     Padding="20,10"
                     HorizontalOptions="Start"
                     VerticalOptions="Center"
-                    Clicked="OnSignInOutHeaderClicked" />
+                    Clicked="OnSignInOutHeaderClicked"/>
+
+            <!-- Middle: Upload from device -->
+            <Button Grid.Row="0"
+                    Grid.Column="1"
+                    Text="Upload"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    CornerRadius="12"
+                    Padding="20,10"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Clicked="OnUploadLogFromDeviceClicked"/>
 
             <!-- Right: New Log Entry -->
             <Button Grid.Row="0"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Text="+ New Log Entry"
                     FontAttributes="Bold"
                     FontSize="16"
@@ -52,18 +65,18 @@
                     HorizontalOptions="End"
                     VerticalOptions="Center"
                     Command="{Binding NavigateCommand, Source={StaticResource PageViewModel}}"
-                    CommandParameter="NewLogEntryPage" />
+                    CommandParameter="NewLogEntryPage"/>
 
             <!-- Divider + Status bar -->
             <VerticalStackLayout Grid.Row="1"
-                                 Grid.ColumnSpan="2"
+                                 Grid.ColumnSpan="3"
                                  Spacing="6"
                                  Margin="0,8,0,0">
 
                 <BoxView HeightRequest="1"
                          BackgroundColor="#DDDDDD"
                          HorizontalOptions="FillAndExpand"
-                         Margin="10,0,10,4" />
+                         Margin="10,0,10,4"/>
 
                 <Border x:Name="StatusBarContainer"
                         Padding="10"
@@ -73,7 +86,7 @@
                         BackgroundColor="#F7F7F7">
 
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnStatusBarTapped" />
+                        <TapGestureRecognizer Tapped="OnStatusBarTapped"/>
                     </Border.GestureRecognizers>
 
                     <HorizontalStackLayout Spacing="10"
@@ -82,18 +95,18 @@
                         <Label x:Name="StatusBarIcon"
                                Text="⚠️"
                                FontSize="16"
-                               VerticalOptions="Center" />
+                               VerticalOptions="Center"/>
 
                         <VerticalStackLayout Spacing="2">
                             <Label x:Name="StatusBarTitle"
                                    Text="Not connected to OneDrive"
                                    FontSize="14"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold"/>
 
                             <Label x:Name="StatusBarSubtitle"
                                    Text="Sign in to view manager logs."
                                    FontSize="12"
-                                   TextColor="Gray" />
+                                   TextColor="Gray"/>
                         </VerticalStackLayout>
 
                     </HorizontalStackLayout>
@@ -102,6 +115,7 @@
             </VerticalStackLayout>
         </Grid>
 
+
         <!-- "Recent Logs" heading -->
         <VerticalStackLayout Grid.Row="1"
                              Spacing="6"
@@ -109,20 +123,20 @@
 
             <BoxView HeightRequest="1"
                      BackgroundColor="#DDDDDD"
-                     HorizontalOptions="FillAndExpand" />
+                     HorizontalOptions="FillAndExpand"/>
 
             <Label Text="Recent Logs"
                    FontSize="18"
                    FontAttributes="Bold"
-                   Margin="0,10,0,20" />
+                   Margin="0,10,0,20"/>
         </VerticalStackLayout>
 
         <!-- Logs list + empty state -->
         <Grid Grid.Row="2"
               Margin="16,0,16,16">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Label x:Name="EmptyStateLabel"
@@ -130,7 +144,7 @@
                    FontSize="13"
                    TextColor="Gray"
                    HorizontalOptions="Center"
-                   IsVisible="False" />
+                   IsVisible="False"/>
 
             <CollectionView x:Name="LogsList"
                             Grid.Row="1"
@@ -140,7 +154,7 @@
 
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"
-                                       ItemSpacing="12" />
+                                       ItemSpacing="12"/>
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
@@ -148,18 +162,18 @@
                         <Border Padding="16"
                                 StrokeThickness="1">
                             <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="12" />
+                                <RoundRectangle CornerRadius="12"/>
                             </Border.StrokeShape>
                             <Border.Shadow>
                                 <Shadow Radius="8"
-                                        Opacity="0.35" />
+                                        Opacity="0.35"/>
                             </Border.Shadow>
 
                             <Grid ColumnSpacing="12">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Icon card -->
@@ -170,7 +184,7 @@
                                         StrokeThickness="0"
                                         VerticalOptions="Start">
                                     <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="12" />
+                                        <RoundRectangle CornerRadius="12"/>
                                     </Border.StrokeShape>
 
                                     <Label Text="📄"
@@ -178,7 +192,7 @@
                                            HeightRequest="56"
                                            HorizontalTextAlignment="Center"
                                            VerticalTextAlignment="Center"
-                                           FontSize="40" />
+                                           FontSize="40"/>
                                 </Border>
 
                                 <!-- Log metadata -->
@@ -187,11 +201,11 @@
                                     <Label Text="{Binding Name}"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           LineBreakMode="TailTruncation" />
+                                           LineBreakMode="TailTruncation"/>
 
                                     <Label Text="{Binding LastModifiedDateTime.LocalDateTime,
                                                           StringFormat='Last modified {0:MM/dd/yyyy h:mm tt}'}"
-                                           FontSize="14" />
+                                           FontSize="14"/>
                                 </VerticalStackLayout>
 
                             </Grid>
@@ -210,6 +224,6 @@
                            VerticalOptions="Center"
                            WidthRequest="60"
                            HeightRequest="60"
-                           Scale="1.3" />
+                           Scale="1.3"/>
     </Grid>
 </ContentPage>

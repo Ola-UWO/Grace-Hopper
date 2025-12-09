@@ -133,6 +133,12 @@ public partial class ManagerLogsPage : ContentPage
         }
     }
 
+    private async void OnUploadLogFromDeviceClicked(object sender, EventArgs e)
+    {
+        await UploadLogFromDeviceAsync();
+    }
+
+
     /// <summary>
     /// Shared sign-out logic used by any sign-out entry point.
     /// Clears auth state, selected folder, logs, and updates the UI/banner.
@@ -179,6 +185,85 @@ public partial class ManagerLogsPage : ContentPage
         UpdateEmptyState();
         await LoadOneDriveLogsAsync();
     }
+
+    /// <summary>
+    /// Lets the user pick a file from the device and uploads it
+    /// into the currently selected OneDrive manager logs folder.
+    /// Ensures sign-in and folder selection before uploading.
+    /// </summary>
+    private async Task UploadLogFromDeviceAsync()
+    {
+        // 1) Ensure the user is signed in
+        if (!_isSignedIn)
+        {
+            var signedIn = await SignInAsync();
+            if (!signedIn)
+            {
+                // Sign-in failed or was cancelled
+                return;
+            }
+        }
+
+        // 2) Ensure a OneDrive folder is selected
+        if (string.IsNullOrEmpty(OneDriveService.SelectedFolderId))
+        {
+            var folderChosen = await EnsureFolderSelectedAsync();
+            if (!folderChosen)
+            {
+                // User cancelled folder selection
+                return;
+            }
+        }
+
+        try
+        {
+            // 3) Let the user pick a file on the device
+            var result = await FilePicker.Default.PickAsync(new PickOptions
+            {
+                PickerTitle = "Select a log file to upload"
+                // You can add FileTypes later to restrict to .docx if you want
+            });
+
+            if (result == null)
+            {
+                // User cancelled the picker
+                return;
+            }
+
+            var localPath = result.FullPath;
+            if (string.IsNullOrEmpty(localPath))
+                throw new Exception("Unable to access the selected file on this device.");
+
+            // 4) Show loading indicator during upload
+            LoadingIndicator.IsVisible = true;
+            LoadingIndicator.IsRunning = true;
+
+            var uploadedItem = await OneDriveService.UploadFileToSelectedFolderAsync(localPath);
+
+            var uploadedName = uploadedItem?.Name ?? System.IO.Path.GetFileName(localPath);
+
+            await DisplayAlert(
+                "Upload complete",
+                $"Uploaded '{uploadedName}' to your OneDrive folder:\n{OneDriveService.SelectedFolderName}",
+                "OK");
+
+            // 5) Optionally reload logs so the new file appears in the list
+            await LoadOneDriveLogsAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert(
+                "Upload failed",
+                $"We couldn't upload that file.\n\nDetails:\n{ex.Message}",
+                "OK");
+        }
+        finally
+        {
+            LoadingIndicator.IsRunning = false;
+            LoadingIndicator.IsVisible = false;
+        }
+    }
+
 
     /// <summary>
     /// Loads .docx logs from the selected OneDrive folder and updates the list + banner state.

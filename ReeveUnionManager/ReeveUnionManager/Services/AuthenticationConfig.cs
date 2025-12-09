@@ -26,7 +26,7 @@ namespace ReeveUnionManager.Services
         /// </summary>
         public static readonly string[] Scopes =
         {
-            "Files.Read",
+            "Files.ReadWrite.All",
             "offline_access",
             "openid"
         };

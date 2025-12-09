@@ -225,5 +225,97 @@ namespace ReeveUnionManager.Services
 
             return localPath;
         }
+        /// <summary>
+        /// Uploads a local file into the currently selected OneDrive manager log folder.
+        /// Uses the file name from <paramref name="localFilePath"/> as the target name.
+        /// Overwrites any existing file with the same name.
+        /// </summary>
+        /// <param name="localFilePath">Full path to the file on the device.</param>
+        /// <returns>The uploaded <see cref="DriveItem"/> metadata.</returns>
+        public static async Task<DriveItem?> UploadFileToSelectedFolderAsync(string localFilePath)
+        {
+            if (string.IsNullOrWhiteSpace(localFilePath))
+                throw new ArgumentException("Local file path is required.", nameof(localFilePath));
+
+            if (!File.Exists(localFilePath))
+                throw new FileNotFoundException("Local file not found.", localFilePath);
+
+            var graphClient = CreateGraphClient();
+
+            // 1) Resolve the user's OneDrive
+            var drive = await graphClient.Me.Drive.GetAsync();
+            if (drive == null || string.IsNullOrEmpty(drive.Id))
+                throw new InvalidOperationException("Unable to resolve the user's OneDrive.");
+
+            var driveId = drive.Id;
+
+            // 2) Locate the selected logs folder (same logic as GetManagerLogFilesAsync)
+            DriveItem? logsFolder = null;
+
+            // Prefer stored folder ID if available
+            if (!string.IsNullOrEmpty(SelectedFolderId))
+            {
+                try
+                {
+                    logsFolder = await graphClient
+                        .Drives[driveId]
+                        .Items[SelectedFolderId]
+                        .GetAsync();
+                }
+                catch
+                {
+                    // ID is invalid (folder moved/deleted); fall back to name lookup below.
+                    logsFolder = null;
+                }
+            }
+
+            // Fallback: locate folder by name in root if ID is missing/invalid
+            if (logsFolder == null)
+            {
+                var rootChildren = await graphClient
+                    .Drives[driveId]
+                    .Items["root"]
+                    .Children
+                    .GetAsync();
+
+                var rootItems = rootChildren?.Value ?? new List<DriveItem>();
+
+                logsFolder = rootItems
+                    .FirstOrDefault(i =>
+                        i.Folder != null &&
+                        !string.IsNullOrEmpty(i.Name) &&
+                        i.Name.Equals(SelectedFolderName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (logsFolder == null || string.IsNullOrEmpty(logsFolder.Id))
+                throw new InvalidOperationException(
+                    $"Could not locate the selected OneDrive folder '{SelectedFolderName}'. " +
+                    "Check SelectedFolderName/SelectedFolderId or re-select the folder.");
+
+            // 3) Open local file stream
+            var fileName = Path.GetFileName(localFilePath);
+            await using var fileStream = File.OpenRead(localFilePath);
+
+            // 4) Upload into the selected folder using simple upload (small files)
+            //    This call returns Task (no DriveItem), so we just await it.
+            await graphClient
+                .Drives[driveId]
+                .Items[logsFolder.Id]
+                .ItemWithPath(fileName)
+                .Content
+                .PutAsync(fileStream);
+
+            // 5) Optionally retrieve the uploaded item's metadata
+            var uploadedItem = await graphClient
+                .Drives[driveId]
+                .Items[logsFolder.Id]
+                .ItemWithPath(fileName)
+                .GetAsync();
+
+            return uploadedItem;
+
+        }
+
     }
+
 }
