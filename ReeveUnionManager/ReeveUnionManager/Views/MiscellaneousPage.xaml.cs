@@ -17,7 +17,5 @@ public partial class MiscellaneousPage : ContentPage
     {
         _log.MiscNotes = MiscTemplate.Notes;
         _log.MiscPictures = MiscTemplate.Photos;
-
-        Navigation.PopAsync();
     }
 }

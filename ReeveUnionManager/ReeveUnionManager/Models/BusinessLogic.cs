@@ -300,50 +300,8 @@ public class BusinessLogic : IBusinessLogic
 
     public async Task<ManagerLogError> CreateManagerLogFile(ManagerLogObject log)
     {
-        string filePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
-
-        // Prevent OpenXML from crashing on existing file
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);    
-        }
-
-        using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(
-            filePath, WordprocessingDocumentType.Document))
-        {
-            MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
-
-            Body body = new Body();
-            foreach (var prop in typeof(ManagerLogObject).GetProperties())
-            {
-                object? value = null;
-
-                string label = prop.Name;
-                value = prop.GetValue(log);
-                string textToWrite;
-
-                if (value == null) 
-                {
-                    textToWrite = $"{label}: (none)"; 
-                }
-                else if (value is string strValue)
-                { 
-                    textToWrite = $"{label}: {strValue}";
-                } 
-                else 
-                {
-                    // for picture fields / object fields
-                    textToWrite = $"{label}: [Object data present]";
-                }
-                
-                Paragraph para = new Paragraph(new Run(new Text(textToWrite)));
-                body.Append(para);
-            }
-            mainPart.Document = new Document(body);
-
-            mainPart.Document.Save();
-        }
-        string newFilePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
+        string newFilePath = log.formatDocument();
+        
         await _database.UploadManagerLogFileAsync(newFilePath);
 
         return ManagerLogError.None;

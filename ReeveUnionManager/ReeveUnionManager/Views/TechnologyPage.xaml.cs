@@ -16,7 +16,5 @@ public partial class TechnologyPage : ContentPage
     {
         _log.AvTechnologyNotes = AvTechnologyTemplate.Notes;
         _log.AvTechnologyPictures = AvTechnologyTemplate.Photos;
-
-        Navigation.PopAsync();
     }
 }

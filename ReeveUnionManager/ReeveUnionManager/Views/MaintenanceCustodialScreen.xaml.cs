@@ -19,7 +19,5 @@ public partial class MaintenanceCustodialScreen : ContentPage
     {
         _log.CustiodialNotes = MaintenanceCustodialTemplate.Notes;
         _log.CustiodialPictures = MaintenanceCustodialTemplate.Photos;
-
-        Navigation.PopAsync();
     }
 }

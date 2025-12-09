@@ -17,7 +17,5 @@ public partial class RetailServicesPage : ContentPage
     {
         _log.RetailServicesNotes = RetailServicesTemplate.Notes;
         _log.RoomSetsPictures = RetailServicesTemplate.Photos;
-
-        Navigation.PopAsync();
     }
 }

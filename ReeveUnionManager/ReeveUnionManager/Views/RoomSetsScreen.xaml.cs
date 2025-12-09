@@ -19,7 +19,5 @@ public partial class RoomSetsScreen : ContentPage
     {
         _log.RoomSetsNotes = RoomSetsTemplate.Notes;
         _log.RoomSetsPictures = RoomSetsTemplate.Photos;
-
-        Navigation.PopAsync();
     }
 }
