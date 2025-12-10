@@ -26,7 +26,9 @@ public static class MauiProgram
 			builder.Logging.AddDebug();
 		#endif
 
+		builder.Services.AddSingleton<BusinessLogic>();
 		builder.Services.AddSingleton<ManagerLogObject>();
+		builder.Services.AddSingleton<IDatabase, Database>();
 
 		return builder.Build();
 	}
