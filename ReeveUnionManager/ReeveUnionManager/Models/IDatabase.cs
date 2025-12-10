@@ -13,6 +13,7 @@ public interface IDatabase
 	Task<BasicEntryError> InsertBasicEntry(BasicEntry entry);
 	Task<string[]> UploadPhotosAsync(ObservableCollection<PhotoInfo> photos);
 	Task<ScrapeEventError> InsertEvent(ScrapeEvent scrapeEvent);
+	Task<ObservableCollection<ScrapeEvent>> SelectAllEvents();
 	Task<ScrapeEventError> DeleteAllEvents();
 	Task<BasicEntryError> InsertFoodIssue(FoodServiceIssue issue);
 	Task<BasicEntryError> InsertEventSupportChange(EventSupportChange change);

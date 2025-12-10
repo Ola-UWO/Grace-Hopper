@@ -142,6 +142,23 @@ public class Database : IDatabase
 	}
 
 	/// <summary>
+    /// Selects all events from the database
+    /// </summary>
+    /// <returns></returns>
+	public async Task<ObservableCollection<ScrapeEvent>> SelectAllEvents()
+	{
+		await waitingForInitialization;
+		var table = supabaseClient!.From<ScrapeEvent>();
+		var response = await table.Get();
+		callLogs.Clear();
+		foreach (ScrapeEvent sc in response.Models)
+		{
+			scrapeEvents.Add(sc);
+		}
+		return scrapeEvents;
+	}
+
+	/// <summary>
 	/// Deletes all events stored in the database, uses a method designed to truncate the table
 	/// </summary>
 	/// <returns>Whether the task failed or succeeded</returns>

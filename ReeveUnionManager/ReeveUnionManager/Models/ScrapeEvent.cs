@@ -14,9 +14,9 @@ namespace ReeveUnionManager.Models
         string _eventLocation = "";
         string _eventDateAndTime = "";
         string _eventNotes = "";
+        bool _checkIn = false;
 
         // [Column("id")]
-        // public Guid Id { get; set; }
         [PrimaryKey("event_id", true)]
         public Guid EventId
         {
@@ -52,6 +52,13 @@ namespace ReeveUnionManager.Models
             set => SetProperty(ref _eventNotes, value);
         }
 
+        [Column("check_in")]
+        public bool EventCheckIn
+        {
+            get => _checkIn;
+            set => SetProperty(ref _checkIn, value);
+        }
+
         public ScrapeEvent() { }
 
         public ScrapeEvent(string eventTitle, string eventLocation, string eventDateAndTime, string eventNotes)
@@ -70,6 +77,7 @@ namespace ReeveUnionManager.Models
             return EventId == other.EventId;
         }
 
+        [JsonIgnore]
         public bool HasNotes => !string.IsNullOrWhiteSpace(EventNotes);
 
     }

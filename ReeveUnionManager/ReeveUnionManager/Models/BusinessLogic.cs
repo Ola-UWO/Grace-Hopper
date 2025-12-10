@@ -47,7 +47,8 @@ public class BusinessLogic : IBusinessLogic
         try
         {
             await Task.WhenAll(
-                LoadCollectionAsync(CallLogs, _database.SelectAllCallLogs)
+                LoadCollectionAsync(CallLogs, _database.SelectAllCallLogs),
+                LoadCollectionAsync(ScrapeEvents, _database.SelectAllEvents)
             );
         }
         catch (Exception ex)
@@ -212,8 +213,15 @@ public class BusinessLogic : IBusinessLogic
         }
 
         return BasicEntryError.None;
-        
+    }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public async Task<ObservableCollection<ScrapeEvent>> GetAllEvents()
+    {
+        return await _database.SelectAllEvents();
     }
 
     /// <summary>
@@ -254,7 +262,8 @@ public class BusinessLogic : IBusinessLogic
                 EventTitle = (string)item.Element("title"),
                 EventLocation = location,
                 EventDateAndTime = dateAndTime,
-                EventNotes = ""
+                EventNotes = "",
+                EventCheckIn = false
             };
             ScrapeEvents.Add(se); // Also adds the event to the observable collection only when scraping, 
             return se;            //if not scraping there will be nothing in observable collection.
@@ -300,7 +309,7 @@ public class BusinessLogic : IBusinessLogic
 
     public async Task<ManagerLogError> CreateManagerLogFile(ManagerLogObject log)
     {
-        string newFilePath = log.formatDocument();
+        string newFilePath = await log.FormatDocument();
 
         await _database.UploadManagerLogFileAsync(newFilePath);
 
