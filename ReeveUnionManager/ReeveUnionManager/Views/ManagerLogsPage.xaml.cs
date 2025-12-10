@@ -350,9 +350,6 @@ public partial class ManagerLogsPage : ContentPage
         return true;
     }
 
-    /// <summary>
-    /// Opens a selected OneDrive log file using the platform launcher (Word, Pages, etc.).
-    /// </summary>
     private async void OnLogSelected(object sender, SelectionChangedEventArgs e)
     {
         var collectionView = (CollectionView)sender;
@@ -364,16 +361,16 @@ public partial class ManagerLogsPage : ContentPage
             if (selected == null)
                 return;
 
-            LoadingIndicator.IsVisible = true;
-            LoadingIndicator.IsRunning = true;
-
-            var localPath = await OneDriveService.DownloadFileToLocalAsync(selected);
-
-            await Launcher.OpenAsync(new OpenFileRequest
+            // Short tap: preview in OneDrive if possible
+            if (!string.IsNullOrWhiteSpace(selected.WebUrl))
             {
-                File = new ReadOnlyFile(localPath),
-                Title = selected.Name ?? "Manager Log"
-            });
+                await Launcher.OpenAsync(selected.WebUrl);
+            }
+            else
+            {
+                // Fallback: open locally on device if no WebUrl is available
+                await OpenDriveItemOnDeviceAsync(selected);
+            }
         }
         catch (Exception ex)
         {
@@ -385,7 +382,47 @@ public partial class ManagerLogsPage : ContentPage
         finally
         {
             collectionView.SelectedItem = null;
+        }
+    }
 
+    private async Task OpenDriveItemOnDeviceAsync(DriveItem item)
+    {
+        try
+        {
+            LoadingIndicator.IsVisible = true;
+            LoadingIndicator.IsRunning = true;
+
+            var localPath = await OneDriveService.DownloadFileToLocalAsync(item);
+
+            await Launcher.OpenAsync(new OpenFileRequest
+            {
+                File = new ReadOnlyFile(localPath),
+                Title = item.Name ?? "Manager Log"
+            });
+        }
+        finally
+        {
+            LoadingIndicator.IsRunning = false;
+            LoadingIndicator.IsVisible = false;
+        }
+    }
+
+    private async Task DownloadDriveItemToDeviceAsync(DriveItem item)
+    {
+        try
+        {
+            LoadingIndicator.IsVisible = true;
+            LoadingIndicator.IsRunning = true;
+
+            var localPath = await OneDriveService.DownloadFileToLocalAsync(item);
+
+            await DisplayAlert(
+                "Download complete",
+                $"The file was downloaded to:\n{localPath}",
+                "OK");
+        }
+        finally
+        {
             LoadingIndicator.IsRunning = false;
             LoadingIndicator.IsVisible = false;
         }
@@ -494,4 +531,39 @@ public partial class ManagerLogsPage : ContentPage
             await LoadOneDriveLogsAsync();
         }
     }
+
+    private async void OnLogContextPreviewClicked(object sender, EventArgs e)
+    {
+        if (sender is MenuFlyoutItem menuItem && menuItem.BindingContext is DriveItem item)
+        {
+            if (!string.IsNullOrWhiteSpace(item.WebUrl))
+            {
+                await Launcher.OpenAsync(item.WebUrl);
+            }
+            else
+            {
+                await DisplayAlert(
+                    "Preview unavailable",
+                    "An online preview link is not available for this file. Try opening it on the device instead.",
+                    "OK");
+            }
+        }
+    }
+
+    private async void OnLogContextOpenClicked(object sender, EventArgs e)
+    {
+        if (sender is MenuFlyoutItem menuItem && menuItem.BindingContext is DriveItem item)
+        {
+            await OpenDriveItemOnDeviceAsync(item);
+        }
+    }
+
+    private async void OnLogContextDownloadClicked(object sender, EventArgs e)
+    {
+        if (sender is MenuFlyoutItem menuItem && menuItem.BindingContext is DriveItem item)
+        {
+            await DownloadDriveItemToDeviceAsync(item);
+        }
+    }
+
 }
