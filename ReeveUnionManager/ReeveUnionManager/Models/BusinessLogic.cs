@@ -174,14 +174,11 @@ public class BusinessLogic : IBusinessLogic
         try
         {
             var callsToDelete = CallLogs.ToList();
-            foreach (var cl in callsToDelete)
+            foreach (var call in callsToDelete)
             {
-                var result = await DeleteCallLog(cl.CallId);
-                if (result != CallLogError.None)
-                {
-                    return result;
-                }
+                CallLogs.Remove(call);
             }
+            await _database.DeleteAllCallLogs();
             return CallLogError.None;
         }
         catch (Exception ex)

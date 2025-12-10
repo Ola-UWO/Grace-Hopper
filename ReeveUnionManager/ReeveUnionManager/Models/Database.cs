@@ -116,6 +116,24 @@ public class Database : IDatabase
 	}
 
 	/// <summary>
+	/// Deletes all call logs stored in the database, uses a method designed to truncate the table
+	/// </summary>
+	/// <returns></returns>
+	public async Task<CallLogError> DeleteAllCallLogs()
+	{
+		try
+		{
+			await supabaseClient.Rpc("truncate_call_logs", new { });
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"ATTN: Error while deleting -- {ex.ToString()}");
+			return CallLogError.DeleteError;
+		}
+		return CallLogError.None;
+	}
+
+	/// <summary>
 	/// Inserts events into the database
 	/// </summary>
 	/// <param name="scrapeEvent">The event being inserted</param>
@@ -197,67 +215,67 @@ public class Database : IDatabase
 
 		return BasicEntryError.None;
 	}
-	
+
 	//Takes collection of images and stores them in supabase storing their reference urls in an array that will be returned
 	public async Task<string[]> UploadPhotosAsync(ObservableCollection<PhotoInfo> photos)
-    {
+	{
 		string[] uploadedUrls = new string[photos.Count];
 		imagesBucket = supabaseClient.Storage.From("images");
 		int count = 0;
-        foreach (var photo in photos)
+		foreach (var photo in photos)
 		{
-            try
-            {
+			try
+			{
 				// Convert the ImageSource into a Stream
 				Stream? stream = null;
 				if (photo.Image is FileImageSource fileImageSource)
 				{
-					stream =  File.OpenRead(fileImageSource.File);
+					stream = File.OpenRead(fileImageSource.File);
 				}
 				else if (photo.Image is StreamImageSource streamImageSource)
 				{
 					stream = await streamImageSource.Stream(CancellationToken.None);
 				}
-		
-                if (stream == null) continue;
+
+				if (stream == null) continue;
 
 				// create file name
 				string fileName = $"{Guid.NewGuid()}_{photo.FileName}";
 
 				// put into storage
 				byte[] bytes = null;
-				using(var memoryStream = new MemoryStream())
+				using (var memoryStream = new MemoryStream())
 				{
 					stream.CopyTo(memoryStream);
 					bytes = memoryStream.ToArray();
 				}
 
 
-                var response = await imagesBucket.Upload(
-                    bytes,
-                    fileName,
-                    new Supabase.Storage.FileOptions
-                    {
-                        CacheControl = "3600",
-                        Upsert = false,
-                        ContentType = "application/octet-stream"
-                    });
+				var response = await imagesBucket.Upload(
+					bytes,
+					fileName,
+					new Supabase.Storage.FileOptions
+					{
+						CacheControl = "3600",
+						Upsert = false,
+						ContentType = "application/octet-stream"
+					});
 
-                // Get the public URL
-                string publicUrl = imagesBucket.GetPublicUrl(fileName);
-                uploadedUrls[count] = publicUrl;
+				// Get the public URL
+				string publicUrl = imagesBucket.GetPublicUrl(fileName);
+				uploadedUrls[count] = publicUrl;
 
 				Console.WriteLine($"Uploaded {fileName} -> {publicUrl}");
 				count++;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error uploading {photo.FileName}: {ex.Message}");
-            }
-        }
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error uploading {photo.FileName}: {ex.Message}");
+			}
+		}
 
-        return uploadedUrls;
-    }
+		return uploadedUrls;
+	}
 
 	public async Task<BasicEntryError> InsertFoodIssue(FoodServiceIssue issue)
 	{
@@ -294,34 +312,34 @@ public class Database : IDatabase
 	}
 
 	public async Task UploadManagerLogFileAsync(string localFilePath)
-    {
+	{
 		await waitingForInitialization;
 
-    try
-    {
-        var bucket = supabaseClient!.Storage.From("manager-logs");
-        Debug.WriteLine("1.12");
+		try
+		{
+			var bucket = supabaseClient!.Storage.From("manager-logs");
+			Debug.WriteLine("1.12");
 
-        string remotePath = $"logs/{Guid.NewGuid()}.docx";
-        Debug.WriteLine("1.13");
+			string remotePath = $"logs/{Guid.NewGuid()}.docx";
+			Debug.WriteLine("1.13");
 
-        await bucket.Upload(
-            localFilePath,
-            remotePath,
-            new Supabase.Storage.FileOptions
-            {
-                ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                Upsert = false
-            }
-        );
+			await bucket.Upload(
+				localFilePath,
+				remotePath,
+				new Supabase.Storage.FileOptions
+				{
+					ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+					Upsert = false
+				}
+			);
 
-        Debug.WriteLine("1.14");
-    }
-    catch (Exception ex)
-    {
-        Debug.WriteLine($"UPLOAD ERROR: {ex.GetType().Name} - {ex.Message}");
-        Debug.WriteLine(ex.StackTrace);
-        throw;
-    }
-    }
+			Debug.WriteLine("1.14");
+		}
+		catch (Exception ex)
+		{
+			Debug.WriteLine($"UPLOAD ERROR: {ex.GetType().Name} - {ex.Message}");
+			Debug.WriteLine(ex.StackTrace);
+			throw;
+		}
+	}
 }
