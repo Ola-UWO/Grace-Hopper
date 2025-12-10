@@ -28,6 +28,21 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	
+	    <!-- MSAL Redirect URI registration (required for iOS) -->
+	    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>msalRedirect</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <!-- IMPORTANT: this must match EXACTLY msal{ClientId} -->
+          <string>msale27b8799-3c66-4897-898d-9ab6b077791a</string>
+        </array>
+      </dict>
+    </array>
+
 	<!-- Allows access to camera and storage -->
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs access to the camera to take photos.</string>

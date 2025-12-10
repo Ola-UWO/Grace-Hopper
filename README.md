@@ -1,36 +1,47 @@
-Sprint 4 To Do List:
+Sprint 4 changes: 
+
+- Integrated Microsoft authentication (MSAL) with proper iOS keychain entitlements and Azure AD app registration to support secure sign-in. Not configured for android yet.
+
+- Implemented OneDrive access through Microsoft Graph v5, including token handoff from MSAL and a custom Graph authentication provider.
+
+- Added the ability to load and display .docx manager logs directly from a designated OneDrive folder, sorted and time-formatted for clarity.
+
+- Enabled file downloads and system-level opening via Launcher.OpenAsync for viewing OneDrive log documents on device.
+
+- Refined UI behavior, including loading indicators, button state changes based on sign-in status, empty-state messaging, and a fully scrollable logs list.
 
 -Connect our app to Microsoft Services ✅
 
 -Create a manager log file
-    -Semi complete, the file needs reformatting and to be automatically added to OneDrive
+    -Semi complete, the file needs reformatting 
 
 -Update the UI for various pages ✅
 
 -Connect more pages to the database ✅
 
+-Completely functional checklist pages and some UI enhancements 
+
 Sprint 3 changes:
 
--Added some funtionality to managerlogs page
+- Added some funtionality to managerlogs page
 
--Implemented a funtional opening checklist
+- Implemented a funtional opening checklist
 
--Implemented a funtional closing checklist
+- Implemented a funtional closing checklist
 
--Implemented web scraping in order to get an up-to-date list of events
+- Implemented web scraping in order to get an up-to-date list of events
 
--Cleaned up the database implementation and added loose RLS
+- Cleaned up the database implementation and added loose RLS
 
 - Replaced the hard-coded Manager Logs list with a dynamic CollectionView that loads the most recent entries from the `manager_logs` table. Added the `ManagerLog` model and database retrieval methods to support live data.
 
 
 Sprint 2 changes:
 
--Made all necessary screens as of this version of the app (some new features are in discussion)
+- Made all necessary screens as of this version of the app (some new features are in discussion)
 
--Added Shell navigation with a view model that allows pages to bind to a NavigateCommand
-and specify what page to navigate to 🤓 
+- Added Shell navigation with a view model that allows pages to bind to a NavigateCommand and specify what page to navigate to 🤓 
 
--Added a massive backend (Business logic + Database layers) to show database connectivity 👨🏽‍💻
+- Added a massive backend (Business logic + Database layers) to show database connectivity 👨🏽‍💻
 
--Made values displayed on screens bind to an observable collection to display data 
+- Made values displayed on screens bind to an observable collection to display data 
