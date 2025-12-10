@@ -301,7 +301,7 @@ public class BusinessLogic : IBusinessLogic
     public async Task<ManagerLogError> CreateManagerLogFile(ManagerLogObject log)
     {
         string newFilePath = log.formatDocument();
-        
+
         await _database.UploadManagerLogFileAsync(newFilePath);
 
         return ManagerLogError.None;
