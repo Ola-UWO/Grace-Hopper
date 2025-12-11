@@ -51,6 +51,13 @@ public partial class UploadNotesTemplate : ContentView
     public async void OnCapturePhotoClicked(object sender, EventArgs args)
     {
         FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
+
+        //If no photo is captured return to prevent crash
+        if (photo == null)
+        {
+            return;
+        }
+
         var newFile = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
         using (var stream = await photo.OpenReadAsync())
         using (var newStream = File.OpenWrite(newFile))
