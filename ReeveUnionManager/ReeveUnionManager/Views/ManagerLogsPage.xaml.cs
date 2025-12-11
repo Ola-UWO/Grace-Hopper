@@ -351,39 +351,39 @@ public partial class ManagerLogsPage : ContentPage
     }
 
     private async void OnLogSelected(object sender, SelectionChangedEventArgs e)
-{
-    var collectionView = (CollectionView)sender;
-    DriveItem? selected = null;
-
-    try
     {
-        selected = e.CurrentSelection?.FirstOrDefault() as DriveItem;
-        if (selected == null)
-            return;
+        var collectionView = (CollectionView)sender;
+        DriveItem? selected = null;
 
-        // Download then preview via iOS QuickLook
-        LoadingIndicator.IsVisible = true;
-        LoadingIndicator.IsRunning = true;
+        try
+        {
+            selected = e.CurrentSelection?.FirstOrDefault() as DriveItem;
+            if (selected == null)
+                return;
 
-        var localPath = await OneDriveService.DownloadFileToLocalAsync(selected);
+            // Download then preview via iOS QuickLook
+            LoadingIndicator.IsVisible = true;
+            LoadingIndicator.IsRunning = true;
 
-        // Native iOS QuickLook preview (we'll implement this next)
-        await FilePreviewService.PreviewAsync(localPath, selected.Name);
+            var localPath = await OneDriveService.DownloadFileToLocalAsync(selected);
+
+            // Native iOS QuickLook preview (we'll implement this next)
+            await FilePreviewService.PreviewAsync(localPath, selected.Name);
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert(
+                "Open Log Error",
+                $"Unable to open this log.\n\nDetails: {ex.Message}",
+                "OK");
+        }
+        finally
+        {
+            collectionView.SelectedItem = null;
+            LoadingIndicator.IsRunning = false;
+            LoadingIndicator.IsVisible = false;
+        }
     }
-    catch (Exception ex)
-    {
-        await DisplayAlert(
-            "Open Log Error",
-            $"Unable to open this log.\n\nDetails: {ex.Message}",
-            "OK");
-    }
-    finally
-    {
-        collectionView.SelectedItem = null;
-        LoadingIndicator.IsRunning = false;
-        LoadingIndicator.IsVisible = false;
-    }
-}
 
 
     private async Task OpenDriveItemOnDeviceAsync(DriveItem item)
@@ -443,6 +443,11 @@ public partial class ManagerLogsPage : ContentPage
     /// </summary>
     private void UpdateStatusBar()
     {
+        // Upload button is only shown when signed in AND a folder is selected
+        var hasFolderSelectedForUpload =
+            _isSignedIn && !string.IsNullOrEmpty(OneDriveService.SelectedFolderId);
+        UploadButton.IsVisible = hasFolderSelectedForUpload;
+
         // 1) Not signed in → always red, regardless of folder/log state
         if (!_isSignedIn)
         {
@@ -495,6 +500,7 @@ public partial class ManagerLogsPage : ContentPage
             StatusBarSubtitle.Text = "Tap here to load manager logs from OneDrive.";
         }
     }
+
 
     /// <summary>
     /// Shows or hides the "no logs" empty state label based on the log collection.
