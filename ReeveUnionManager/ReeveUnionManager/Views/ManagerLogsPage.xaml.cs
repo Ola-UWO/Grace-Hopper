@@ -29,6 +29,9 @@ public partial class ManagerLogsPage : ContentPage
     /// </summary>
     private bool _hasLoadedLogsSuccessfully;
 
+    public static bool ShouldRefreshOnAppear = false;
+
+
     /// <summary>
     /// Initializes the Manager Logs page, binding the list and syncing initial auth state.
     /// </summary>
@@ -517,6 +520,13 @@ public partial class ManagerLogsPage : ContentPage
     {
         base.OnAppearing();
         await InitializeAsync();
+
+        if (ShouldRefreshOnAppear)
+        {
+            ShouldRefreshOnAppear = false;  // reset flag
+            await LoadOneDriveLogsAsync();
+        }
+
     }
 
     /// <summary>
