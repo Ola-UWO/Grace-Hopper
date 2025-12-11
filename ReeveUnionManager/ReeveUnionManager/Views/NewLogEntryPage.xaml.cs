@@ -20,7 +20,7 @@ public partial class NewLogEntryPage : ContentPage
 	{
 		Debug.WriteLine("Before Log Build");
 		
-		var localPath = await MauiProgram.businessLogic.CreateManagerLogFileAsync(_log);
+		var localPath = await MauiProgram.businessLogic.CreateManagerLogFile(_log);
 		Debug.WriteLine("After Log Build");
 		
 		/*

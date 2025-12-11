@@ -12,40 +12,42 @@ public class ManagerLogObject(BusinessLogic businessLogic)
 {
     private readonly BusinessLogic _businessLogic = businessLogic;
 
-    public string? ShiftDetailsName {get; set;}
-    public string? ShiftDetailsDate {get; set;}
-    public string? ShiftDetailsDayOfWeek {get; set;}
-    public string? ShiftStartTime {get; set;}
-    public string? ShiftEndTime {get; set;}
-    public string? EventSupportChangesName {get; set;}
-    public string? EventSupportChangesTime {get; set;}
-    public string? EventSupportChangesLocation {get; set;}
-    public string? EventSupportChangesDetails {get; set;}
-    public ObservableCollection<PhotoInfo> EventSupportChangesPictures {get; set;}
-    public string? RoomSetsNotes {get; set;}
-    public ObservableCollection<PhotoInfo> RoomSetsPictures {get; set;}
-    public string? AvTechnologyNotes {get; set;}
-    public ObservableCollection<PhotoInfo> AvTechnologyPictures {get; set;}
-    public string? FoodServiceCategory {get; set;}
-    public string? FoodServiceLocation {get; set;}
-    public string? FoodServiceDescription {get; set;}
-    public ObservableCollection<PhotoInfo> FoodServicePictures {get; set;}
-    public string? RetailServicesNotes {get; set;}
-    public ObservableCollection<PhotoInfo> RetailServicesPictures {get; set;}
-    public string? CustiodialNotes {get; set;}
-    public ObservableCollection<PhotoInfo> CustiodialPictures {get; set;}
-    public string? MiscNotes {get; set;}
-    public ObservableCollection<PhotoInfo> MiscPictures {get; set;}
-    public string? FrontDeskTasksNotes {get; set;}
-    public ObservableCollection<PhotoInfo> FrontDeskTasksPictures {get; set;}
-    public string? NumberOfGuestsDate {get; set;}
-    public string? NumberOfGuestsHourBeforeClosing {get; set;}
-    public string? NumberofGuestsAtClosing {get; set;}
-    public string? NumberOfGuestsNotes {get; set;}
+    public string? ShiftDetailsName { get; set; }
+    public string? ShiftDetailsDate { get; set; }
+    public string? ShiftDetailsDayOfWeek { get; set; }
+    public string? ShiftStartTime { get; set; }
+    public string? ShiftEndTime { get; set; }
+    public string? EventSupportChangesName { get; set; }
+    public string? EventSupportChangesTime { get; set; }
+    public string? EventSupportChangesLocation { get; set; }
+    public string? EventSupportChangesDetails { get; set; }
+    public ObservableCollection<PhotoInfo> EventSupportChangesPictures { get; set; }
+    public string? RoomSetsNotes { get; set; }
+    public ObservableCollection<PhotoInfo> RoomSetsPictures { get; set; }
+    public string? AvTechnologyNotes { get; set; }
+    public ObservableCollection<PhotoInfo> AvTechnologyPictures { get; set; }
+    public string? FoodServiceCategory { get; set; }
+    public string? FoodServiceLocation { get; set; }
+    public string? FoodServiceDescription { get; set; }
+    public ObservableCollection<PhotoInfo> FoodServicePictures { get; set; }
+    public string? RetailServicesNotes { get; set; }
+    public ObservableCollection<PhotoInfo> RetailServicesPictures { get; set; }
+    public string? CustiodialNotes { get; set; }
+    public ObservableCollection<PhotoInfo> CustiodialPictures { get; set; }
+    public string? MiscNotes { get; set; }
+    public ObservableCollection<PhotoInfo> MiscPictures { get; set; }
+    public string? FrontDeskTasksNotes { get; set; }
+    public ObservableCollection<PhotoInfo> FrontDeskTasksPictures { get; set; }
+    public string? NumberOfGuestsDate { get; set; }
+    public string? NumberOfGuestsHourBeforeClosing { get; set; }
+    public string? NumberofGuestsAtClosing { get; set; }
+    public string? NumberOfGuestsNotes { get; set; }
 
     public async Task<string> FormatDocument()
     {
-        string filePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
+        string dateString = DateTime.Now.ToString("MM-dd-yyyy");
+        string fileName = $"ManagerLog_{dateString}.docx";
+        string filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
 
         List<Paragraph> paragraphs = null;
 
@@ -125,11 +127,11 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             Paragraph eventSupport = new(new Run(new Text("Event Support / Reservations: ")));
             Paragraph eventSupportInfo = new(new Run(new Text($"• {EventSupportChangesName} {EventSupportChangesTime} {EventSupportChangesLocation}")));
             Paragraph eventSupportDetails = new(new Run(new Text($"• {EventSupportChangesDetails}")));
-            
+
             body.Append(eventSupport);
             body.Append(eventSupportInfo);
             body.Append(eventSupportDetails);
-            if(EventSupportChangesPictures != null)
+            if (EventSupportChangesPictures != null)
             {
 
                 paragraphs = await InsertImages(mainPart, EventSupportChangesPictures);
@@ -137,17 +139,17 @@ public class ManagerLogObject(BusinessLogic businessLogic)
                 {
                     body.Append(p);
                 }
-                
+
             }
-            
+
 
             Paragraph setsForTomorrow = new(new Run(new Text("Sets for Tomorrow: ")));
             Paragraph setsForTomorrowDetails = new(new Run(new Text($"• {RoomSetsNotes}")));
-            
+
             body.Append(setsForTomorrow);
             body.Append(setsForTomorrowDetails);
 
-            if(RoomSetsPictures != null)
+            if (RoomSetsPictures != null)
             {
 
                 paragraphs = await InsertImages(mainPart, RoomSetsPictures);
@@ -155,16 +157,16 @@ public class ManagerLogObject(BusinessLogic businessLogic)
                 {
                     body.Append(p);
                 }
-                
+
             }
 
             Paragraph avTech = new(new Run(new Text("AV / Technology: ")));
             Paragraph avTechDetails = new(new Run(new Text($"• {AvTechnologyNotes}")));
-            
+
             body.Append(avTech);
             body.Append(avTechDetails);
 
-            if(AvTechnologyPictures != null)
+            if (AvTechnologyPictures != null)
             {
 
                 paragraphs = await InsertImages(mainPart, AvTechnologyPictures);
@@ -172,19 +174,19 @@ public class ManagerLogObject(BusinessLogic businessLogic)
                 {
                     body.Append(p);
                 }
-                
+
             }
-            
+
 
             Paragraph foodService = new(new Run(new Text("Food Service: ")));
             Paragraph foodServiceInfo = new(new Run(new Text($"• {FoodServiceCategory} {FoodServiceLocation}")));
             Paragraph foodServiceDetails = new(new Run(new Text($"• {FoodServiceDescription}")));
-            
+
             body.Append(foodService);
             body.Append(foodServiceInfo);
             body.Append(foodServiceDetails);
 
-            if(FoodServicePictures != null)
+            if (FoodServicePictures != null)
             {
                 paragraphs = await InsertImages(mainPart, FoodServicePictures);
                 foreach (var p in paragraphs)
@@ -196,11 +198,11 @@ public class ManagerLogObject(BusinessLogic businessLogic)
 
             Paragraph retailServices = new(new Run(new Text("Retail Services: ")));
             Paragraph retailServicesDetails = new(new Run(new Text($"• {RetailServicesNotes}")));
-            
+
             body.Append(retailServices);
             body.Append(retailServicesDetails);
 
-            if(RetailServicesPictures != null)
+            if (RetailServicesPictures != null)
             {
 
                 paragraphs = await InsertImages(mainPart, RetailServicesPictures);
@@ -208,17 +210,17 @@ public class ManagerLogObject(BusinessLogic businessLogic)
                 {
                     body.Append(p);
                 }
-                
+
             }
 
 
             Paragraph custodial = new(new Run(new Text("Maintenence / Custodial: ")));
             Paragraph custidialDetails = new(new Run(new Text($"• {CustiodialNotes}")));
-            
+
             body.Append(custodial);
             body.Append(custidialDetails);
 
-            if(CustiodialPictures != null)
+            if (CustiodialPictures != null)
             {
                 paragraphs = await InsertImages(mainPart, CustiodialPictures);
                 foreach (var p in paragraphs)
@@ -230,11 +232,11 @@ public class ManagerLogObject(BusinessLogic businessLogic)
 
             Paragraph misc = new(new Run(new Text("Miscellaneous: ")));
             Paragraph miscDetails = new(new Run(new Text($"• {MiscNotes}")));
-            
+
             body.Append(misc);
             body.Append(miscDetails);
 
-            if(MiscPictures != null)
+            if (MiscPictures != null)
             {
 
                 paragraphs = await InsertImages(mainPart, MiscPictures);
@@ -242,17 +244,17 @@ public class ManagerLogObject(BusinessLogic businessLogic)
                 {
                     body.Append(p);
                 }
-                
+
             }
 
 
             Paragraph frontDeskTasks = new(new Run(new Text("Front Desk Tasks Done: ")));
             Paragraph frontDeskTasksDetails = new(new Run(new Text($"• {FrontDeskTasksNotes}")));
-            
+
             body.Append(frontDeskTasks);
             body.Append(frontDeskTasksDetails);
 
-            if(FrontDeskTasksPictures != null)
+            if (FrontDeskTasksPictures != null)
             {
 
                 paragraphs = await InsertImages(mainPart, FrontDeskTasksPictures);
@@ -260,7 +262,7 @@ public class ManagerLogObject(BusinessLogic businessLogic)
                 {
                     body.Append(p);
                 }
-                
+
             }
 
 
@@ -315,7 +317,7 @@ public class ManagerLogObject(BusinessLogic businessLogic)
 
             Paragraph phoneLogTitle = new(new Run(new Text("Building Manager Phone Log")));
             body.Append(phoneLogTitle);
-            
+
             Table callLogTable = new();
 
             TableProperties callTblProps = new(
@@ -356,7 +358,7 @@ public class ManagerLogObject(BusinessLogic businessLogic)
 
             mainPart.Document.Save();
         }
-        string newFilePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
+        string newFilePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
         return newFilePath;
     }
 
@@ -385,24 +387,24 @@ public class ManagerLogObject(BusinessLogic businessLogic)
     }
 
     public async Task<List<Paragraph>> InsertImages(MainDocumentPart mainPart, ObservableCollection<PhotoInfo> photos)
-{
-    var paragraphs = new List<Paragraph>();
-
-    foreach (var photo in photos)
     {
+        var paragraphs = new List<Paragraph>();
 
-        // Convert ImageSource → byte[]
-        byte[] imageBytes = await GetBytesFromImageSourceAsync(photo.Image);
-        if (imageBytes == null || imageBytes.Length == 0)
-            continue;
+        foreach (var photo in photos)
+        {
 
-        // Insert single image paragraph
-        Paragraph p = InsertImage(mainPart, imageBytes, photo.FileName);
-        paragraphs.Add(p);
+            // Convert ImageSource → byte[]
+            byte[] imageBytes = await GetBytesFromImageSourceAsync(photo.Image);
+            if (imageBytes == null || imageBytes.Length == 0)
+                continue;
+
+            // Insert single image paragraph
+            Paragraph p = InsertImage(mainPart, imageBytes, photo.FileName);
+            paragraphs.Add(p);
+        }
+
+        return paragraphs;
     }
-
-    return paragraphs;
-}
 
 
 
@@ -477,29 +479,29 @@ public class ManagerLogObject(BusinessLogic businessLogic)
     }
 
     private async Task<byte[]> GetBytesFromImageSourceAsync(ImageSource source)
-{
+    {
 
-    Stream stream = null;
+        Stream stream = null;
 
-    if (source is FileImageSource fileSrc)
-    {
-        stream = File.OpenRead(fileSrc.File);
-    }
-    else if (source is StreamImageSource streamSrc)
-    {
-        stream = await streamSrc.Stream(CancellationToken.None);
-    }
-    else
-    {
-        return null;
-    }
+        if (source is FileImageSource fileSrc)
+        {
+            stream = File.OpenRead(fileSrc.File);
+        }
+        else if (source is StreamImageSource streamSrc)
+        {
+            stream = await streamSrc.Stream(CancellationToken.None);
+        }
+        else
+        {
+            return null;
+        }
 
-    using (var ms = new MemoryStream())
-    {
-        await stream.CopyToAsync(ms);
-        return ms.ToArray();
+        using (var ms = new MemoryStream())
+        {
+            await stream.CopyToAsync(ms);
+            return ms.ToArray();
+        }
     }
-}
 
 
 }
