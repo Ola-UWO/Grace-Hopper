@@ -23,21 +23,21 @@ public class ManagerLogObject(BusinessLogic businessLogic)
     public string? EventSupportChangesDetails {get; set;}
     public ObservableCollection<PhotoInfo> EventSupportChangesPictures {get; set;}
     public string? RoomSetsNotes {get; set;}
-    public object? RoomSetsPictures {get; set;}
+    public ObservableCollection<PhotoInfo> RoomSetsPictures {get; set;}
     public string? AvTechnologyNotes {get; set;}
-    public object? AvTechnologyPictures {get; set;}
+    public ObservableCollection<PhotoInfo> AvTechnologyPictures {get; set;}
     public string? FoodServiceCategory {get; set;}
     public string? FoodServiceLocation {get; set;}
     public string? FoodServiceDescription {get; set;}
-    public object? FoodServicePictures {get; set;}
+    public ObservableCollection<PhotoInfo> FoodServicePictures {get; set;}
     public string? RetailServicesNotes {get; set;}
-    public object? RetailServicesPictures {get; set;}
+    public ObservableCollection<PhotoInfo> RetailServicesPictures {get; set;}
     public string? CustiodialNotes {get; set;}
-    public object? CustiodialPictures {get; set;}
+    public ObservableCollection<PhotoInfo> CustiodialPictures {get; set;}
     public string? MiscNotes {get; set;}
-    public object? MiscPictures {get; set;}
+    public ObservableCollection<PhotoInfo> MiscPictures {get; set;}
     public string? FrontDeskTasksNotes {get; set;}
-    public object? FrontDeskTasksPictures {get; set;}
+    public ObservableCollection<PhotoInfo> FrontDeskTasksPictures {get; set;}
     public string? NumberOfGuestsDate {get; set;}
     public string? NumberOfGuestsHourBeforeClosing {get; set;}
     public string? NumberofGuestsAtClosing {get; set;}
@@ -46,6 +46,8 @@ public class ManagerLogObject(BusinessLogic businessLogic)
     public async Task<string> FormatDocument()
     {
         string filePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
+
+        List<Paragraph> paragraphs = null;
 
         // Prevent OpenXML from crashing on existing file
         if (File.Exists(filePath))
@@ -127,11 +129,17 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             body.Append(eventSupport);
             body.Append(eventSupportInfo);
             body.Append(eventSupportDetails);
-            var paragraphs = InsertImages(mainPart, EventSupportChangesPictures);
-            foreach (var p in await paragraphs)
+            if(EventSupportChangesPictures != null)
             {
-                body.Append(p);
+
+                paragraphs = await InsertImages(mainPart, EventSupportChangesPictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+                
             }
+            
 
             Paragraph setsForTomorrow = new(new Run(new Text("Sets for Tomorrow: ")));
             Paragraph setsForTomorrowDetails = new(new Run(new Text($"• {RoomSetsNotes}")));
@@ -139,11 +147,34 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             body.Append(setsForTomorrow);
             body.Append(setsForTomorrowDetails);
 
+            if(RoomSetsPictures != null)
+            {
+
+                paragraphs = await InsertImages(mainPart, RoomSetsPictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+                
+            }
+
             Paragraph avTech = new(new Run(new Text("AV / Technology: ")));
             Paragraph avTechDetails = new(new Run(new Text($"• {AvTechnologyNotes}")));
             
             body.Append(avTech);
             body.Append(avTechDetails);
+
+            if(AvTechnologyPictures != null)
+            {
+
+                paragraphs = await InsertImages(mainPart, AvTechnologyPictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+                
+            }
+            
 
             Paragraph foodService = new(new Run(new Text("Food Service: ")));
             Paragraph foodServiceInfo = new(new Run(new Text($"• {FoodServiceCategory} {FoodServiceLocation}")));
@@ -153,11 +184,33 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             body.Append(foodServiceInfo);
             body.Append(foodServiceDetails);
 
+            if(FoodServicePictures != null)
+            {
+                paragraphs = await InsertImages(mainPart, FoodServicePictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+            }
+
+
             Paragraph retailServices = new(new Run(new Text("Retail Services: ")));
             Paragraph retailServicesDetails = new(new Run(new Text($"• {RetailServicesNotes}")));
             
             body.Append(retailServices);
             body.Append(retailServicesDetails);
+
+            if(RetailServicesPictures != null)
+            {
+
+                paragraphs = await InsertImages(mainPart, RetailServicesPictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+                
+            }
+
 
             Paragraph custodial = new(new Run(new Text("Maintenence / Custodial: ")));
             Paragraph custidialDetails = new(new Run(new Text($"• {CustiodialNotes}")));
@@ -165,17 +218,51 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             body.Append(custodial);
             body.Append(custidialDetails);
 
+            if(CustiodialPictures != null)
+            {
+                paragraphs = await InsertImages(mainPart, CustiodialPictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+            }
+
+
             Paragraph misc = new(new Run(new Text("Miscellaneous: ")));
             Paragraph miscDetails = new(new Run(new Text($"• {MiscNotes}")));
             
             body.Append(misc);
             body.Append(miscDetails);
 
+            if(MiscPictures != null)
+            {
+
+                paragraphs = await InsertImages(mainPart, MiscPictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+                
+            }
+
+
             Paragraph frontDeskTasks = new(new Run(new Text("Front Desk Tasks Done: ")));
             Paragraph frontDeskTasksDetails = new(new Run(new Text($"• {FrontDeskTasksNotes}")));
             
             body.Append(frontDeskTasks);
             body.Append(frontDeskTasksDetails);
+
+            if(FrontDeskTasksPictures != null)
+            {
+
+                paragraphs = await InsertImages(mainPart, FrontDeskTasksPictures);
+                foreach (var p in paragraphs)
+                {
+                    body.Append(p);
+                }
+                
+            }
+
 
             Paragraph hourBeforeClosing = new(new Run(new Text($"Number of guests 1 hour before close: {NumberOfGuestsHourBeforeClosing}   Number of guests asked to leave at closing: {NumberofGuestsAtClosing}")));
             body.Append(hourBeforeClosing);

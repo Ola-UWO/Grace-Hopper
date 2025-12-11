@@ -16,6 +16,6 @@ public partial class RetailServicesPage : ContentPage
 	private void OnSubmitFromTemplate(object sender, EventArgs e)
     {
         _log.RetailServicesNotes = RetailServicesTemplate.Notes;
-        _log.RoomSetsPictures = RetailServicesTemplate.Photos;
+        _log.RetailServicesPictures = RetailServicesTemplate.Photos;
     }
 }

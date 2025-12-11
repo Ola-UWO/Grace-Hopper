@@ -31,7 +31,7 @@ public partial class FoodServiceIssue : ContentPage
         _log.FoodServiceCategory = CategoryPicker.SelectedItem?.ToString();
         _log.FoodServiceLocation = LocationBox.Text;
         _log.FoodServiceDescription = NotesBox.Text;
-        // _log.FoodServicePictures = FoodServicePictures.Image;          // FIXME: Another picture area
+        _log.FoodServicePictures = Photos;
 
         Navigation.PopAsync();
         BindingContext = this;
@@ -86,20 +86,4 @@ public partial class FoodServiceIssue : ContentPage
         }
     }
 
-    public async void HandleSubmit(object sender, EventArgs args)
-    {
-        string category = CategoryPicker.SelectedItem as string;
-
-        string location = LocationBox.Text;
-        string notes = NotesBox.Text;
-
-        BasicEntryError error = await MauiProgram.businessLogic.AddFoodIssue(category, location, notes, Photos);
-        if (error != BasicEntryError.None)
-        {
-            await DisplayAlert("Addition has failed", error.ToString(), "OK");
-        }
-        
-
-        await Navigation.PopAsync();
-    }
 }

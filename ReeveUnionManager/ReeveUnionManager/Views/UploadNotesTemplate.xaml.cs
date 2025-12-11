@@ -89,10 +89,11 @@ public partial class UploadNotesTemplate : ContentView
 
     public event EventHandler SubmitClicked;
 
-    public async void HandleSubmit(object sender, EventArgs args)
+    private void OnSubmitClicked(object sender, EventArgs e)
     {
         SubmitClicked?.Invoke(this, EventArgs.Empty);
 
-        await Navigation.PopAsync();
+        Navigation.PopAsync();
+        
     }
 }
