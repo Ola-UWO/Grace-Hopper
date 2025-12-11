@@ -10,9 +10,11 @@ public interface IDatabase
 	Task<CallLog?> SelectCallLog(Guid callId);
 	Task<CallLogError> InsertCallLog(CallLog callLog);
 	Task<CallLogError> DeleteCallLog(Guid callId);
+	Task<CallLogError> DeleteAllCallLogs();
 	Task<BasicEntryError> InsertBasicEntry(BasicEntry entry);
 	Task<string[]> UploadPhotosAsync(ObservableCollection<PhotoInfo> photos);
 	Task<ScrapeEventError> InsertEvent(ScrapeEvent scrapeEvent);
+	Task<ObservableCollection<ScrapeEvent>> SelectAllEvents();
 	Task<ScrapeEventError> DeleteAllEvents();
 	Task<BasicEntryError> InsertFoodIssue(FoodServiceIssue issue);
 	Task<BasicEntryError> InsertEventSupportChange(EventSupportChange change);

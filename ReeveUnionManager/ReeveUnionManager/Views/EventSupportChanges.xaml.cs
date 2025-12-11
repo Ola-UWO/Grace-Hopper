@@ -34,7 +34,7 @@ public partial class EventSupportChanges : ContentPage
         _log.EventSupportChangesTime = TimeSelector.Time.ToString(@"hh\:mm");
         _log.EventSupportChangesLocation = LocationBox.Text;
         _log.EventSupportChangesDetails = NotesBox.Text;
-        // _log.EventSupportChangesPictures = ShiftEnd.Time.ToString(@"hh\:mm");           FIXME: FIGURE OUT PICTURES LATER
+        _log.EventSupportChangesPictures = Photos;
         
         Navigation.PopAsync();
     }
@@ -94,28 +94,4 @@ public partial class EventSupportChanges : ContentPage
 
         }
     }
-
-    public async void HandleSubmit(object sender, EventArgs args)
-    {
-        // _log.EventSupportChangesName = NameBox.Text;
-        // _log.EventSupportChangesTime = TimeSelector.Time.ToString(@"hh\:mm");
-        // _log.EventSupportChangesLocation = LocationBox.Text;
-        // _log.EventSupportChangesDetails = NotesBox.Text;
-        
-        // string name = NameBox.Text;
-        // TimeOnly time = TimeOnly.FromTimeSpan(TimePicker.Time);
-        // string location = LocationBox.Text;
-        // string notes = NotesBox.Text;
-
-        // BasicEntryError error = await MauiProgram.businessLogic.AddEventSupportChange(name, time, location, notes, Photos);
-        // if (error != BasicEntryError.None)
-        // {
-        //     //await DisplayAlert("Addition has failed", error.ToString(), "OK");
-        // }
-        
-
-        await Navigation.PopAsync();
-    }
-
-
 }

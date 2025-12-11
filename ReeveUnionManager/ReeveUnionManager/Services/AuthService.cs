@@ -1,3 +1,4 @@
+
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace ReeveUnionManager.Services
     public static class AuthService
     {
         private static readonly IPublicClientApplication _pca;
+
         private static AuthenticationResult? _lastResult;
 
         static AuthService()
@@ -31,6 +33,7 @@ namespace ReeveUnionManager.Services
 
         /// <summary>
         /// Last acquired access token, or null if no user is currently signed in.
+
         /// </summary>
         public static string? AccessToken => _lastResult?.AccessToken;
 

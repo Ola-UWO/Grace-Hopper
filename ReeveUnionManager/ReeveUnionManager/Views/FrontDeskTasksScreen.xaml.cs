@@ -19,7 +19,5 @@ public partial class FrontDeskTasksScreen : ContentPage
     {
         _log.FrontDeskTasksNotes = FrontDeskTemplate.Notes;
         _log.FrontDeskTasksPictures = FrontDeskTemplate.Photos;
-
-        Navigation.PopAsync();
     }
 }

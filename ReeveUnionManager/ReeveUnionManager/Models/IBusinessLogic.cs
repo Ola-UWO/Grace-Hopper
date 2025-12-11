@@ -13,6 +13,7 @@ public interface IBusinessLogic
     Task<CallLogError> DeleteCallLog(Guid callId);
     Task<CallLogError> DeleteAllCallLogs();
     Task<BasicEntryError> AddBasicEntry(string title, string notes, ObservableCollection<PhotoInfo> photos);
+    Task<ObservableCollection<ScrapeEvent>> GetAllEvents();
     Task<ScrapeEventError> Scrape25Live();
     Task<BasicEntryError> AddEventSupportChange(string name, TimeOnly time, string location, string notes, ObservableCollection<PhotoInfo> photos);
     Task<BasicEntryError> AddFoodIssue(string category, string location, string notes, ObservableCollection<PhotoInfo> photos);

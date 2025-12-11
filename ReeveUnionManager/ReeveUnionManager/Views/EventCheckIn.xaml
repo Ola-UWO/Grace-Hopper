@@ -23,6 +23,11 @@
                     FontAttributes="Bold" />
                 <Entry Placeholder="Location:" WidthRequest="300" x:Name="CheckInLocationEntry"
                     HeightRequest="40" HorizontalOptions="Start" />
+                <HorizontalStackLayout Spacing="10">
+                <CheckBox x:Name="CheckInBox" />
+                <Label Text="Checked In?"
+                       VerticalTextAlignment="Center" />
+            </HorizontalStackLayout>
                 <Label Text="Notes"
                     FontAttributes="Bold" />
 

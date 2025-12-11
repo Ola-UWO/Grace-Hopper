@@ -19,14 +19,22 @@ public partial class NewLogEntryPage : ContentPage
 	private async void OnSubmitClicked(object sender, EventArgs e)
 	{
 		Debug.WriteLine("Before Log Build");
-
-		// 1) Create the DOCX via business logic
+		
 		var localPath = await MauiProgram.businessLogic.CreateManagerLogFileAsync(_log);
-
 		Debug.WriteLine("After Log Build");
-
+		
+		/*
+		if (result == ManagerLogError.None)
+		{
+			await DisplayAlert("Success", "Manager log created!", "OK");
+			await MauiProgram.businessLogic.DeleteAllCallLogs(); // clear the phone log after creating the manager log
+		}
+		else
+		*/
+		// 1) Create the DOCX via business logic
 		if (string.IsNullOrEmpty(localPath))
 		{
+
 			await DisplayAlert("Error", "Could not create log file.", "OK");
 			return;
 		}
@@ -83,6 +91,10 @@ public partial class NewLogEntryPage : ContentPage
 				$"We created the log file, but couldn't upload it to OneDrive.\n\nDetails:\n{ex.Message}",
 				"OK");
 		}
+		
+		await MauiProgram.businessLogic.DeleteAllCallLogs(); // clear the phone log after creating the manager log
 	}
+	
+
 
 }
