@@ -338,6 +338,18 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             );
             callLogTable.Append(callLogHeader);
 
+            var calls = await _businessLogic.GetCallLogs();
+
+            foreach (var ca in calls)
+            {
+                TableRow row = new();
+                row.Append(
+                    CreateCell(ca.TimeOfCall ?? "", 3000),
+                    CreateCell(ca.CallNotes ?? "", 1500)
+                );
+                callLogTable.Append(row);
+            }
+
             body.Append(callLogTable);
 
             mainPart.Document = new Document(body);

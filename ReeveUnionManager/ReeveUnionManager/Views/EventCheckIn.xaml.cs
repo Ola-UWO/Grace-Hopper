@@ -66,6 +66,7 @@ public partial class EventCheckIn : ContentPage
         string checkInName = CheckInNameEntry.Text;
         string timeOfCheckIn = TimeOfCheckInEntry.Text;
         string checkInLocation = CheckInLocationEntry.Text;
+        bool isChecked = CheckInBox.IsChecked;
         string checkInNotes = EventNotesEntry.Text;
 		
 		var se = new ScrapeEvent
@@ -74,6 +75,7 @@ public partial class EventCheckIn : ContentPage
                 EventTitle = checkInName,
                 EventLocation = checkInLocation,
                 EventDateAndTime = timeOfCheckIn,
+                EventCheckIn = isChecked,
                 EventNotes = checkInNotes,
             };
 		// FIX: this should be editing not trying to insert (no way to edit currently)
