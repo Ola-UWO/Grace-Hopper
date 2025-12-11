@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReeveUnionManager.Views.OneDriveFolderPage"
+             Title="Choose OneDrive Folder"
+             BackgroundColor="#F2F2F2">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16">
+
+            <!-- Outer card -->
+            <Border Stroke="#DDDDDD"
+                    StrokeThickness="1"
+                    BackgroundColor="White"
+                    Padding="20"
+                    StrokeShape="RoundRectangle 16"
+                    Margin="0,16,0,16">
+                <Border.Shadow>
+                    <Shadow Brush="#55000000"
+                            Offset="0,4"
+                            Radius="12"
+                            Opacity="0.25"/>
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="18">
+
+                    <!-- Title -->
+                    <Label Text="Select a folder from your OneDrive"
+                           FontAttributes="Bold"
+                           FontSize="20"
+                           HorizontalOptions="Center"/>
+
+                    <!-- Current selection label -->
+                    <Label x:Name="CurrentFolderLabel"
+                           Text="Current Selection: OneDrive root"
+                           FontSize="16"
+                           TextColor="#444"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Fill"
+                           LineBreakMode="HeadTruncation"/>
+
+                    <!-- Folder list card -->
+                    <Border Stroke="#CCCCCC"
+                            StrokeThickness="1"
+                            BackgroundColor="White"
+                            Padding="0"
+                            StrokeShape="RoundRectangle 12">
+
+                        <Grid>
+
+                            <!-- Folder list -->
+                            <CollectionView x:Name="FolderList"
+                                            SelectionMode="None"
+                                            HeightRequest="370">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <HorizontalStackLayout Padding="12,8"
+                                                               Spacing="12">
+                                            <HorizontalStackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnFolderTapped"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </HorizontalStackLayout.GestureRecognizers>
+
+                                            <Label Text="📁"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center"/>
+
+                                            <Label Text="{Binding Name}"
+                                                   FontSize="16"
+                                                   VerticalOptions="Center"/>
+                                        </HorizontalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- "No subfolders" message -->
+                            <Label x:Name="NoSubfoldersLabel"
+                                   Text="This folder has no subfolders."
+                                   FontSize="14"
+                                   TextColor="#888"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   IsVisible="False"/>
+
+                            <!-- Loading overlay -->
+                            <Grid x:Name="FolderListOverlay"
+                                  BackgroundColor="#80000000"
+                                  IsVisible="False"
+                                  InputTransparent="False">
+
+                                <ActivityIndicator x:Name="FolderLoadingIndicator"
+                                                   IsVisible="True"
+                                                   IsRunning="False"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="60"
+                                                   HeightRequest="60"
+                                                   Scale="1.2"/>
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+
+                    <!-- Action buttons -->
+                    <HorizontalStackLayout Spacing="16"
+                                           HorizontalOptions="Fill"
+                                           Margin="0,4,0,0">
+
+                        <!-- LEFT: Up -->
+                        <Button x:Name="UpButton"
+                                Text="▲ Up"
+                                Padding="16,8"
+                                FontSize="14"
+                                BackgroundColor="#EFEFEF"
+                                TextColor="#333"
+                                CornerRadius="10"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                IsVisible="False"
+                                Clicked="OnUpClicked"/>
+
+                        <!-- CENTER: Cancel -->
+                        <Button Text="Cancel"
+                                Padding="14,8"
+                                BackgroundColor="#EFEFEF"
+                                TextColor="#333"
+                                CornerRadius="10"
+                                HorizontalOptions="CenterAndExpand"
+                                VerticalOptions="Center"
+                                Clicked="OnCancelClicked"/>
+
+                        <!-- RIGHT: Select -->
+                        <Button x:Name="SelectFolderButton"
+                                Text="Use This Folder"
+                                Padding="20,8"
+                                BackgroundColor="#2E77F7"
+                                TextColor="White"
+                                CornerRadius="10"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"
+                                Clicked="OnSelectFolderClicked"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

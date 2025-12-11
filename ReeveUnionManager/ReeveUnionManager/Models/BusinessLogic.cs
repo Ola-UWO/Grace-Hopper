@@ -212,7 +212,7 @@ public class BusinessLogic : IBusinessLogic
         }
 
         return BasicEntryError.None;
-        
+
 
     }
 
@@ -298,56 +298,73 @@ public class BusinessLogic : IBusinessLogic
         return decoded;
     }
 
-    public async Task<ManagerLogError> CreateManagerLogFile(ManagerLogObject log)
+    public async Task<string?> CreateManagerLogFileAsync(ManagerLogObject log)
     {
-        string filePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
-
-        // Prevent OpenXML from crashing on existing file
-        if (File.Exists(filePath))
+        try
         {
-            File.Delete(filePath);    
-        }
+            // Dynamic file name: "MM-DD-YYYY Manager Log.docx"
+            var datePart = DateTime.Now.ToString("MM-dd-yyyy");
+            var fileName = $"{datePart}.docx";
 
-        using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(
-            filePath, WordprocessingDocumentType.Document))
-        {
-            MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+            string filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
 
-            Body body = new Body();
-            foreach (var prop in typeof(ManagerLogObject).GetProperties())
+            // Prevent OpenXML from crashing on existing file
+            if (File.Exists(filePath))
             {
-                object? value = null;
-
-                string label = prop.Name;
-                value = prop.GetValue(log);
-                string textToWrite;
-
-                if (value == null) 
-                {
-                    textToWrite = $"{label}: (none)"; 
-                }
-                else if (value is string strValue)
-                { 
-                    textToWrite = $"{label}: {strValue}";
-                } 
-                else 
-                {
-                    // for picture fields / object fields
-                    textToWrite = $"{label}: [Object data present]";
-                }
-                
-                Paragraph para = new Paragraph(new Run(new Text(textToWrite)));
-                body.Append(para);
+                File.Delete(filePath);
             }
-            mainPart.Document = new Document(body);
 
-            mainPart.Document.Save();
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(
+                   filePath, WordprocessingDocumentType.Document))
+            {
+                MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+
+                Body body = new Body();
+                foreach (var prop in typeof(ManagerLogObject).GetProperties())
+                {
+                    string label = prop.Name;
+                    object? value = prop.GetValue(log);
+
+                    string textToWrite;
+
+                    if (value == null)
+                    {
+                        textToWrite = $"{label}: (none)";
+                    }
+                    else if (value is string strValue)
+                    {
+                        textToWrite = $"{label}: {strValue}";
+                    }
+                    else
+                    {
+                        // for picture fields / object fields
+                        textToWrite = $"{label}: [Object data present]";
+                    }
+
+                    Paragraph para = new Paragraph(new Run(new Text(textToWrite)));
+                    body.Append(para);
+                }
+
+                mainPart.Document = new Document(body);
+                mainPart.Document.Save();
+            }
+
+            // LEGACY BACKUP PIPELINE:
+            // Send the file path into your existing database method as a backup
+            await _database.UploadManagerLogFileAsync(filePath);
+
+            // Return the local path so the UI can upload to OneDrive
+            return filePath;
         }
-        string newFilePath = Path.Combine(FileSystem.AppDataDirectory, "ManagerLog.docx");
-        await _database.UploadManagerLogFileAsync(newFilePath);
-
-        return ManagerLogError.None;
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error creating manager log file: {ex}");
+            return null;
+        }
     }
+
+
+
 
     public async Task<BasicEntryError> AddFoodIssue(string category, string location, string notes, ObservableCollection<PhotoInfo> photos)
     {
@@ -371,7 +388,7 @@ public class BusinessLogic : IBusinessLogic
         }
 
         return BasicEntryError.None;
-        
+
 
     }
 
@@ -398,7 +415,7 @@ public class BusinessLogic : IBusinessLogic
         }
 
         return BasicEntryError.None;
-        
+
 
     }
 }

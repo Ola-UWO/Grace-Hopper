@@ -44,7 +44,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\clipboard.png"/>
+		<MauiIcon Include="Resources\AppIcon\appicon.png"/>
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -65,5 +65,10 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 	</ItemGroup>
+
+	<ItemGroup>
+  		<BundleResource Include="Platforms/iOS/LaunchScreen.storyboard" />
+	</ItemGroup>
+
 
 </Project>
