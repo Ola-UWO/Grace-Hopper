@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using System.Collections.ObjectModel;
 //using System.Windows.Forms;
 
 namespace ReeveUnionManager.Models;
@@ -20,7 +21,7 @@ public class ManagerLogObject(BusinessLogic businessLogic)
     public string? EventSupportChangesTime {get; set;}
     public string? EventSupportChangesLocation {get; set;}
     public string? EventSupportChangesDetails {get; set;}
-    public object? EventSupportChangesPictures {get; set;}
+    public ObservableCollection<PhotoInfo> EventSupportChangesPictures {get; set;}
     public string? RoomSetsNotes {get; set;}
     public object? RoomSetsPictures {get; set;}
     public string? AvTechnologyNotes {get; set;}
@@ -126,6 +127,11 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             body.Append(eventSupport);
             body.Append(eventSupportInfo);
             body.Append(eventSupportDetails);
+            var paragraphs = InsertImages(mainPart, EventSupportChangesPictures);
+            foreach (var p in await paragraphs)
+            {
+                body.Append(p);
+            }
 
             Paragraph setsForTomorrow = new(new Run(new Text("Sets for Tomorrow: ")));
             Paragraph setsForTomorrowDetails = new(new Run(new Text($"• {RoomSetsNotes}")));
@@ -278,4 +284,123 @@ public class ManagerLogObject(BusinessLogic businessLogic)
             paragraph
         );
     }
+
+    public async Task<List<Paragraph>> InsertImages(MainDocumentPart mainPart, ObservableCollection<PhotoInfo> photos)
+{
+    var paragraphs = new List<Paragraph>();
+
+    foreach (var photo in photos)
+    {
+
+        // Convert ImageSource → byte[]
+        byte[] imageBytes = await GetBytesFromImageSourceAsync(photo.Image);
+        if (imageBytes == null || imageBytes.Length == 0)
+            continue;
+
+        // Insert single image paragraph
+        Paragraph p = InsertImage(mainPart, imageBytes, photo.FileName);
+        paragraphs.Add(p);
+    }
+
+    return paragraphs;
+}
+
+
+
+    private Paragraph InsertImage(MainDocumentPart mainPart, byte[] imageBytes, string imageName)
+    {
+
+        // Add the image part
+        ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+        using (MemoryStream ms = new MemoryStream(imageBytes))
+            imagePart.FeedData(ms);
+
+        string relationshipId = mainPart.GetIdOfPart(imagePart);
+
+        var drawing = new Drawing(
+            new DocumentFormat.OpenXml.Drawing.Wordprocessing.Inline(
+                new DocumentFormat.OpenXml.Drawing.Wordprocessing.Extent
+                {
+                    Cx = 4000000,
+                    Cy = 3000000
+                },
+                new DocumentFormat.OpenXml.Drawing.Wordprocessing.DocProperties
+                {
+                    Id = 1,
+                    Name = imageName
+                },
+                new DocumentFormat.OpenXml.Drawing.Wordprocessing.NonVisualGraphicFrameDrawingProperties(
+                    new DocumentFormat.OpenXml.Drawing.GraphicFrameLocks
+                    {
+                        NoChangeAspect = true
+                    }),
+                new DocumentFormat.OpenXml.Drawing.Graphic(
+                    new DocumentFormat.OpenXml.Drawing.GraphicData(
+                        new DocumentFormat.OpenXml.Drawing.Pictures.Picture(
+                            new DocumentFormat.OpenXml.Drawing.Pictures.NonVisualPictureProperties(
+                                new DocumentFormat.OpenXml.Drawing.Pictures.NonVisualDrawingProperties
+                                {
+                                    Id = 0,
+                                    Name = imageName
+                                },
+                                new DocumentFormat.OpenXml.Drawing.Pictures.NonVisualPictureDrawingProperties()
+                            ),
+                            new DocumentFormat.OpenXml.Drawing.Pictures.BlipFill(
+                                new DocumentFormat.OpenXml.Drawing.Blip
+                                {
+                                    Embed = relationshipId
+                                },
+                                new DocumentFormat.OpenXml.Drawing.Stretch(
+                                    new DocumentFormat.OpenXml.Drawing.FillRectangle()
+                                )),
+                            new DocumentFormat.OpenXml.Drawing.Pictures.ShapeProperties(
+                                new DocumentFormat.OpenXml.Drawing.Transform2D(
+                                    new DocumentFormat.OpenXml.Drawing.Offset { X = 0, Y = 0 },
+                                    new DocumentFormat.OpenXml.Drawing.Extents
+                                    {
+                                        Cx = 4000000,
+                                        Cy = 3000000
+                                    }),
+                                new DocumentFormat.OpenXml.Drawing.PresetGeometry
+                                {
+                                    Preset = DocumentFormat.OpenXml.Drawing.ShapeTypeValues.Rectangle
+                                }
+                            )
+                        )
+                    )
+                    {
+                        Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture"
+                    }
+                )
+            )
+        );
+        return new Paragraph(new Run(drawing));
+    }
+
+    private async Task<byte[]> GetBytesFromImageSourceAsync(ImageSource source)
+{
+
+    Stream stream = null;
+
+    if (source is FileImageSource fileSrc)
+    {
+        stream = File.OpenRead(fileSrc.File);
+    }
+    else if (source is StreamImageSource streamSrc)
+    {
+        stream = await streamSrc.Stream(CancellationToken.None);
+    }
+    else
+    {
+        return null;
+    }
+
+    using (var ms = new MemoryStream())
+    {
+        await stream.CopyToAsync(ms);
+        return ms.ToArray();
+    }
+}
+
+
 }
