@@ -9,9 +9,10 @@ public partial class TechnologyPage : ContentPage
     {
         InitializeComponent();
         _log = log;
+        AvTechnologyTemplate.SubmitClicked += OnSubmitFromTemplate;
     }
 
-	private void HandleSubmit(object sender, EventArgs e)
+	private void OnSubmitFromTemplate(object sender, EventArgs e)
     {
         _log.AvTechnologyNotes = AvTechnologyTemplate.Notes;
         _log.AvTechnologyPictures = AvTechnologyTemplate.Photos;

@@ -10,8 +10,8 @@ public partial class GuestCountEntry : ContentPage
 
     public GuestCountEntry(ManagerLogObject log)
     {
-        InitializeComponent();
         _log = log;
+        InitializeComponent();
     }
     
     private void OnSubmitClicked(object sender, EventArgs e)

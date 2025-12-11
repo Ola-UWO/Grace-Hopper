@@ -12,9 +12,10 @@ public partial class RoomSetsScreen : ContentPage
     {
         InitializeComponent();
         _log = log;
+        RoomSetsTemplate.SubmitClicked += OnSubmitFromTemplate;
     }
 
-	private void HandleSubmit(object sender, EventArgs e)
+	private void OnSubmitFromTemplate(object sender, EventArgs e)
     {
         _log.RoomSetsNotes = RoomSetsTemplate.Notes;
         _log.RoomSetsPictures = RoomSetsTemplate.Photos;
