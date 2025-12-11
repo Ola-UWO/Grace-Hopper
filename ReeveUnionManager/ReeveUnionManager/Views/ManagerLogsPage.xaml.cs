@@ -351,39 +351,40 @@ public partial class ManagerLogsPage : ContentPage
     }
 
     private async void OnLogSelected(object sender, SelectionChangedEventArgs e)
+{
+    var collectionView = (CollectionView)sender;
+    DriveItem? selected = null;
+
+    try
     {
-        var collectionView = (CollectionView)sender;
-        DriveItem? selected = null;
+        selected = e.CurrentSelection?.FirstOrDefault() as DriveItem;
+        if (selected == null)
+            return;
 
-        try
-        {
-            selected = e.CurrentSelection?.FirstOrDefault() as DriveItem;
-            if (selected == null)
-                return;
+        // Download then preview via iOS QuickLook
+        LoadingIndicator.IsVisible = true;
+        LoadingIndicator.IsRunning = true;
 
-            // Short tap: preview in OneDrive if possible
-            if (!string.IsNullOrWhiteSpace(selected.WebUrl))
-            {
-                await Launcher.OpenAsync(selected.WebUrl);
-            }
-            else
-            {
-                // Fallback: open locally on device if no WebUrl is available
-                await OpenDriveItemOnDeviceAsync(selected);
-            }
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert(
-                "Open Log Error",
-                $"Unable to open this log.\n\nDetails: {ex.Message}",
-                "OK");
-        }
-        finally
-        {
-            collectionView.SelectedItem = null;
-        }
+        var localPath = await OneDriveService.DownloadFileToLocalAsync(selected);
+
+        // Native iOS QuickLook preview (we'll implement this next)
+        await FilePreviewService.PreviewAsync(localPath, selected.Name);
     }
+    catch (Exception ex)
+    {
+        await DisplayAlert(
+            "Open Log Error",
+            $"Unable to open this log.\n\nDetails: {ex.Message}",
+            "OK");
+    }
+    finally
+    {
+        collectionView.SelectedItem = null;
+        LoadingIndicator.IsRunning = false;
+        LoadingIndicator.IsVisible = false;
+    }
+}
+
 
     private async Task OpenDriveItemOnDeviceAsync(DriveItem item)
     {
